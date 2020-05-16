@@ -24,4 +24,17 @@ public class Portfolio {
   public void setGroups(List<AssetGroup> groups) {
     this.groups = groups;
   }
+
+  public void addGroup(AssetGroup group) {
+    groups.add(group);
+  }
+
+  public void reorder() {
+    int count = 1;
+
+    for(AssetGroup group : groups) {
+      group.setOrder(count);
+      count++;
+    }
+  }
 }

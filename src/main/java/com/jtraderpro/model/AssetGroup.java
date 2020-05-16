@@ -19,14 +19,31 @@ public class AssetGroup {
   private Integer order = 0;
   private List<Asset> assets = new ArrayList<>();
 
-  public AssetGroup() {  
+  public AssetGroup() {
   }
-  
+
   public AssetGroup(String name, Integer order) {
     this.name = name;
     this.order = order;
   }
-    
+
+  public void reorder() {
+    int count = 1;
+
+    for (Asset asset : assets) {
+      asset.setOrder(count);
+      count++;
+    }
+  }
+
+  public void removeAsset(Asset asset) {
+    assets.remove(asset);
+  }
+
+  public void addAsset(Asset asset) {
+    assets.add(asset);
+  }
+
   public String getName() {
     return name;
   }

@@ -15,10 +15,19 @@ import java.util.Date;
 public class Asset {
 
   private String symbol = "";
+  private String name = "";
   private Integer order = 0;
   private Integer amount = 0;
   private Double price = 0.00;
   private Date date = new Date();
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 
   public String getSymbol() {
     return symbol;
@@ -58,5 +67,24 @@ public class Asset {
 
   public void setDate(Date date) {
     this.date = date;
+  }
+
+  @Override
+  public int hashCode() {
+    return symbol.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o != null) {
+      if (o instanceof Asset) {
+        final Asset a = (Asset) o;
+        if (a.getSymbol().equalsIgnoreCase(symbol)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }
