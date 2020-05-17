@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
+import javax.swing.UIManager;
 
 /**
  * Main
@@ -25,25 +26,33 @@ public class Main {
    */
   public static void main(String[] args) {
     init();
+
+    try {
+      UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+    } catch(Exception err) {
+      err.printStackTrace();
+    }
+
     final MainFrame frame = new MainFrame();
+
+    frame.setSize(770, 570);
+    frame.setResizable(true);
     frame.setVisible(true);
     centerComponent(frame);
   }
 
   private static void init() {
-    final PortfolioProvider provider = new PortfolioProvider();
-
-    if (!provider.defaultExists()) {
-      provider.getNewPortfolio();
+    if (!PortfolioProvider.getInstance().defaultExists()) {
+      PortfolioProvider.getInstance().getNewPortfolio();
 
       try {
-        provider.save();
+        PortfolioProvider.getInstance().save();
       } catch (IOException err) {
         err.printStackTrace();
       }
     } else {
       try {
-        provider.load();
+        PortfolioProvider.getInstance().load();
       } catch (IOException err) {
         err.printStackTrace();
       }

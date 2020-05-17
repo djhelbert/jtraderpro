@@ -21,6 +21,17 @@ public class Asset {
   private Double price = 0.00;
   private Date date = new Date();
 
+  public Asset() {
+  }
+  
+  public Asset(String symbol, String name, Integer order, Integer amount, Double price) {
+    this.symbol = symbol;
+    this.name = name;
+    this.order = order;
+    this.amount = amount;
+    this.price = price;
+  }
+  
   public String getName() {
     return name;
   }

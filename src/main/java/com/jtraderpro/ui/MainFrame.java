@@ -36,11 +36,6 @@ public class MainFrame extends JFrame implements ActionListener {
    */
   private final static JMenuItem saveItem = new JMenuItem("Save");
 
-  /**
-   * Portfolio Provider
-   */
-  private final PortfolioProvider provider = new PortfolioProvider();
-  
   public MainFrame() {
     super("JTraderPro");
     init();
@@ -67,6 +62,7 @@ public class MainFrame extends JFrame implements ActionListener {
     exitItem.addActionListener(this);
 
     setJMenuBar(menuBar);
+    setContentPane(new PortfolioPanel());
   }
 
   @Override
@@ -84,7 +80,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
   private void saveItemAction() {
     try {
-      provider.save();
+      PortfolioProvider.getInstance().save();
     } catch (IOException err) {
       err.printStackTrace();
     }
@@ -95,6 +91,6 @@ public class MainFrame extends JFrame implements ActionListener {
   }
 
   private void newItemAction() {
-    provider.getNewPortfolio();
+    PortfolioProvider.getInstance().getNewPortfolio();
   }
 }
