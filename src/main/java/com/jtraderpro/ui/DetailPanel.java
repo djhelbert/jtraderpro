@@ -12,48 +12,37 @@
  * You should have received a copy of the GNU General Public License
  * along with jTraderPro.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.jtraderpro.model;
+package com.jtraderpro.ui;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import static com.jtraderpro.ui.AssetGroupPanel.COL_MAX;
+import static com.jtraderpro.ui.AssetGroupPanel.ROW_MAX;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 /**
- * Portfolio
- *
+ * Detail Panel
+ * 
  * @author djhelbert
  */
-public class Portfolio {
+public class DetailPanel extends JPanel {
 
-  private Date date = new Date();
-  private List<AssetGroup> groups = new ArrayList<>();
-
-  public Date getDate() {
-    return date;
+  private JPanel summaryPanel = new JPanel();
+  private JPanel graphPanel = new JPanel();
+  
+  public DetailPanel() {
+    super();
+    init();
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  private void init() {
+    setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+    setLayout(new GridLayout(2, 1));
+    add(summaryPanel);
+    add(graphPanel);
   }
 
-  public List<AssetGroup> getGroups() {
-    return groups;
-  }
-
-  public void setGroups(List<AssetGroup> groups) {
-    this.groups = groups;
-  }
-
-  public void addGroup(AssetGroup group) {
-    groups.add(group);
-  }
-
-  public void reorder() {
-    int count = 1;
-
-    for (AssetGroup group : groups) {
-      group.setOrder(count);
-      count++;
-    }
+  public void update(String symbol) {
   }
 }

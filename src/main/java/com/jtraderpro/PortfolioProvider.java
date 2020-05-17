@@ -51,8 +51,8 @@ public class PortfolioProvider {
   public Portfolio getNewPortfolio() {
     portfolio = new Portfolio();
     portfolio.getGroups().add(new AssetGroup("My Stocks", 0));
-    portfolio.getGroups().get(0).addAsset(new Asset("ORCL", "Oracle Corporation", 0, 0, 0.00));
-    portfolio.getGroups().get(0).addAsset(new Asset("AAPL", "Apple Inc.", 1, 0, 0.00));
+    portfolio.getGroups().get(0).addAsset(new Asset("ORCL", "Oracle Corporation", 0));
+    portfolio.getGroups().get(0).addAsset(new Asset("AAPL", "Apple Inc.", 1));
 
     return portfolio;
   }

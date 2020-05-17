@@ -1,11 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * jTraderPro is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * jTraderPro is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with jTraderPro.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.jtraderpro.model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Asset
@@ -17,21 +27,29 @@ public class Asset {
   private String symbol = "";
   private String name = "";
   private Integer order = 0;
-  private Integer amount = 0;
-  private Double price = 0.00;
-  private Date date = new Date();
+  private List<Lot> lots = new ArrayList<>();
 
   public Asset() {
   }
-  
-  public Asset(String symbol, String name, Integer order, Integer amount, Double price) {
+
+  public Asset(String symbol, String name, Integer order) {
     this.symbol = symbol;
     this.name = name;
     this.order = order;
-    this.amount = amount;
-    this.price = price;
   }
-  
+
+  public List<Lot> getLots() {
+    return lots;
+  }
+
+  public void setLots(List<Lot> lots) {
+    this.lots = lots;
+  }
+
+  public void addLot(Lot lot) {
+    lots.add(lot);
+  }
+
   public String getName() {
     return name;
   }
@@ -56,30 +74,6 @@ public class Asset {
     this.order = order;
   }
 
-  public Integer getAmount() {
-    return amount;
-  }
-
-  public void setAmount(Integer amount) {
-    this.amount = amount;
-  }
-
-  public Double getPrice() {
-    return price;
-  }
-
-  public void setPrice(Double price) {
-    this.price = price;
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
-  }
-
   @Override
   public int hashCode() {
     return symbol.hashCode();
@@ -87,12 +81,10 @@ public class Asset {
 
   @Override
   public boolean equals(Object o) {
-    if (o != null) {
-      if (o instanceof Asset) {
-        final Asset a = (Asset) o;
-        if (a.getSymbol().equalsIgnoreCase(symbol)) {
-          return true;
-        }
+    if (o != null && o instanceof Asset) {
+      final Asset a = (Asset) o;
+      if (a.getSymbol().equalsIgnoreCase(symbol)) {
+        return true;
       }
     }
 

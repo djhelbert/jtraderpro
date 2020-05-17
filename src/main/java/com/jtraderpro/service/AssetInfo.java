@@ -1,7 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * jTraderPro is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * jTraderPro is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with jTraderPro.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.jtraderpro.service;
 
@@ -11,6 +20,7 @@ package com.jtraderpro.service;
  */
 public class AssetInfo {
   private String symbol;
+  private String name;
   private String currency;
   private String type;
   private String exchange;
@@ -32,6 +42,14 @@ public class AssetInfo {
 
   public void setSymbol(String symbol) {
     this.symbol = symbol;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getCurrency() {

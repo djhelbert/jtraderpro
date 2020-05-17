@@ -14,19 +14,43 @@
  */
 package com.jtraderpro.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
- * Portfolio
+ * Lot
  *
  * @author djhelbert
  */
-public class Portfolio {
+public class Lot {
 
+  private Integer amount = 0;
+  private Double price = 0.00;
   private Date date = new Date();
-  private List<AssetGroup> groups = new ArrayList<>();
+
+  public Lot() {
+  }
+
+  public Lot(Integer amount, Double price, Date date) {
+    this.amount = amount;
+    this.date = date;
+    this.price = price;
+  }
+
+  public Integer getAmount() {
+    return amount;
+  }
+
+  public void setAmount(Integer amount) {
+    this.amount = amount;
+  }
+
+  public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
+  }
 
   public Date getDate() {
     return date;
@@ -34,26 +58,5 @@ public class Portfolio {
 
   public void setDate(Date date) {
     this.date = date;
-  }
-
-  public List<AssetGroup> getGroups() {
-    return groups;
-  }
-
-  public void setGroups(List<AssetGroup> groups) {
-    this.groups = groups;
-  }
-
-  public void addGroup(AssetGroup group) {
-    groups.add(group);
-  }
-
-  public void reorder() {
-    int count = 1;
-
-    for (AssetGroup group : groups) {
-      group.setOrder(count);
-      count++;
-    }
   }
 }
