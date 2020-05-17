@@ -6,6 +6,9 @@
 package com.jtraderpro.ui;
 
 import com.jtraderpro.model.Asset;
+import com.jtraderpro.service.AssetInfo;
+import com.jtraderpro.service.AssetService;
+import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -39,6 +42,27 @@ public class AssetPanel extends JPanel {
     this.asset = asset;
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
+    updateInfo();
+  }
+
+  public final void updateInfo() {
+    final AssetInfo info = AssetService.getInstance().getAssetInfo(asset.getSymbol());
+    
+    if(info != null) {
+      priceLabel.setText(info.getMarketPrice().toString() + " " + info.getPercentChange());
+      volumeLabel.setText((info.getVolume().doubleValue() / 1000000) + "M");
+
+      if(info.getPercentChange() < 0.0) {
+        priceLabel.setForeground(Color.red);
+        symbolLabel.setForeground(Color.red);
+      } else if( info.getPercentChange() > 0.0) {
+        priceLabel.setForeground(new Color(51,102,0));
+        symbolLabel.setForeground(new Color(51,102,0));
+      } else {
+        priceLabel.setForeground(Color.black);
+        symbolLabel.setForeground(Color.black);
+      }
+    }
   }
 
   public final void clear() {
