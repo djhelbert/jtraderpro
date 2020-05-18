@@ -40,7 +40,7 @@ public class AssetInfo {
   private Double dividendYield;
   private Date exDate;
   private Date earningsAnnouncement;
-  private Double avgVolume;
+  private Long avgVolume;
   
   public AssetInfo() {    
   }
@@ -201,11 +201,11 @@ public class AssetInfo {
     this.earningsAnnouncement = earningsAnnouncement;
   }
   
-  public Double getAvgVolume() {
+  public Long getAvgVolume() {
     return avgVolume;
   }
 
-  public void setAvgVolume(Double avgVolume) {
+  public void setAvgVolume(Long avgVolume) {
     this.avgVolume = avgVolume;
   }
 }

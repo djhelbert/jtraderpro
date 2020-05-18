@@ -31,13 +31,13 @@ import javax.swing.border.EtchedBorder;
  * 
  * @author djhelbert
  */
-public class PortfolioPanel extends JPanel implements ActionListener{
-  
-  private final JPanel buttonPanel = new JPanel();
-  private final JButton addGroupButton = new JButton("Group");
-  private final JButton saveButton = new JButton("Save");
-  private final JTabbedPane tabbedPane = new JTabbedPane();
-  private final DetailPanel detailPanel = new DetailPanel();
+public class PortfolioPanel extends JPanel implements ActionListener {
+
+  private static final JPanel buttonPanel = new JPanel();
+  private static final JButton addGroupButton = new JButton("Group");
+  private static final JButton saveButton = new JButton("Save");
+  private static final JTabbedPane tabbedPane = new JTabbedPane();
+  private static final DetailPanel detailPanel = new DetailPanel();
   
   public PortfolioPanel() {
     super();
@@ -64,6 +64,10 @@ public class PortfolioPanel extends JPanel implements ActionListener{
     add(buttonPanel, BorderLayout.PAGE_START);
     add(tabbedPane, BorderLayout.CENTER);
     add(detailPanel, BorderLayout.LINE_END);
+  }
+
+  public static DetailPanel getDetailPanel() {
+    return detailPanel;
   }
 
   public void load() {

@@ -19,6 +19,9 @@ import com.jtraderpro.model.AssetGroup;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
@@ -35,7 +38,8 @@ public class AssetGroupPanel extends JPanel {
   public static int MAX_SIZE = 40;
 
   private final List<AssetPanel> assetPanels = new ArrayList<>();
-  
+  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
   private AssetGroup group;
 
   public AssetGroupPanel() {
@@ -47,6 +51,7 @@ public class AssetGroupPanel extends JPanel {
     this.group = group;
     init();
     update();
+    executor.schedule(new UpdateInfoTask(), 60, TimeUnit.SECONDS);
   }
 
   public int getOrder() {
@@ -79,4 +84,23 @@ public class AssetGroupPanel extends JPanel {
       }
     }
   }
+
+  class UpdateInfoTask implements Runnable {
+
+    public UpdateInfoTask() {
+    }
+
+    @Override
+    public void run() {
+      try {
+        System.out.println("Updating panels...");
+        for (AssetPanel panel : assetPanels) {
+          panel.updateInfo();
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
 }

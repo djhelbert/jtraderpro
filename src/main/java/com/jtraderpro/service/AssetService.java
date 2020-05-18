@@ -49,7 +49,7 @@ public class AssetService {
         info.setVolume(stock.getQuote().getVolume());
         info.setYearHigh(stock.getQuote().getYearHigh().doubleValue());
         info.setYearLow(stock.getQuote().getYearLow().doubleValue());
-        info.setAvgVolume(stock.getQuote().getAvgVolume().doubleValue());
+        info.setAvgVolume(stock.getQuote().getAvgVolume());
         info.setBid(stock.getQuote().getBid().doubleValue());
         info.setAsk(stock.getQuote().getAsk().doubleValue());
         info.setDayHigh(stock.getQuote().getDayHigh().doubleValue());

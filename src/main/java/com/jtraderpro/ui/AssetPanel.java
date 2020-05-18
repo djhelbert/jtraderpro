@@ -40,7 +40,7 @@ import javax.swing.border.EtchedBorder;
  * @author djhelbert
  */
 public class AssetPanel extends JPanel implements MouseListener, ActionListener {
-  
+
   private final JPopupMenu assetMenu = new JPopupMenu("Asset");
   private final JMenuItem updateItem = new JMenuItem("Update");
   private final JMenuItem clearItem = new JMenuItem("Clear");
@@ -51,58 +51,60 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   private final int order;
   private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private final AssetGroup assetGroup;
-  
+
   private Asset asset;
-  
+
   public AssetPanel(AssetGroup assetGroup, Integer order) {
     super();
     init();
     this.order = order;
     this.assetGroup = assetGroup;
   }
-  
+
   public final void update() {
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
     updateInfo();
   }
-  
+
   public final void update(Asset asset) {
     this.asset = asset;
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
     updateInfo();
   }
-  
+
   public final void updateInfo() {
-    final AssetInfo info = AssetService.getInstance().getAssetInfo(asset.getSymbol());
-    
-    if (info != null) {
-      priceLabel.setText(formatDouble(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
-      
-      if (info.getVolume() > 1000000) {
-        volumeLabel.setText((info.getVolume() / 1000000) + "M");
-      } else {
-        volumeLabel.setText((info.getVolume() / 1000) + "K");
-      }
-      
-      if (info.getPercentChange() < 0.0) {
-        priceLabel.setForeground(Color.red);
-        symbolLabel.setForeground(Color.red);
-      } else if (info.getPercentChange() > 0.0) {
-        priceLabel.setForeground(new Color(51, 102, 0));
-        symbolLabel.setForeground(new Color(51, 102, 0));
-      } else {
-        priceLabel.setForeground(Color.black);
-        symbolLabel.setForeground(Color.black);
+    if (asset != null) {
+      final AssetInfo info = AssetService.getInstance().getAssetInfo(asset.getSymbol());
+
+      if (info != null) {
+        priceLabel.setText(formatDouble(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
+
+        if (info.getVolume() > 1000000) {
+          volumeLabel.setText((info.getVolume() / 1000000) + "M");
+        } else {
+          volumeLabel.setText((info.getVolume() / 1000) + "K");
+        }
+
+        if (info.getPercentChange() < 0.0) {
+          priceLabel.setForeground(Color.red);
+          symbolLabel.setForeground(Color.red);
+        } else if (info.getPercentChange() > 0.0) {
+          priceLabel.setForeground(new Color(51, 102, 0));
+          symbolLabel.setForeground(new Color(51, 102, 0));
+        } else {
+          priceLabel.setForeground(Color.black);
+          symbolLabel.setForeground(Color.black);
+        }
       }
     }
   }
-  
+
   private String formatDouble(Double value) {
     return decimalFormat.format(value);
   }
-  
+
   public final void clear() {
     assetGroup.removeAsset(asset);
     symbolLabel.setText("");
@@ -111,58 +113,60 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     valueLabel.setText("");
     asset = null;
   }
-  
+
   private void init() {
     setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     setLayout(new GridLayout(4, 1));
-    
+
     add(symbolLabel);
     add(priceLabel);
     add(volumeLabel);
     add(valueLabel);
-    
+
     addMouseListener(this);
     symbolLabel.addMouseListener(this);
     priceLabel.addMouseListener(this);
     volumeLabel.addMouseListener(this);
     valueLabel.addMouseListener(this);
-    
+
     assetMenu.add(updateItem);
     assetMenu.add(clearItem);
-    
+
     clearItem.addActionListener(this);
     updateItem.addActionListener(this);
   }
-  
+
   @Override
   public void mouseClicked(MouseEvent e) {
   }
-  
+
   @Override
   public void mousePressed(MouseEvent e) {
     checkPopup(e);
   }
-  
+
   @Override
   public void mouseReleased(MouseEvent e) {
   }
-  
+
   @Override
   public void mouseEntered(MouseEvent e) {
   }
-  
+
   @Override
   public void mouseExited(MouseEvent e) {
   }
-  
+
   private void checkPopup(MouseEvent e) {
     if (SwingUtilities.isRightMouseButton(e)) {
       assetMenu.show(e.getComponent(), e.getX(), e.getY());
     } else if (SwingUtilities.isLeftMouseButton(e)) {
-      // TODO
+      if(asset != null) {
+        PortfolioPanel.getDetailPanel().update(asset.getSymbol());
+      }
     }
   }
-  
+
   @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(clearItem)) {
@@ -172,10 +176,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         MainFrame.getMainComponent(), "Enter new symbol", "Add", JOptionPane.QUESTION_MESSAGE);
       if (input != null && !input.isBlank()) {
         final AssetInfo info = AssetService.getInstance().getAssetInfo(input.trim());
-        
+
         if (info != null) {
           final Asset newAsset = new Asset(input.toUpperCase().trim(), info.getName(), order);
-          
+
           if (asset != null) {
             // Update asset
             asset.setSymbol(newAsset.getSymbol());

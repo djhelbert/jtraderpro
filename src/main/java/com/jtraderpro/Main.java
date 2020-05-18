@@ -44,7 +44,7 @@ public class Main {
 
     final MainFrame frame = new MainFrame();
 
-    frame.setSize(600, 800);
+    frame.setSize(1000, 800);
     frame.setResizable(true);
     frame.setVisible(true);
     centerComponent(frame);
