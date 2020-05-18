@@ -18,6 +18,8 @@ import com.jtraderpro.PortfolioProvider;
 import com.jtraderpro.model.AssetGroup;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -29,7 +31,7 @@ import javax.swing.border.EtchedBorder;
  * 
  * @author djhelbert
  */
-public class PortfolioPanel extends JPanel {
+public class PortfolioPanel extends JPanel implements ActionListener{
   
   private final JPanel buttonPanel = new JPanel();
   private final JButton addGroupButton = new JButton("Group");
@@ -48,7 +50,10 @@ public class PortfolioPanel extends JPanel {
     buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
     
+    saveButton.addActionListener(this);
     saveButton.setIcon(Util.getImageIcon("save.png"));
+    
+    addGroupButton.addActionListener(this);
     addGroupButton.setIcon(Util.getImageIcon("add.png"));
 
     buttonPanel.add(saveButton);
@@ -66,6 +71,21 @@ public class PortfolioPanel extends JPanel {
 
     for(AssetGroup group : PortfolioProvider.getInstance().getPortfolio().getGroups()) {
       tabbedPane.addTab(group.getName(), new AssetGroupPanel(group));
+    }
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    if(e.getSource().equals(saveButton)) {
+      try {
+        PortfolioProvider.getInstance().save();
+      } catch(Exception err) {
+        err.printStackTrace();
+      }
+    } else {
+      final AssetGroup newGroup = new AssetGroup("New Group", PortfolioProvider.getInstance().getPortfolio().getGroups().size());
+      PortfolioProvider.getInstance().getPortfolio().addGroup(newGroup);
+      tabbedPane.addTab("New Group", new AssetGroupPanel(newGroup));
     }
   }
 }

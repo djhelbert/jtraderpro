@@ -14,6 +14,8 @@
  */
 package com.jtraderpro.service;
 
+import java.util.Date;
+
 /**
  * Asset Info
  * @author djhelbert
@@ -27,8 +29,19 @@ public class AssetInfo {
   private Double marketPrice;
   private Double previousClose;
   private Double percentChange;
-  private Double volume;
-
+  private Long volume;
+  private Double yearHigh;
+  private Double yearLow;
+  private Double bid;
+  private Double ask;
+  private Double open;
+  private Double dayHigh;
+  private Double dayLow;
+  private Double dividendYield;
+  private Date exDate;
+  private Date earningsAnnouncement;
+  private Double avgVolume;
+  
   public AssetInfo() {    
   }
 
@@ -100,11 +113,99 @@ public class AssetInfo {
     this.percentChange = percentChange;
   }
 
-  public Double getVolume() {
+  public Long getVolume() {
     return volume;
   }
 
-  public void setVolume(Double volume) {
+  public void setVolume(Long volume) {
     this.volume = volume;
+  }
+
+  public Double getYearHigh() {
+    return yearHigh;
+  }
+
+  public void setYearHigh(Double yearHigh) {
+    this.yearHigh = yearHigh;
+  }
+
+  public Double getYearLow() {
+    return yearLow;
+  }
+
+  public void setYearLow(Double yearLow) {
+    this.yearLow = yearLow;
+  }
+
+  public Double getBid() {
+    return bid;
+  }
+
+  public void setBid(Double bid) {
+    this.bid = bid;
+  }
+
+  public Double getAsk() {
+    return ask;
+  }
+
+  public void setAsk(Double ask) {
+    this.ask = ask;
+  }
+
+  public Double getOpen() {
+    return open;
+  }
+
+  public void setOpen(Double open) {
+    this.open = open;
+  }
+
+  public Double getDayHigh() {
+    return dayHigh;
+  }
+
+  public void setDayHigh(Double dayHigh) {
+    this.dayHigh = dayHigh;
+  }
+
+  public Double getDayLow() {
+    return dayLow;
+  }
+
+  public void setDayLow(Double dayLow) {
+    this.dayLow = dayLow;
+  }
+
+  public Double getDividendYield() {
+    return dividendYield;
+  }
+
+  public void setDividendYield(Double dividendYield) {
+    this.dividendYield = dividendYield;
+  }
+
+  public Date getExDate() {
+    return exDate;
+  }
+
+  public void setExDate(Date exDate) {
+    this.exDate = exDate;
+  }
+
+  public Date getEarningsAnnouncement() {
+    return earningsAnnouncement;
+  }
+
+  public void setEarningsAnnouncement(Date earningsAnnouncement) {
+    this.earningsAnnouncement = earningsAnnouncement;
+  }
+  
+  public Double getAvgVolume() {
+    return avgVolume;
+  }
+
+  public void setAvgVolume(Double avgVolume) {
+    this.avgVolume = avgVolume;
   }
 }

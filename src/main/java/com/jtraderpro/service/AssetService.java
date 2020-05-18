@@ -40,14 +40,36 @@ public class AssetService {
       final Stock stock = YahooFinance.get(symbol);
 
       if(stock != null) {
+        info.setName(stock.getName());
         info.setMarketPrice(stock.getQuote().getPrice().doubleValue());
         info.setPreviousClose(stock.getQuote().getPreviousClose().doubleValue());
         info.setPercentChange(stock.getQuote().getChangeInPercent().doubleValue());
         info.setCurrency(stock.getCurrency());
         info.setExchange(stock.getStockExchange());
-        info.setVolume(stock.getQuote().getVolume().doubleValue());
-        info.setName(stock.getName());
+        info.setVolume(stock.getQuote().getVolume());
+        info.setYearHigh(stock.getQuote().getYearHigh().doubleValue());
+        info.setYearLow(stock.getQuote().getYearLow().doubleValue());
+        info.setAvgVolume(stock.getQuote().getAvgVolume().doubleValue());
+        info.setBid(stock.getQuote().getBid().doubleValue());
+        info.setAsk(stock.getQuote().getAsk().doubleValue());
+        info.setDayHigh(stock.getQuote().getDayHigh().doubleValue());
+        info.setDayLow(stock.getQuote().getDayLow().doubleValue());
+        info.setOpen(stock.getQuote().getOpen().doubleValue());
+
+        if(stock.getStats().getEarningsAnnouncement() != null) {
+          info.setEarningsAnnouncement(stock.getStats().getEarningsAnnouncement().getTime());
+        }
         
+        if(stock.getDividend() != null && stock.getDividend().getAnnualYieldPercent() != null) {
+          info.setDividendYield(stock.getDividend().getAnnualYieldPercent().doubleValue());
+        } else {
+          info.setDividendYield(0.00);
+        }
+
+        if(stock.getDividend() != null && stock.getDividend().getExDate() != null) {
+          info.setExDate(stock.getDividend().getExDate().getTime());
+        }
+
         return info;
       }
     } catch(Exception err) {

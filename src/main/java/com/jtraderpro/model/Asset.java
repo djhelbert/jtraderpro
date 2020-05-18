@@ -76,7 +76,7 @@ public class Asset {
 
   @Override
   public int hashCode() {
-    return symbol.hashCode();
+    return symbol.toUpperCase().hashCode();
   }
 
   @Override
