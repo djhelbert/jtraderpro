@@ -25,7 +25,7 @@ import java.util.List;
 public class AssetGroup {
 
   public static final Integer MAX_SIZE = 40;
-  
+
   private String name = "";
   private Integer order = 0;
   private List<Asset> assets = new ArrayList<>(MAX_SIZE);
@@ -43,7 +43,7 @@ public class AssetGroup {
   }
 
   public void addAsset(Asset asset) {
-    if(assets.size() <= MAX_SIZE) {
+    if (assets.size() <= MAX_SIZE) {
       assets.add(asset);
     }
   }
@@ -70,5 +70,22 @@ public class AssetGroup {
 
   public void setAssets(List<Asset> assets) {
     this.assets = assets;
+  }
+
+  @Override
+  public int hashCode() {
+    return order.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o != null && o instanceof AssetGroup) {
+      final AssetGroup a = (AssetGroup) o;
+      if (a.getOrder().equals(order)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

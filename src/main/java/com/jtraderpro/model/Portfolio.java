@@ -14,6 +14,7 @@
  */
 package com.jtraderpro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,19 @@ public class Portfolio {
   private Date date = new Date();
   private List<AssetGroup> groups = new ArrayList<>();
 
+  @JsonIgnore
+  public Integer getMaximumGroup() {
+    Integer max = 0;
+ 
+    for (AssetGroup group : groups) {
+      if(group.getOrder() > max) {
+        max = group.getOrder();
+      }
+    }
+
+    return max;
+  }
+ 
   public Date getDate() {
     return date;
   }

@@ -35,6 +35,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
 
   private static final JPanel buttonPanel = new JPanel();
   private static final JButton addGroupButton = new JButton("Group");
+  private static final JButton remGroupButton = new JButton("Group");
   private static final JButton saveButton = new JButton("Save");
   private static final JTabbedPane tabbedPane = new JTabbedPane();
   private static final DetailPanel detailPanel = new DetailPanel();
@@ -56,8 +57,12 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     addGroupButton.addActionListener(this);
     addGroupButton.setIcon(Util.getImageIcon("add.png"));
 
+    remGroupButton.addActionListener(this);
+    remGroupButton.setIcon(Util.getImageIcon("delete.png"));
+ 
     buttonPanel.add(saveButton);
     buttonPanel.add(addGroupButton);
+    buttonPanel.add(remGroupButton);
 
     setLayout(new BorderLayout());
     
@@ -76,6 +81,12 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     for(AssetGroup group : PortfolioProvider.getInstance().getPortfolio().getGroups()) {
       tabbedPane.addTab(group.getName(), new AssetGroupPanel(group));
     }
+
+    if(tabbedPane.getTabCount() > 1) {
+      remGroupButton.setEnabled(true);
+    } else {
+      remGroupButton.setEnabled(false);
+    }
   }
 
   @Override
@@ -86,10 +97,26 @@ public class PortfolioPanel extends JPanel implements ActionListener {
       } catch(Exception err) {
         err.printStackTrace();
       }
-    } else {
-      final AssetGroup newGroup = new AssetGroup("New Group", PortfolioProvider.getInstance().getPortfolio().getGroups().size());
+    } else if(e.getSource().equals(remGroupButton)) {
+      if(tabbedPane.getTabCount() > 1) {
+        int index = tabbedPane.getSelectedIndex();
+        final AssetGroupPanel agPanel = (AssetGroupPanel)tabbedPane.getSelectedComponent();
+        PortfolioProvider.getInstance().getPortfolio().getGroups().remove(agPanel.getAssetGroup());
+        tabbedPane.remove(index);
+
+        if(tabbedPane.getTabCount() <= 1) {
+          remGroupButton.setEnabled(false);
+        }
+      }
+    }
+    else {
+      final AssetGroup newGroup = new AssetGroup("New Group", PortfolioProvider.getInstance().getPortfolio().getMaximumGroup() + 1);
       PortfolioProvider.getInstance().getPortfolio().addGroup(newGroup);
       tabbedPane.addTab("New Group", new AssetGroupPanel(newGroup));
+
+      if(tabbedPane.getTabCount() > 1) {
+        remGroupButton.setEnabled(true);
+      }
     }
   }
 }

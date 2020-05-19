@@ -46,6 +46,10 @@ public class AssetGroupPanel extends JPanel {
     this(new AssetGroup());
   }
 
+  public AssetGroup getAssetGroup() {
+    return group;
+  }
+
   public AssetGroupPanel(AssetGroup group) {
     super();
     this.group = group;
@@ -54,6 +58,10 @@ public class AssetGroupPanel extends JPanel {
     executor.schedule(new UpdateInfoTask(), 60, TimeUnit.SECONDS);
   }
 
+  public void shutdown() {
+    executor.shutdown();
+  }
+ 
   public int getOrder() {
     return group.getOrder();
   }
