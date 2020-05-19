@@ -29,6 +29,13 @@ public class Portfolio {
   private Date date = new Date();
   private List<AssetGroup> groups = new ArrayList<>();
 
+  /**
+   * Constructor
+   *
+   */
+  public Portfolio() {
+  }
+
   @JsonIgnore
   public Integer getMaximumGroup() {
     Integer max = 0;

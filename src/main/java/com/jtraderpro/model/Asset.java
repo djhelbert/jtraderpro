@@ -29,6 +29,9 @@ public class Asset {
   private Integer order = 0;
   private List<Lot> lots = new ArrayList<>();
 
+  public Asset() {
+  }
+
   public Asset(String symbol, String name, Integer order) {
     this.symbol = symbol;
     this.name = name;

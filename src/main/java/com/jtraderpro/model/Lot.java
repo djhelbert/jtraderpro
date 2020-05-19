@@ -28,6 +28,20 @@ public class Lot {
   private Double price = 0.00;
   private Date date = new Date();
 
+  /**
+   * Constructor
+   */
+  public Lot() {
+  }
+
+  /**
+   * Constructor
+   *
+   * @param order
+   * @param amount
+   * @param price
+   * @param date
+   */
   public Lot(Integer order, Integer amount, Double price, Date date) {
     this.amount = amount;
     this.date = date;
