@@ -55,7 +55,7 @@ public class AssetGroupPanel extends JPanel {
     this.group = group;
     init();
     update();
-    executor.schedule(new UpdateInfoTask(), 60, TimeUnit.SECONDS);
+    executor.scheduleAtFixedRate(new UpdateInfoTask(), 60, 60, TimeUnit.SECONDS);
   }
 
   public void shutdown() {
@@ -93,7 +93,7 @@ public class AssetGroupPanel extends JPanel {
     }
   }
 
-  class UpdateInfoTask implements Runnable {
+  private class UpdateInfoTask implements Runnable {
 
     public UpdateInfoTask() {
     }
@@ -101,7 +101,6 @@ public class AssetGroupPanel extends JPanel {
     @Override
     public void run() {
       try {
-        System.out.println("Updating panels...");
         for (AssetPanel panel : assetPanels) {
           panel.updateInfo();
         }

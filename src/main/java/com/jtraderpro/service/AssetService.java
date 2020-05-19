@@ -84,10 +84,13 @@ public class AssetService {
         info.setOpen(stock.getQuote().getOpen().doubleValue());
         info.setEps(stock.getStats().getEps().doubleValue());
         info.setMarketCap(stock.getStats().getMarketCap().doubleValue());
-        info.setPe(stock.getStats().getPe().doubleValue());
         info.setStockExchange(stock.getStockExchange());
         info.setAskSize(stock.getQuote().getAskSize());
         info.setBidSize(stock.getQuote().getBidSize());
+
+        if(stock.getStats().getPe() != null) {
+          info.setPe(stock.getStats().getPe().doubleValue());
+        }
 
         if (stock.getStats().getPriceBook() != null) {
           info.setPriceBook(stock.getStats().getPriceBook().doubleValue());

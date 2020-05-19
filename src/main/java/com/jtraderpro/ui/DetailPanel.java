@@ -86,7 +86,7 @@ public class DetailPanel extends JPanel {
     summaryPanel.add(dayHighLabel);
     summaryPanel.add(new JLabel("Year Low "));
     summaryPanel.add(yearLowLabel);
-    summaryPanel.add(new JLabel("Year Low "));
+    summaryPanel.add(new JLabel("Year High "));
     summaryPanel.add(yearHighLabel);
     summaryPanel.add(new JLabel("Dividend "));
     summaryPanel.add(dividendLabel);
@@ -131,7 +131,7 @@ public class DetailPanel extends JPanel {
       dayHighLabel.setText(formatDouble(info.getDayHigh()));
       dayLowLabel.setText(formatDouble(info.getDayLow()));
       priceLabel.setText(formatDouble(info.getMarketPrice()));
-      changeLabel.setText(formatDouble(info.getPercentChange()));
+      changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
       epsLabel.setText(formatDouble(info.getEps()));
       peLabel.setText(formatDouble(info.getPe()));
       pBookLabel.setText(formatDouble(info.getPriceBook()));
