@@ -53,8 +53,9 @@ public class DetailPanel extends JPanel {
   
   private JPanel graphPanel = new JPanel();
 
-  private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
+  private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
+  private static final Color DARK_GREEN = new Color(51, 102, 0);
 
   public DetailPanel() {
     super();
@@ -64,48 +65,36 @@ public class DetailPanel extends JPanel {
   private void init() {
     summaryPanel.setLayout(new GridLayout(9, 4));
 
-    summaryPanel.add(new JLabel("Symbol "));
-    summaryPanel.add(symbolLabel);
-    summaryPanel.add(new JLabel("Open "));
-    summaryPanel.add(openLabel);
-    summaryPanel.add(new JLabel("Price "));
-    summaryPanel.add(priceLabel);
-    summaryPanel.add(new JLabel("Change "));
-    summaryPanel.add(changeLabel);
-    summaryPanel.add(new JLabel("Bid "));
-    summaryPanel.add(bidLabel);
-    summaryPanel.add(new JLabel("Ask "));
-    summaryPanel.add(askLabel);
-    summaryPanel.add(new JLabel("Volume "));
-    summaryPanel.add(volumeLabel);
-    summaryPanel.add(new JLabel("Avg. Volume "));
-    summaryPanel.add(avgVolumeLabel);
-    summaryPanel.add(new JLabel("Day Low "));
-    summaryPanel.add(dayLowLabel);
-    summaryPanel.add(new JLabel("Day Low "));
-    summaryPanel.add(dayHighLabel);
-    summaryPanel.add(new JLabel("Year Low "));
-    summaryPanel.add(yearLowLabel);
-    summaryPanel.add(new JLabel("Year High "));
-    summaryPanel.add(yearHighLabel);
-    summaryPanel.add(new JLabel("Dividend "));
-    summaryPanel.add(dividendLabel);
-    summaryPanel.add(new JLabel("Payment Date "));
-    summaryPanel.add(exDivLabel);
-    summaryPanel.add(new JLabel("EPS "));
-    summaryPanel.add(epsLabel);
-    summaryPanel.add(new JLabel("PE Ratio "));
-    summaryPanel.add(peLabel);
-    summaryPanel.add(new JLabel("PB Ratio "));
-    summaryPanel.add(pBookLabel);
-    summaryPanel.add(new JLabel("Exchange "));
-    summaryPanel.add(exchangeLabel);
-    
+    addLabel("Symbol ", symbolLabel);
+    addLabel("Open ", openLabel);
+    addLabel("Price ", priceLabel);
+    addLabel("Change ", changeLabel);
+    addLabel("Bid ", bidLabel);
+    addLabel("Ask ", askLabel);
+    addLabel("Volume ", volumeLabel);
+    addLabel("Avg. Volume ", avgVolumeLabel);
+    addLabel("Day Low ", dayLowLabel);
+    addLabel("Day Low ", dayHighLabel);
+    addLabel("Year Low ", yearLowLabel);
+    addLabel("Year High ", yearHighLabel);
+    addLabel("Dividend ", dividendLabel);
+    addLabel("Payment Date ", exDivLabel);
+    addLabel("EPS ", epsLabel);
+    addLabel("PE Ratio ", peLabel);
+    addLabel("PB Ratio ", pBookLabel);
+    addLabel("Exchange ", exchangeLabel);
+
     setBorder(BorderFactory.createTitledBorder(""));
     setLayout(new GridLayout(2, 1));
+
     add(summaryPanel);
     add(graphPanel);
 
+  }
+
+  private void addLabel(String text, JLabel label) {
+    summaryPanel.add(new JLabel(text));
+    summaryPanel.add(label);
   }
 
   private String formatDouble(Double value) {
@@ -161,8 +150,8 @@ public class DetailPanel extends JPanel {
         priceLabel.setForeground(Color.red);
         changeLabel.setForeground(Color.red);
       } else if (info.getPercentChange() > 0.0) {
-        priceLabel.setForeground(new Color(51, 102, 0));
-        changeLabel.setForeground(new Color(51, 102, 0));
+        priceLabel.setForeground(DARK_GREEN);
+        changeLabel.setForeground(DARK_GREEN);
       } else {
         priceLabel.setForeground(Color.black);
         changeLabel.setForeground(Color.black);

@@ -55,9 +55,6 @@ public class AssetInfo {
   private Long bidSize;
 
   private List<AssetQuote> assetQuotes = new ArrayList<>();
-  
-  public AssetInfo() {    
-  }
 
   public AssetInfo(final String symbol) {
     this.symbol = symbol;

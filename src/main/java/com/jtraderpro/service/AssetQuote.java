@@ -77,6 +77,4 @@ public class AssetQuote {
   public void setVolume(Long volume) {
     this.volume = volume;
   }
-  
-  
 }

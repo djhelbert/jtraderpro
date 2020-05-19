@@ -51,16 +51,12 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     
     buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-    
     saveButton.addActionListener(this);
     saveButton.setIcon(Util.getImageIcon("save.png"));
-    
     addGroupButton.addActionListener(this);
     addGroupButton.setIcon(Util.getImageIcon("add.png"));
-
     remGroupButton.addActionListener(this);
     remGroupButton.setIcon(Util.getImageIcon("delete.png"));
-
     buttonPanel.add(saveButton);
     buttonPanel.add(addGroupButton);
     buttonPanel.add(remGroupButton);

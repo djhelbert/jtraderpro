@@ -36,6 +36,9 @@ public class MainFrame extends JFrame implements ActionListener {
   private final static JMenuItem saveItem = new JMenuItem("Save");
   private final static PortfolioPanel portfolioPanel = new PortfolioPanel();
 
+  /**
+   * Constructor
+   */
   public MainFrame() {
     super("JTraderPro");
     init();

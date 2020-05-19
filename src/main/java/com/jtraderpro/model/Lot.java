@@ -23,14 +23,12 @@ import java.util.Date;
  */
 public class Lot {
 
+  private Integer order;
   private Integer amount = 0;
   private Double price = 0.00;
   private Date date = new Date();
 
-  public Lot() {
-  }
-
-  public Lot(Integer amount, Double price, Date date) {
+  public Lot(Integer order, Integer amount, Double price, Date date) {
     this.amount = amount;
     this.date = date;
     this.price = price;
@@ -58,5 +56,30 @@ public class Lot {
 
   public void setDate(Date date) {
     this.date = date;
+  }
+
+  public Integer getOrder() {
+    return order;
+  }
+
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
+
+  @Override
+  public int hashCode() {
+    return order.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o != null && o instanceof Lot) {
+      final Lot a = (Lot) o;
+      if (a.getOrder().equals(order)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
