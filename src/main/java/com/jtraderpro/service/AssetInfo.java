@@ -14,7 +14,9 @@
  */
 package com.jtraderpro.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Asset Info
@@ -52,6 +54,8 @@ public class AssetInfo {
   private Long askSize;
   private Long bidSize;
 
+  private List<AssetQuote> assetQuotes = new ArrayList<>();
+  
   public AssetInfo() {    
   }
 
@@ -298,6 +302,12 @@ public class AssetInfo {
   public void setBidSize(Long bidSize) {
     this.bidSize = bidSize;
   }
-  
-  
+
+  public List<AssetQuote> getAssetQuotes() {
+    return assetQuotes;
+  }
+
+  public void setAssetQuotes(List<AssetQuote> assetQuotes) {
+    this.assetQuotes = assetQuotes;
+  }
 }

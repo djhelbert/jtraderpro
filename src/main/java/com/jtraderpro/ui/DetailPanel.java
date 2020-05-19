@@ -92,7 +92,7 @@ public class DetailPanel extends JPanel {
     summaryPanel.add(exDivLabel);
     summaryPanel.add(new JLabel("EPS "));
     summaryPanel.add(epsLabel);
-    summaryPanel.add(new JLabel("PE "));
+    summaryPanel.add(new JLabel("PE Ratio "));
     summaryPanel.add(peLabel);
 
     setBorder(BorderFactory.createTitledBorder(""));

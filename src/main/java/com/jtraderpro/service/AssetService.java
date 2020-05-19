@@ -14,8 +14,12 @@
  */
 package com.jtraderpro.service;
 
+import java.util.Calendar;
+import java.util.List;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
+import yahoofinance.histquotes.Interval;
 
 /**
  * Asset Service
@@ -41,7 +45,24 @@ public class AssetService {
     final AssetInfo info = new AssetInfo(symbol); 
 
     try {
-      final Stock stock = YahooFinance.get(symbol, historical);
+      final Stock stock  = YahooFinance.get(symbol, historical);
+
+      if(historical) {
+        Calendar from = Calendar.getInstance();
+        from.add(Calendar.DATE, -5);
+
+        final List<HistoricalQuote> histQuotes = stock.getHistory(from, Interval.DAILY);
+
+        for(HistoricalQuote q : histQuotes) {
+          AssetQuote aq = new AssetQuote();
+          aq.setClose(q.getClose().doubleValue());
+          aq.setDate(q.getDate().getTime());
+          aq.setHigh(q.getHigh().doubleValue());
+          aq.setLow(q.getLow().doubleValue());
+          aq.setVolume(q.getVolume());
+          info.getAssetQuotes().add(aq);
+        }
+      }
 
       if(stock != null) {
         info.setName(stock.getName());
