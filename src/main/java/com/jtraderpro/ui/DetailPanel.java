@@ -20,6 +20,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,10 +59,12 @@ public class DetailPanel extends JPanel {
   private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
   private static final Color DARK_GREEN = new Color(51, 102, 0);
+  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   public DetailPanel() {
     super();
     init();
+    executor.scheduleAtFixedRate(new UpdateDetailTask(), 60, 60, TimeUnit.SECONDS);
   }
 
   private void init() {
@@ -103,6 +108,12 @@ public class DetailPanel extends JPanel {
     }
     
     return decimalFormat.format(value);
+  }
+
+  private void update() {
+    if(symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
+      update(symbolLabel.getText());
+    }
   }
 
   public void update(String symbol) {
@@ -155,6 +166,20 @@ public class DetailPanel extends JPanel {
       } else {
         priceLabel.setForeground(Color.black);
         changeLabel.setForeground(Color.black);
+      }
+    }
+  }
+
+  private class UpdateDetailTask implements Runnable {
+    public UpdateDetailTask() {
+    }
+
+    @Override
+    public void run() {
+      try {
+        update();
+      } catch (Exception e) {
+        e.printStackTrace();
       }
     }
   }
