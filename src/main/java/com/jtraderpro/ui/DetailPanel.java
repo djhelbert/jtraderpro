@@ -153,6 +153,8 @@ public class DetailPanel extends JPanel {
 
       if (info.getExDate() != null) {
         exDivLabel.setText(dateFormat.format(info.getExDate()));
+      } else {
+        exDivLabel.setText("");
       }
 
       if (info.getPercentChange() < 0.0) {
