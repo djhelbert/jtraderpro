@@ -34,10 +34,14 @@ public class AssetService {
   }
 
   public AssetInfo getAssetInfo(String symbol) {
+    return getAssetInfo(symbol, false);
+  }
+
+  public AssetInfo getAssetInfo(String symbol, boolean historical) {
     final AssetInfo info = new AssetInfo(symbol); 
 
     try {
-      final Stock stock = YahooFinance.get(symbol);
+      final Stock stock = YahooFinance.get(symbol, historical);
 
       if(stock != null) {
         info.setName(stock.getName());
@@ -55,6 +59,28 @@ public class AssetService {
         info.setDayHigh(stock.getQuote().getDayHigh().doubleValue());
         info.setDayLow(stock.getQuote().getDayLow().doubleValue());
         info.setOpen(stock.getQuote().getOpen().doubleValue());
+        info.setEps(stock.getStats().getEps().doubleValue());
+        info.setMarketCap(stock.getStats().getMarketCap().doubleValue());
+        info.setPe(stock.getStats().getPe().doubleValue());
+        info.setStockExchange(stock.getStockExchange());
+        info.setAskSize(stock.getQuote().getAskSize());
+        info.setBidSize(stock.getQuote().getBidSize());
+
+        if(stock.getStats().getPriceBook() != null) {
+          info.setPriceBook(stock.getStats().getPriceBook().doubleValue());
+        }
+        
+        if(stock.getStats().getPriceSales() != null) {
+          info.setPriceSales(stock.getStats().getPriceSales().doubleValue());
+        }
+        
+        if(stock.getStats().getRevenue() != null) {
+          info.setRevenue(stock.getStats().getRevenue().doubleValue());
+        }
+        
+        if(stock.getStats().getPeg() != null) {
+          info.setPeg(stock.getStats().getPeg().doubleValue());
+        }
 
         if(stock.getStats().getEarningsAnnouncement() != null) {
           info.setEarningsAnnouncement(stock.getStats().getEarningsAnnouncement().getTime());
@@ -66,8 +92,8 @@ public class AssetService {
           info.setDividendYield(0.00);
         }
 
-        if(stock.getDividend() != null && stock.getDividend().getExDate() != null) {
-          info.setExDate(stock.getDividend().getExDate().getTime());
+        if(stock.getDividend() != null && stock.getDividend().getPayDate() != null) {
+          info.setExDate(stock.getDividend().getPayDate().getTime());
         }
 
         return info;

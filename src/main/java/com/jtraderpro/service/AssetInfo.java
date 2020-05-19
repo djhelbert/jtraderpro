@@ -41,7 +41,17 @@ public class AssetInfo {
   private Date exDate;
   private Date earningsAnnouncement;
   private Long avgVolume;
-  
+  private Double eps;
+  private Double peg;
+  private Double priceBook;
+  private Double priceSales;
+  private Double revenue;
+  private Double marketCap;
+  private Double pe;
+  private String stockExchange;
+  private Long askSize;
+  private Long bidSize;
+
   public AssetInfo() {    
   }
 
@@ -208,4 +218,86 @@ public class AssetInfo {
   public void setAvgVolume(Long avgVolume) {
     this.avgVolume = avgVolume;
   }
+
+  public Double getEps() {
+    return eps;
+  }
+
+  public void setEps(Double eps) {
+    this.eps = eps;
+  }
+
+  public Double getPeg() {
+    return peg;
+  }
+
+  public void setPeg(Double peg) {
+    this.peg = peg;
+  }
+
+  public Double getPriceBook() {
+    return priceBook;
+  }
+
+  public void setPriceBook(Double priceBook) {
+    this.priceBook = priceBook;
+  }
+
+  public Double getPriceSales() {
+    return priceSales;
+  }
+
+  public void setPriceSales(Double priceSales) {
+    this.priceSales = priceSales;
+  }
+
+  public Double getRevenue() {
+    return revenue;
+  }
+
+  public void setRevenue(Double revenue) {
+    this.revenue = revenue;
+  }
+
+  public Double getMarketCap() {
+    return marketCap;
+  }
+
+  public void setMarketCap(Double marketCap) {
+    this.marketCap = marketCap;
+  }
+
+  public Double getPe() {
+    return pe;
+  }
+
+  public void setPe(Double pe) {
+    this.pe = pe;
+  }
+
+  public String getStockExchange() {
+    return stockExchange;
+  }
+
+  public void setStockExchange(String stockExchange) {
+    this.stockExchange = stockExchange;
+  }
+
+  public Long getAskSize() {
+    return askSize;
+  }
+
+  public void setAskSize(Long askSize) {
+    this.askSize = askSize;
+  }
+
+  public Long getBidSize() {
+    return bidSize;
+  }
+
+  public void setBidSize(Long bidSize) {
+    this.bidSize = bidSize;
+  }
+  
+  
 }
