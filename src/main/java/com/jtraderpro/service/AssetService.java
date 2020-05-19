@@ -23,16 +23,16 @@ import yahoofinance.histquotes.Interval;
 
 /**
  * Asset Service
- * 
+ *
  * @author djhelbert
  */
 public class AssetService {
-  
+
   private final static AssetService service = new AssetService();
-  
-  private AssetService() {  
+
+  private AssetService() {
   }
-  
+
   public static AssetService getInstance() {
     return service;
   }
@@ -42,29 +42,31 @@ public class AssetService {
   }
 
   public AssetInfo getAssetInfo(String symbol, boolean historical) {
-    final AssetInfo info = new AssetInfo(symbol); 
+    final AssetInfo info = new AssetInfo(symbol);
 
     try {
-      final Stock stock  = YahooFinance.get(symbol, historical);
+      final Stock stock = YahooFinance.get(symbol, historical);
 
-      if(historical) {
-        Calendar from = Calendar.getInstance();
+      if (historical) {
+        final Calendar from = Calendar.getInstance();
         from.add(Calendar.DATE, -5);
 
         final List<HistoricalQuote> histQuotes = stock.getHistory(from, Interval.DAILY);
 
-        for(HistoricalQuote q : histQuotes) {
+        histQuotes.stream().map((q) -> {
           AssetQuote aq = new AssetQuote();
           aq.setClose(q.getClose().doubleValue());
           aq.setDate(q.getDate().getTime());
           aq.setHigh(q.getHigh().doubleValue());
           aq.setLow(q.getLow().doubleValue());
           aq.setVolume(q.getVolume());
+          return aq;
+        }).forEachOrdered((aq) -> {
           info.getAssetQuotes().add(aq);
-        }
+        });
       }
 
-      if(stock != null) {
+      if (stock != null) {
         info.setName(stock.getName());
         info.setMarketPrice(stock.getQuote().getPrice().doubleValue());
         info.setPreviousClose(stock.getQuote().getPreviousClose().doubleValue());
@@ -87,42 +89,42 @@ public class AssetService {
         info.setAskSize(stock.getQuote().getAskSize());
         info.setBidSize(stock.getQuote().getBidSize());
 
-        if(stock.getStats().getPriceBook() != null) {
+        if (stock.getStats().getPriceBook() != null) {
           info.setPriceBook(stock.getStats().getPriceBook().doubleValue());
         }
-        
-        if(stock.getStats().getPriceSales() != null) {
+
+        if (stock.getStats().getPriceSales() != null) {
           info.setPriceSales(stock.getStats().getPriceSales().doubleValue());
         }
-        
-        if(stock.getStats().getRevenue() != null) {
+
+        if (stock.getStats().getRevenue() != null) {
           info.setRevenue(stock.getStats().getRevenue().doubleValue());
         }
-        
-        if(stock.getStats().getPeg() != null) {
+
+        if (stock.getStats().getPeg() != null) {
           info.setPeg(stock.getStats().getPeg().doubleValue());
         }
 
-        if(stock.getStats().getEarningsAnnouncement() != null) {
+        if (stock.getStats().getEarningsAnnouncement() != null) {
           info.setEarningsAnnouncement(stock.getStats().getEarningsAnnouncement().getTime());
         }
-        
-        if(stock.getDividend() != null && stock.getDividend().getAnnualYieldPercent() != null) {
+
+        if (stock.getDividend() != null && stock.getDividend().getAnnualYieldPercent() != null) {
           info.setDividendYield(stock.getDividend().getAnnualYieldPercent().doubleValue());
         } else {
           info.setDividendYield(0.00);
         }
 
-        if(stock.getDividend() != null && stock.getDividend().getPayDate() != null) {
+        if (stock.getDividend() != null && stock.getDividend().getPayDate() != null) {
           info.setExDate(stock.getDividend().getPayDate().getTime());
         }
 
         return info;
       }
-    } catch(Exception err) {
+    } catch (Exception err) {
       err.printStackTrace();
     }
 
-    return null; 
+    return null;
   }
 }

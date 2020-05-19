@@ -48,6 +48,8 @@ public class DetailPanel extends JPanel {
   private final JLabel dayLowLabel = new JLabel();
   private final JLabel epsLabel = new JLabel();
   private final JLabel peLabel = new JLabel();
+  private final JLabel pBookLabel = new JLabel();
+  private final JLabel exchangeLabel = new JLabel();
   
   private JPanel graphPanel = new JPanel();
 
@@ -60,7 +62,7 @@ public class DetailPanel extends JPanel {
   }
 
   private void init() {
-    summaryPanel.setLayout(new GridLayout(8, 4));
+    summaryPanel.setLayout(new GridLayout(9, 4));
 
     summaryPanel.add(new JLabel("Symbol "));
     summaryPanel.add(symbolLabel);
@@ -94,7 +96,11 @@ public class DetailPanel extends JPanel {
     summaryPanel.add(epsLabel);
     summaryPanel.add(new JLabel("PE Ratio "));
     summaryPanel.add(peLabel);
-
+    summaryPanel.add(new JLabel("PB Ratio "));
+    summaryPanel.add(pBookLabel);
+    summaryPanel.add(new JLabel("Exchange "));
+    summaryPanel.add(exchangeLabel);
+    
     setBorder(BorderFactory.createTitledBorder(""));
     setLayout(new GridLayout(2, 1));
     add(summaryPanel);
@@ -128,7 +134,9 @@ public class DetailPanel extends JPanel {
       changeLabel.setText(formatDouble(info.getPercentChange()));
       epsLabel.setText(formatDouble(info.getEps()));
       peLabel.setText(formatDouble(info.getPe()));
-      
+      pBookLabel.setText(formatDouble(info.getPriceBook()));
+      exchangeLabel.setText(info.getExchange());
+
       if (info.getVolume() > 1000000) {
         volumeLabel.setText((info.getVolume() / 1000000) + "M");
       } else {
