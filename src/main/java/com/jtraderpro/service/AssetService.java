@@ -49,7 +49,7 @@ public class AssetService {
 
       if (historical) {
         final Calendar from = Calendar.getInstance();
-        from.add(Calendar.DATE, -5);
+        from.add(Calendar.DATE, -30);
 
         final List<HistoricalQuote> histQuotes = stock.getHistory(from, Interval.DAILY);
 

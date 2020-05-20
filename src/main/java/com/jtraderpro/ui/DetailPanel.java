@@ -16,7 +16,10 @@ package com.jtraderpro.ui;
 
 import com.jtraderpro.service.AssetInfo;
 import com.jtraderpro.service.AssetService;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -25,6 +28,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -54,11 +58,15 @@ public class DetailPanel extends JPanel {
   private final JLabel pBookLabel = new JLabel();
   private final JLabel exchangeLabel = new JLabel();
   
-  private JPanel graphPanel = new JPanel();
+  private final JPanel graphPanel = new JPanel();
+  private final CardLayout cardLayout = new CardLayout();
+  private static Component lastComponent;
 
   private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
   private static final Color DARK_GREEN = new Color(51, 102, 0);
+  private static final Dimension CHART_SIZE = new Dimension(400,400);
+
   private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   public DetailPanel() {
@@ -69,6 +77,7 @@ public class DetailPanel extends JPanel {
 
   private void init() {
     summaryPanel.setLayout(new GridLayout(9, 4));
+    summaryPanel.setPreferredSize(CHART_SIZE);
 
     addLabel("Symbol ", symbolLabel);
     addLabel("Open ", openLabel);
@@ -89,15 +98,18 @@ public class DetailPanel extends JPanel {
     addLabel("PB Ratio ", pBookLabel);
     addLabel("Exchange ", exchangeLabel);
 
+    graphPanel.setPreferredSize(CHART_SIZE);
+    graphPanel.setLayout(cardLayout);
+    graphPanel.setBackground(Color.white);
+
     setBorder(BorderFactory.createTitledBorder(""));
     setLayout(new GridLayout(2, 1));
 
     add(summaryPanel);
     add(graphPanel);
-
   }
 
-  private void addLabel(String text, JLabel label) {
+  private final void addLabel(String text, JLabel label) {
     summaryPanel.add(new JLabel(text));
     summaryPanel.add(label);
   }
@@ -168,6 +180,20 @@ public class DetailPanel extends JPanel {
         changeLabel.setForeground(Color.black);
       }
     }
+
+    // Remove previous chart
+    if(lastComponent != null) {
+      graphPanel.remove(lastComponent);
+    }
+
+    // Create new chart
+    final Component newComp = ChartUtil.createChart(info.getAssetQuotes());
+    newComp.setPreferredSize(CHART_SIZE);
+
+    // Add to card layout
+    graphPanel.add(newComp,info.getSymbol());
+
+    lastComponent = newComp;
   }
 
   private class UpdateDetailTask implements Runnable {
