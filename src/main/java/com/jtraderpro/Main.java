@@ -20,6 +20,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
 import javax.swing.UIManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main
@@ -27,6 +29,8 @@ import javax.swing.UIManager;
  * @author djhelbert
  */
 public class Main {
+
+  private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   /**
    * Main
@@ -39,7 +43,7 @@ public class Main {
     try {
       UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
     } catch(Exception err) {
-      err.printStackTrace();
+      logger.error("UI Mananger Error", err);
     }
 
     final MainFrame frame = new MainFrame();
@@ -57,13 +61,13 @@ public class Main {
       try {
         PortfolioProvider.getInstance().save();
       } catch (IOException err) {
-        err.printStackTrace();
+        logger.error("Portfolio Provider", err);
       }
     } else {
       try {
         PortfolioProvider.getInstance().load();
       } catch (IOException err) {
-        err.printStackTrace();
+        logger.error("Main Error", err);
       }
     }
   }

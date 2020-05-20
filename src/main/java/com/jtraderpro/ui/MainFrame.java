@@ -14,6 +14,7 @@
  */
 package com.jtraderpro.ui;
 
+import com.jtraderpro.Main;
 import com.jtraderpro.PortfolioProvider;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main Frame
@@ -35,6 +38,8 @@ public class MainFrame extends JFrame implements ActionListener {
   private final static JMenuItem newItem = new JMenuItem("New");
   private final static JMenuItem saveItem = new JMenuItem("Save");
   private final static PortfolioPanel portfolioPanel = new PortfolioPanel();
+
+  private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   /**
    * Constructor
@@ -85,7 +90,7 @@ public class MainFrame extends JFrame implements ActionListener {
     try {
       PortfolioProvider.getInstance().save();
     } catch (IOException err) {
-      err.printStackTrace();
+      logger.error("Save Item", err);
     }
   }
 
@@ -106,5 +111,4 @@ public class MainFrame extends JFrame implements ActionListener {
 	public static Component getMainComponent() {
 		return portfolioPanel;
 	}
-  
 }

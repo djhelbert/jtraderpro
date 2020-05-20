@@ -14,6 +14,7 @@
  */
 package com.jtraderpro.ui;
 
+import com.jtraderpro.Main;
 import com.jtraderpro.PortfolioProvider;
 import com.jtraderpro.model.AssetGroup;
 import java.awt.BorderLayout;
@@ -26,6 +27,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EtchedBorder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Portfolio Panel
@@ -40,7 +43,9 @@ public class PortfolioPanel extends JPanel implements ActionListener {
   private static final JButton saveButton = new JButton("Save");
   private static final JTabbedPane tabbedPane = new JTabbedPane();
   private static final DetailPanel detailPanel = new DetailPanel();
-  
+
+  private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
   public PortfolioPanel() {
     super();
     init();
@@ -92,7 +97,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
       try {
         PortfolioProvider.getInstance().save();
       } catch(Exception err) {
-        err.printStackTrace();
+        logger.error("Save Error", err);
       }
     } else if(e.getSource().equals(remGroupButton)) {
       if(tabbedPane.getTabCount() > 1) {
