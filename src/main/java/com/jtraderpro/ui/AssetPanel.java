@@ -51,9 +51,15 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   private final int order;
   private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private final AssetGroup assetGroup;
-
+  private static final Color DARK_GREEN = new Color(51, 102, 0);
   private Asset asset;
 
+  /**
+   * Constructor
+   *
+   * @param assetGroup
+   * @param order
+   */
   public AssetPanel(AssetGroup assetGroup, Integer order) {
     super();
     init();
@@ -61,13 +67,21 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     this.assetGroup = assetGroup;
   }
 
-  public final void update() {
+  /**
+   * Refresh Panel
+   */
+  public final void refresh() {
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
     updateInfo();
   }
 
-  public final void update(Asset asset) {
+  /**
+   * Update for Asset
+   *
+   * @param asset
+   */
+  public final void refresh(Asset asset) {
     this.asset = asset;
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
@@ -79,7 +93,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
       final AssetInfo info = AssetService.getInstance().getAssetInfo(asset.getSymbol());
 
       if (info != null) {
-        priceLabel.setText(formatDouble(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
+        priceLabel.setText(
+            formatDouble(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange())
+                + "%");
 
         if (info.getVolume() > 1000000) {
           volumeLabel.setText((info.getVolume() / 1000000) + "M");
@@ -91,8 +107,8 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
           priceLabel.setForeground(Color.red);
           symbolLabel.setForeground(Color.red);
         } else if (info.getPercentChange() > 0.0) {
-          priceLabel.setForeground(new Color(51, 102, 0));
-          symbolLabel.setForeground(new Color(51, 102, 0));
+          priceLabel.setForeground(DARK_GREEN);
+          symbolLabel.setForeground(DARK_GREEN);
         } else {
           priceLabel.setForeground(Color.black);
           symbolLabel.setForeground(Color.black);
@@ -105,6 +121,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     return decimalFormat.format(value);
   }
 
+  /**
+   * Clear Panel
+   */
   public final void clear() {
     assetGroup.removeAsset(asset);
     symbolLabel.setText("");
@@ -114,6 +133,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     asset = null;
   }
 
+  /**
+   * Initialize Component
+   */
   private void init() {
     setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     setLayout(new GridLayout(4, 1));
@@ -161,7 +183,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     if (SwingUtilities.isRightMouseButton(e)) {
       assetMenu.show(e.getComponent(), e.getX(), e.getY());
     } else if (SwingUtilities.isLeftMouseButton(e)) {
-      if(asset != null) {
+      if (asset != null) {
         PortfolioPanel.getDetailPanel().update(asset.getSymbol());
       }
     }
@@ -173,7 +195,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
       clear();
     } else if (e.getSource().equals(updateItem)) {
       final String input = JOptionPane.showInputDialog(
-        MainFrame.getMainComponent(), "Enter new symbol", "Add", JOptionPane.QUESTION_MESSAGE);
+          MainFrame.getMainComponent(), "Enter new symbol", "Add", JOptionPane.QUESTION_MESSAGE);
       if (input != null && !input.isBlank()) {
         final AssetInfo info = AssetService.getInstance().getAssetInfo(input.trim());
 
@@ -184,16 +206,18 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
             // Update asset
             asset.setSymbol(newAsset.getSymbol());
             asset.setName(info.getName());
-            update();
+            refresh();
           } else if (!assetGroup.getAssets().contains(newAsset)) {
             // Add new asset
             assetGroup.addAsset(newAsset);
-            update(newAsset);
+            refresh(newAsset);
           } else {
-            System.out.println(newAsset.getSymbol() + " already found in group.");
+            JOptionPane.showMessageDialog(MainFrame.getMainComponent(), "Symbol has already been added.",
+                "Error", JOptionPane.ERROR_MESSAGE);
           }
         } else {
-          System.out.println(input + " not a valid symbol.");
+          JOptionPane.showMessageDialog(MainFrame.getMainComponent(), "Not a valid symbol.",
+              "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     }

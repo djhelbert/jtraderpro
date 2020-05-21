@@ -73,7 +73,7 @@ public class AssetGroupPanel extends JPanel {
 
   private void update() {
     for (Asset asset : group.getAssets()) {
-      assetPanels.get(asset.getOrder()).update(asset);
+      assetPanels.get(asset.getOrder()).refresh(asset);
     }
   }
 

@@ -62,14 +62,14 @@ public class ChartUtil {
     return new TimeSeriesCollection(timeseries);
   }
 
-  public static ChartPanel createChart(final List<AssetQuote> assetQuotes) {
-    return createChart(createVolumeDataset(assetQuotes), createPriceDataset(assetQuotes));
+  public static ChartPanel createChart(String title, String currency, final List<AssetQuote> assetQuotes) {
+    return createChart(title, currency, createVolumeDataset(assetQuotes), createPriceDataset(assetQuotes));
   }
 
-  private static ChartPanel createChart(final IntervalXYDataset volumeDataset,
+  private static ChartPanel createChart(String title, String currency, final IntervalXYDataset volumeDataset,
       final XYDataset priceDataSet) {
     JFreeChart jfreechart = ChartFactory
-        .createTimeSeriesChart("Price/Volume", "Date", "Price", priceDataSet, true, true, false);
+        .createTimeSeriesChart(title, "Date", "Price " + currency, priceDataSet, true, true, false);
 
     final XYPlot xyplot = (XYPlot) jfreechart.getPlot();
     NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();
@@ -83,7 +83,7 @@ public class ChartUtil {
         new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
             new DecimalFormat("0.00")));
 
-    final NumberAxis numberaxis1 = new NumberAxis("Volume");
+    final NumberAxis numberaxis1 = new NumberAxis("Volume M");
     numberaxis1.setUpperMargin(1.0D);
 
     xyplot.setRangeAxis(1, numberaxis1);

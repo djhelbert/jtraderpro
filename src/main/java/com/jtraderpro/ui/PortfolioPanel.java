@@ -18,6 +18,7 @@ import com.jtraderpro.Main;
 import com.jtraderpro.PortfolioProvider;
 import com.jtraderpro.model.AssetGroup;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,6 +67,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     buttonPanel.add(addGroupButton);
     buttonPanel.add(remGroupButton);
 
+    setBackground(Color.white);
     setLayout(new BorderLayout());
     
     add(buttonPanel, BorderLayout.PAGE_START);

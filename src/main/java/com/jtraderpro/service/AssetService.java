@@ -14,6 +14,7 @@
  */
 package com.jtraderpro.service;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import yahoofinance.Stock;
@@ -55,10 +56,10 @@ public class AssetService {
 
         histQuotes.stream().map((q) -> {
           AssetQuote aq = new AssetQuote();
-          aq.setClose(q.getClose().doubleValue());
+          aq.setClose(getDouble(q.getClose()));
           aq.setDate(q.getDate().getTime());
-          aq.setHigh(q.getHigh().doubleValue());
-          aq.setLow(q.getLow().doubleValue());
+          aq.setHigh(getDouble(q.getHigh()));
+          aq.setLow(getDouble(q.getLow()));
           aq.setVolume(q.getVolume());
           return aq;
         }).forEachOrdered((aq) -> {
@@ -68,47 +69,47 @@ public class AssetService {
 
       if (stock != null) {
         info.setName(stock.getName());
-        info.setMarketPrice(stock.getQuote().getPrice().doubleValue());
-        info.setPreviousClose(stock.getQuote().getPreviousClose().doubleValue());
-        info.setPercentChange(stock.getQuote().getChangeInPercent().doubleValue());
+        info.setMarketPrice(getDouble(stock.getQuote().getPrice()));
+        info.setPreviousClose(getDouble(stock.getQuote().getPreviousClose()));
+        info.setPercentChange(getDouble(stock.getQuote().getChangeInPercent()));
         info.setCurrency(stock.getCurrency());
         info.setExchange(stock.getStockExchange());
         info.setVolume(stock.getQuote().getVolume());
-        info.setYearHigh(stock.getQuote().getYearHigh().doubleValue());
-        info.setYearLow(stock.getQuote().getYearLow().doubleValue());
+        info.setYearHigh(getDouble(stock.getQuote().getYearHigh()));
+        info.setYearLow(getDouble(stock.getQuote().getYearLow()));
         info.setAvgVolume(stock.getQuote().getAvgVolume());
-        info.setBid(stock.getQuote().getBid().doubleValue());
-        info.setAsk(stock.getQuote().getAsk().doubleValue());
-        info.setDayHigh(stock.getQuote().getDayHigh().doubleValue());
-        info.setDayLow(stock.getQuote().getDayLow().doubleValue());
-        info.setOpen(stock.getQuote().getOpen().doubleValue());
-        info.setMarketCap(stock.getStats().getMarketCap().doubleValue());
+        info.setBid(getDouble(stock.getQuote().getBid()));
+        info.setAsk(getDouble(stock.getQuote().getAsk()));
+        info.setDayHigh(getDouble(stock.getQuote().getDayHigh()));
+        info.setDayLow(getDouble(stock.getQuote().getDayLow()));
+        info.setOpen(getDouble(stock.getQuote().getOpen()));
+        info.setMarketCap(getDouble(stock.getStats().getMarketCap()));
         info.setStockExchange(stock.getStockExchange());
         info.setAskSize(stock.getQuote().getAskSize());
         info.setBidSize(stock.getQuote().getBidSize());
 
         if(stock.getStats().getEps() != null) {
-          info.setEps(stock.getStats().getEps().doubleValue());
+          info.setEps(getDouble(stock.getStats().getEps()));
         }
 
         if(stock.getStats().getPe() != null) {
-          info.setPe(stock.getStats().getPe().doubleValue());
+          info.setPe(getDouble(stock.getStats().getPe()));
         }
 
         if (stock.getStats().getPriceBook() != null) {
-          info.setPriceBook(stock.getStats().getPriceBook().doubleValue());
+          info.setPriceBook(getDouble(stock.getStats().getPriceBook()));
         }
 
         if (stock.getStats().getPriceSales() != null) {
-          info.setPriceSales(stock.getStats().getPriceSales().doubleValue());
+          info.setPriceSales(getDouble(stock.getStats().getPriceSales()));
         }
 
         if (stock.getStats().getRevenue() != null) {
-          info.setRevenue(stock.getStats().getRevenue().doubleValue());
+          info.setRevenue(getDouble(stock.getStats().getRevenue()));
         }
 
         if (stock.getStats().getPeg() != null) {
-          info.setPeg(stock.getStats().getPeg().doubleValue());
+          info.setPeg(getDouble(stock.getStats().getPeg()));
         }
 
         if (stock.getStats().getEarningsAnnouncement() != null) {
@@ -116,7 +117,7 @@ public class AssetService {
         }
 
         if (stock.getDividend() != null && stock.getDividend().getAnnualYieldPercent() != null) {
-          info.setDividendYield(stock.getDividend().getAnnualYieldPercent().doubleValue());
+          info.setDividendYield(getDouble(stock.getDividend().getAnnualYieldPercent()));
         } else {
           info.setDividendYield(0.00);
         }
@@ -132,5 +133,13 @@ public class AssetService {
     }
 
     return null;
+  }
+
+  private double getDouble(BigDecimal big) {
+    if(big == null) {
+      return 0.0d;
+    } else {
+      return big.doubleValue();
+    }
   }
 }

@@ -76,8 +76,11 @@ public class DetailPanel extends JPanel {
   }
 
   private void init() {
+    setBackground(Color.white);
+
     summaryPanel.setLayout(new GridLayout(9, 4));
     summaryPanel.setPreferredSize(CHART_SIZE);
+    summaryPanel.setBackground(Color.white);
 
     addLabel("Symbol ", symbolLabel);
     addLabel("Open ", openLabel);
@@ -102,7 +105,7 @@ public class DetailPanel extends JPanel {
     graphPanel.setLayout(cardLayout);
     graphPanel.setBackground(Color.white);
 
-    setBorder(BorderFactory.createTitledBorder(""));
+    setBorder(BorderFactory.createTitledBorder(" "));
     setLayout(new GridLayout(2, 1));
 
     add(summaryPanel);
@@ -187,11 +190,12 @@ public class DetailPanel extends JPanel {
     }
 
     // Create new chart
-    final Component newComp = ChartUtil.createChart(info.getAssetQuotes());
+    final Component newComp = ChartUtil.createChart(info.getSymbol(), info.getCurrency(), info.getAssetQuotes());
     newComp.setPreferredSize(CHART_SIZE);
 
     // Add to card layout
     graphPanel.add(newComp,info.getSymbol());
+    graphPanel.validate();
 
     lastComponent = newComp;
   }

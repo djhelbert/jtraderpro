@@ -20,11 +20,8 @@ import java.io.IOException;
 public class PortfolioProvider {
 
   private static final String DEFAULT = "jtraderpro.json";
-
   private static final ObjectMapper objectMapper = new ObjectMapper();
-
   private static Portfolio portfolio;
-
   public final static File DEFAULT_FILE = new File(System.getProperty("user.home") + File.separator + DEFAULT);
 
   private static PortfolioProvider provider = new PortfolioProvider();
