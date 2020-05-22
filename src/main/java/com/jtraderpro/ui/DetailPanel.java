@@ -14,6 +14,7 @@
  */
 package com.jtraderpro.ui;
 
+import com.jtraderpro.Main;
 import com.jtraderpro.service.AssetInfo;
 import com.jtraderpro.service.AssetService;
 import java.awt.CardLayout;
@@ -28,8 +29,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Detail Panel
@@ -57,18 +59,16 @@ public class DetailPanel extends JPanel {
   private final JLabel peLabel = new JLabel();
   private final JLabel pBookLabel = new JLabel();
   private final JLabel exchangeLabel = new JLabel();
-  
   private final JPanel graphPanel = new JPanel();
   private final CardLayout cardLayout = new CardLayout();
   private static Component lastComponent;
-
   private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
   private static final Color DARK_GREEN = new Color(51, 102, 0);
   private static final Dimension CHART_SIZE = new Dimension(400,400);
-
   private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
+  private static final Logger logger = LoggerFactory.getLogger(DetailPanel.class);
+  
   public DetailPanel() {
     super();
     init();
@@ -112,7 +112,7 @@ public class DetailPanel extends JPanel {
     add(graphPanel);
   }
 
-  private final void addLabel(String text, JLabel label) {
+  private void addLabel(String text, JLabel label) {
     summaryPanel.add(new JLabel(text));
     summaryPanel.add(label);
   }
@@ -131,7 +131,7 @@ public class DetailPanel extends JPanel {
     }
   }
 
-  public void update(String symbol) {
+  public synchronized void update(String symbol) {
     final AssetInfo info = AssetService.getInstance().getAssetInfo(symbol, true);
 
     if (info != null) {
@@ -209,7 +209,7 @@ public class DetailPanel extends JPanel {
       try {
         update();
       } catch (Exception e) {
-        e.printStackTrace();
+        logger.error("Update Detail Task", e);
       }
     }
   }
