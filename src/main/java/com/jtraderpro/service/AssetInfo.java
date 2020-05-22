@@ -53,6 +53,7 @@ public class AssetInfo {
   private String stockExchange;
   private Long askSize;
   private Long bidSize;
+  private Double roc;
 
   private List<AssetQuote> assetQuotes = new ArrayList<>();
 
@@ -298,6 +299,16 @@ public class AssetInfo {
 
   public void setBidSize(Long bidSize) {
     this.bidSize = bidSize;
+  }
+
+  public Double getRoc() {
+    return roc;
+  }
+  
+  public void updateRoc() {
+    if(assetQuotes.size() > 0) {
+      roc = (assetQuotes.get(assetQuotes.size()-1).getClose() - assetQuotes.get(0).getClose()) / assetQuotes.get(0).getClose() * 100.0;
+    }
   }
 
   public List<AssetQuote> getAssetQuotes() {

@@ -88,6 +88,8 @@ public class AssetService {
         }).forEachOrdered((aq) -> {
           info.getAssetQuotes().add(aq);
         });
+        
+        info.updateRoc();
       }
 
       if (stock != null) {

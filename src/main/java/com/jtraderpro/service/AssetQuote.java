@@ -24,11 +24,11 @@ import java.util.Date;
 public class AssetQuote {
 
   private Date date;
-  private Double open;
-  private Double low;
-  private Double high;
-  private Double close;
-  private Long volume;
+  private Double open = 0.0d;
+  private Double low = 0.0d;
+  private Double high = 0.0d;
+  private Double close = 0.0d;
+  private Long volume = 0l;
 
   public Date getDate() {
     return date;

@@ -57,7 +57,7 @@ public class DetailPanel extends JPanel {
   private static final JLabel epsLabel = new JLabel();
   private static final JLabel peLabel = new JLabel();
   private static final JLabel pBookLabel = new JLabel();
-  private static final JLabel exchangeLabel = new JLabel();
+  private static final JLabel rocLabel = new JLabel();
   private static final JPanel graphPanel = new JPanel();
   private static final CardLayout cardLayout = new CardLayout();
   private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -98,7 +98,7 @@ public class DetailPanel extends JPanel {
     addLabel("EPS ", epsLabel);
     addLabel("PE Ratio ", peLabel);
     addLabel("PB Ratio ", pBookLabel);
-    addLabel("Exchange ", exchangeLabel);
+    addLabel("ROC ", rocLabel);
 
     graphPanel.setPreferredSize(CHART_SIZE);
     graphPanel.setLayout(cardLayout);
@@ -149,7 +149,7 @@ public class DetailPanel extends JPanel {
       epsLabel.setText(formatDouble(info.getEps()));
       peLabel.setText(formatDouble(info.getPe()));
       pBookLabel.setText(formatDouble(info.getPriceBook()));
-      exchangeLabel.setText(info.getExchange());
+      rocLabel.setText(formatDouble(info.getRoc()));
 
       if (info.getVolume() > 1000000) {
         volumeLabel.setText((info.getVolume() / 1000000) + "M");
@@ -188,7 +188,7 @@ public class DetailPanel extends JPanel {
       }
 
       // Create new chart
-      final Component newComp = ChartUtil.createChart(info.getSymbol(), info.getCurrency(), info.getAssetQuotes());
+      final Component newComp = ChartUtil.createChart(info.getSymbol() + " " + info.getExchange(), info.getCurrency(), info.getAssetQuotes());
       newComp.setPreferredSize(CHART_SIZE);
 
       // Add to card layout
