@@ -14,9 +14,12 @@
  */
 package com.jtraderpro.service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -29,26 +32,46 @@ import yahoofinance.histquotes.Interval;
  */
 public class AssetService {
 
-  private final static AssetService service = new AssetService();
+  private static final AssetService service = new AssetService();
+  private static final Logger logger = LoggerFactory.getLogger(AssetService.class);
 
+  /**
+   * Private Constructor
+   */
   private AssetService() {
   }
 
+  /**
+   * Get Singleton Instance
+   * @return 
+   */
   public static AssetService getInstance() {
     return service;
   }
 
+  /**
+   * Get Asset Information with no History
+   * @param symbol
+   * @return 
+   */
   public AssetInfo getAssetInfo(String symbol) {
     return getAssetInfo(symbol, false);
   }
 
+  /**
+   * Get Asset Information
+   * 
+   * @param symbol
+   * @param historical
+   * @return 
+   */
   public AssetInfo getAssetInfo(String symbol, boolean historical) {
     final AssetInfo info = new AssetInfo(symbol);
 
     try {
       final Stock stock = YahooFinance.get(symbol, historical);
 
-      if (historical) {
+      if (stock != null && historical) {
         final Calendar from = Calendar.getInstance();
         from.add(Calendar.DATE, -30);
 
@@ -128,8 +151,8 @@ public class AssetService {
 
         return info;
       }
-    } catch (Exception err) {
-      err.printStackTrace();
+    } catch (IOException e) {
+      logger.error("AssetService", e);
     }
 
     return null;

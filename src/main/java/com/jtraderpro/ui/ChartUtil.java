@@ -45,9 +45,9 @@ public class ChartUtil {
   private static IntervalXYDataset createVolumeDataset(final List<AssetQuote> assetQuotes) {
     final TimeSeries timeseries = new TimeSeries("Volume");
 
-    for (AssetQuote aq : assetQuotes) {
+    assetQuotes.forEach((aq) -> {
       timeseries.add(new Day(aq.getDate()), aq.getVolume() / 1000000);
-    }
+    });
 
     return new TimeSeriesCollection(timeseries);
   }
@@ -55,9 +55,9 @@ public class ChartUtil {
   private static XYDataset createPriceDataset(final List<AssetQuote> assetQuotes) {
     final TimeSeries timeseries = new TimeSeries("Price");
 
-    for (AssetQuote aq : assetQuotes) {
+    assetQuotes.forEach((aq) -> {
       timeseries.add(new Day(aq.getDate()), aq.getClose());
-    }
+    });
 
     return new TimeSeriesCollection(timeseries);
   }

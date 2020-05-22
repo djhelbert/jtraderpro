@@ -14,7 +14,6 @@
  */
 package com.jtraderpro.ui;
 
-import com.jtraderpro.Main;
 import com.jtraderpro.PortfolioProvider;
 import com.jtraderpro.model.AssetGroup;
 import com.jtraderpro.service.AssetInfo;
@@ -24,6 +23,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -59,8 +59,8 @@ public class PortfolioPanel extends JPanel implements ActionListener {
   private static final String IXIC = "^IXIC";
   private static final String SPX = "^SPX";
   private static final Color DARK_GREEN = new Color(51, 102, 0);
-  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-  
+  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
   public PortfolioPanel() {
     super();
     init();
@@ -159,7 +159,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     if(e.getSource().equals(saveButton)) {
       try {
         PortfolioProvider.getInstance().save();
-      } catch(Exception err) {
+      } catch(IOException err) {
         logger.error("Save Error", err);
       }
     } else if(e.getSource().equals(remGroupButton)) {

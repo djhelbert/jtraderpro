@@ -38,8 +38,7 @@ public class MainFrame extends JFrame implements ActionListener {
   private final static JMenuItem newItem = new JMenuItem("New");
   private final static JMenuItem saveItem = new JMenuItem("Save");
   private final static PortfolioPanel portfolioPanel = new PortfolioPanel();
-
-  private static final Logger logger = LoggerFactory.getLogger(Main.class);
+  private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
   /**
    * Constructor

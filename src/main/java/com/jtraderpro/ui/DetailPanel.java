@@ -14,7 +14,6 @@
  */
 package com.jtraderpro.ui;
 
-import com.jtraderpro.Main;
 import com.jtraderpro.service.AssetInfo;
 import com.jtraderpro.service.AssetService;
 import java.awt.CardLayout;
@@ -40,35 +39,35 @@ import org.slf4j.LoggerFactory;
  */
 public class DetailPanel extends JPanel {
 
-  private final JPanel summaryPanel = new JPanel();
-  private final JLabel priceLabel = new JLabel();
-  private final JLabel changeLabel = new JLabel();
-  private final JLabel symbolLabel = new JLabel();
-  private final JLabel openLabel = new JLabel();
-  private final JLabel bidLabel = new JLabel();
-  private final JLabel askLabel = new JLabel();
-  private final JLabel volumeLabel = new JLabel();
-  private final JLabel avgVolumeLabel = new JLabel();
-  private final JLabel yearHighLabel = new JLabel();
-  private final JLabel yearLowLabel = new JLabel();
-  private final JLabel dividendLabel = new JLabel();
-  private final JLabel exDivLabel = new JLabel();
-  private final JLabel dayHighLabel = new JLabel();
-  private final JLabel dayLowLabel = new JLabel();
-  private final JLabel epsLabel = new JLabel();
-  private final JLabel peLabel = new JLabel();
-  private final JLabel pBookLabel = new JLabel();
-  private final JLabel exchangeLabel = new JLabel();
-  private final JPanel graphPanel = new JPanel();
-  private final CardLayout cardLayout = new CardLayout();
-  private static Component lastComponent;
+  private static final JPanel summaryPanel = new JPanel();
+  private static final JLabel priceLabel = new JLabel();
+  private static final JLabel changeLabel = new JLabel();
+  private static final JLabel symbolLabel = new JLabel();
+  private static final JLabel openLabel = new JLabel();
+  private static final JLabel bidLabel = new JLabel();
+  private static final JLabel askLabel = new JLabel();
+  private static final JLabel volumeLabel = new JLabel();
+  private static final JLabel avgVolumeLabel = new JLabel();
+  private static final JLabel yearHighLabel = new JLabel();
+  private static final JLabel yearLowLabel = new JLabel();
+  private static final JLabel dividendLabel = new JLabel();
+  private static final JLabel exDivLabel = new JLabel();
+  private static final JLabel dayHighLabel = new JLabel();
+  private static final JLabel dayLowLabel = new JLabel();
+  private static final JLabel epsLabel = new JLabel();
+  private static final JLabel peLabel = new JLabel();
+  private static final JLabel pBookLabel = new JLabel();
+  private static final JLabel exchangeLabel = new JLabel();
+  private static final JPanel graphPanel = new JPanel();
+  private static final CardLayout cardLayout = new CardLayout();
   private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
   private static final Color DARK_GREEN = new Color(51, 102, 0);
-  private static final Dimension CHART_SIZE = new Dimension(400,400);
-  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+  private static final Dimension CHART_SIZE = new Dimension(400, 400);
+  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static final Logger logger = LoggerFactory.getLogger(DetailPanel.class);
-  
+  private static Component lastComponent;
+
   public DetailPanel() {
     super();
     init();
@@ -118,15 +117,15 @@ public class DetailPanel extends JPanel {
   }
 
   private String formatDouble(Double value) {
-    if(value == null) {
+    if (value == null) {
       return "";
     }
-    
+
     return decimalFormat.format(value);
   }
 
   private void update() {
-    if(symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
+    if (symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
       update(symbolLabel.getText());
     }
   }
@@ -164,7 +163,7 @@ public class DetailPanel extends JPanel {
         avgVolumeLabel.setText((info.getAvgVolume() / 1000) + "K");
       }
 
-      dividendLabel.setText(decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%") );
+      dividendLabel.setText(decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
 
       if (info.getExDate() != null) {
         exDivLabel.setText(dateFormat.format(info.getExDate()));
@@ -182,22 +181,22 @@ public class DetailPanel extends JPanel {
         priceLabel.setForeground(Color.black);
         changeLabel.setForeground(Color.black);
       }
+
+      // Remove previous chart
+      if (lastComponent != null) {
+        graphPanel.remove(lastComponent);
+      }
+
+      // Create new chart
+      final Component newComp = ChartUtil.createChart(info.getSymbol(), info.getCurrency(), info.getAssetQuotes());
+      newComp.setPreferredSize(CHART_SIZE);
+
+      // Add to card layout
+      graphPanel.add(newComp, info.getSymbol());
+      graphPanel.validate();
+
+      lastComponent = newComp;
     }
-
-    // Remove previous chart
-    if(lastComponent != null) {
-      graphPanel.remove(lastComponent);
-    }
-
-    // Create new chart
-    final Component newComp = ChartUtil.createChart(info.getSymbol(), info.getCurrency(), info.getAssetQuotes());
-    newComp.setPreferredSize(CHART_SIZE);
-
-    // Add to card layout
-    graphPanel.add(newComp,info.getSymbol());
-    graphPanel.validate();
-
-    lastComponent = newComp;
   }
 
   private class UpdateDetailTask implements Runnable {

@@ -51,9 +51,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   private final int order;
   private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private final AssetGroup assetGroup;
-  private static final Color DARK_GREEN = new Color(51, 102, 0);
   private Asset asset;
 
+  private static final Color DARK_GREEN = new Color(51, 102, 0);
+  
   /**
    * Constructor
    *

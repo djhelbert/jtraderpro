@@ -14,7 +14,6 @@
  */
 package com.jtraderpro.ui;
 
-import com.jtraderpro.model.Asset;
 import com.jtraderpro.model.AssetGroup;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -25,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Asset Group Panel
@@ -36,10 +37,11 @@ public class AssetGroupPanel extends JPanel {
   public static int ROW_MAX = 8;
   public static int COL_MAX = 5;
   public static int MAX_SIZE = 40;
+  
+  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+  private static final Logger logger = LoggerFactory.getLogger(AssetGroupPanel.class);
 
   private final List<AssetPanel> assetPanels = new ArrayList<>();
-  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
   private AssetGroup group;
 
   public AssetGroupPanel() {
@@ -72,9 +74,9 @@ public class AssetGroupPanel extends JPanel {
   }
 
   private void update() {
-    for (Asset asset : group.getAssets()) {
+    group.getAssets().forEach((asset) -> {
       assetPanels.get(asset.getOrder()).refresh(asset);
-    }
+    });
   }
 
   private void init() {
@@ -94,18 +96,17 @@ public class AssetGroupPanel extends JPanel {
   }
 
   private class UpdateInfoTask implements Runnable {
-
     public UpdateInfoTask() {
     }
 
     @Override
     public void run() {
       try {
-        for (AssetPanel panel : assetPanels) {
+        assetPanels.forEach((panel) -> {
           panel.updateInfo();
-        }
+        });
       } catch (Exception e) {
-        e.printStackTrace();
+        logger.error("Update Info Task", e);
       }
     }
   }
