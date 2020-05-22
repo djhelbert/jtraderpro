@@ -124,7 +124,7 @@ public class DetailPanel extends JPanel {
     return decimalFormat.format(value);
   }
 
-  private void update() {
+  private void refresh() {
     if (symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
       update(symbolLabel.getText());
     }
@@ -206,7 +206,7 @@ public class DetailPanel extends JPanel {
     @Override
     public void run() {
       try {
-        update();
+        refresh();
       } catch (Exception e) {
         logger.error("Update Detail Task", e);
       }

@@ -21,13 +21,13 @@ public class PortfolioProvider {
 
   private static final String DEFAULT = "jtraderpro.json";
   private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final File DEFAULT_FILE = new File(System.getProperty("user.home") + File.separator + DEFAULT);
+  private static final PortfolioProvider provider = new PortfolioProvider();
+
   private static Portfolio portfolio;
-  public final static File DEFAULT_FILE = new File(System.getProperty("user.home") + File.separator + DEFAULT);
-
-  private static PortfolioProvider provider = new PortfolioProvider();
-
+  
   /**
-   * Private
+   * Private Constructor
    */
   private PortfolioProvider() {
   }
