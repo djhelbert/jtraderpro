@@ -70,7 +70,10 @@ public class PortfolioPanel extends JPanel implements ActionListener {
 
   private void init() {
     load();
-    
+
+    djiLabel.setToolTipText("Dow Jones Indus.");
+    ixicLabel.setToolTipText("Nasdaq");
+    spxLabel.setToolTipText("S&P 500");
     buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
     saveButton.addActionListener(this);
