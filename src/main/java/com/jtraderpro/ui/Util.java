@@ -15,6 +15,9 @@
 package com.jtraderpro.ui;
 
 import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -74,5 +77,33 @@ public class Util {
    */
   public static void showInfo(Component c, Component m, String title) {
     JOptionPane.showMessageDialog(c, m, title, JOptionPane.PLAIN_MESSAGE);
+  }
+
+
+  /**
+   * Get File Text
+   *
+   * @param name
+   * @return String
+   * @throws Exception
+   */
+  public static String getFileText(String name) throws Exception {
+    String text = "";
+
+    ClassLoader cload = Util.class.getClassLoader();
+    InputStream is = cload.getResourceAsStream(name);
+    InputStreamReader isr = new InputStreamReader(is);
+    BufferedReader br = new BufferedReader(isr);
+
+    String temp = br.readLine();
+
+    while (temp != null) {
+      text += temp + "\n";
+      temp = br.readLine();
+    }
+
+    br.close();
+
+    return text;
   }
 }
