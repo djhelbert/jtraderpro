@@ -18,8 +18,8 @@ import com.jtraderpro.model.Asset;
 import com.jtraderpro.model.AssetGroup;
 import com.jtraderpro.service.AssetInfo;
 import com.jtraderpro.service.AssetService;
-import java.awt.Color;
-import java.awt.GridLayout;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -52,6 +52,8 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
   private final AssetGroup assetGroup;
   private Asset asset;
+  private Font labelFont;
+  private Font boldFont;
 
   private static final Color DARK_GREEN = new Color(51, 102, 0);
   
@@ -157,6 +159,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
 
     clearItem.addActionListener(this);
     updateItem.addActionListener(this);
+
+    labelFont = symbolLabel.getFont();
+    boldFont = new Font(labelFont.getName(), Font.BOLD, labelFont.getSize()+1);
   }
 
   @Override
@@ -174,10 +179,16 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
 
   @Override
   public void mouseEntered(MouseEvent e) {
+    if(e.getSource().equals(symbolLabel)) {
+      symbolLabel.setFont(boldFont); // Update font
+    }
   }
 
   @Override
   public void mouseExited(MouseEvent e) {
+    if(e.getSource().equals(symbolLabel)) {
+      symbolLabel.setFont(labelFont); // Revert
+    }
   }
 
   private void checkPopup(MouseEvent e) {
