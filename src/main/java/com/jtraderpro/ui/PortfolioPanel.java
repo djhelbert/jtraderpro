@@ -199,11 +199,11 @@ public class PortfolioPanel extends JPanel implements ActionListener {
       }
     }
   }
-  
-  private class UpdateIndexesTask implements Runnable {
-    public UpdateIndexesTask() {
-    }
 
+  /**
+   * Update Indexes Task
+   */
+  private class UpdateIndexesTask implements Runnable {
     @Override
     public void run() {
       try {

@@ -76,7 +76,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   public final void refresh() {
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
-    updateInfo();
+    startTask();
   }
 
   /**
@@ -88,7 +88,12 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     this.asset = asset;
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
-    updateInfo();
+    startTask();
+  }
+
+  public void startTask() {
+    final Thread thread = new Thread(new UpdateTask());
+    thread.start();
   }
 
   public final void updateInfo() {
@@ -246,6 +251,16 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
               "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
+    }
+  }
+
+  /**
+   * Runnable Update Task
+   */
+  private class UpdateTask implements Runnable {
+    @Override
+    public void run() {
+      updateInfo();
     }
   }
 }
