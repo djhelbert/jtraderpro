@@ -49,6 +49,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
   private static final JButton addGroupButton = new JButton("Group");
   private static final JButton remGroupButton = new JButton("Group");
   private static final JButton saveButton = new JButton("Save");
+  private static final JButton sortButton = new JButton("Sort");
   private static final JTabbedPane tabbedPane = new JTabbedPane();
   private static final DetailPanel detailPanel = new DetailPanel();
   private static final JLabel djiLabel = new JLabel();
@@ -82,9 +83,12 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     addGroupButton.setIcon(Util.getImageIcon("add.png"));
     remGroupButton.addActionListener(this);
     remGroupButton.setIcon(Util.getImageIcon("delete.png"));
+    sortButton.addActionListener(this);
+    sortButton.setIcon(Util.getImageIcon("sort.png"));
     buttonPanel.add(saveButton);
     buttonPanel.add(addGroupButton);
     buttonPanel.add(remGroupButton);
+    buttonPanel.add(sortButton);
     indexPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
     indexPanel.add(new JLabel("^DJI"));
     indexPanel.add(djiLabel);
@@ -165,10 +169,14 @@ public class PortfolioPanel extends JPanel implements ActionListener {
       } catch(IOException err) {
         logger.error("Save Error", err);
       }
+    } else if(e.getSource().equals(sortButton)) {
+      final AssetGroupPanel agPanel = (AssetGroupPanel)tabbedPane.getSelectedComponent();
+      agPanel.sort();
     } else if(e.getSource().equals(remGroupButton)) {
       if(tabbedPane.getTabCount() > 1) {
         int index = tabbedPane.getSelectedIndex();
         final AssetGroupPanel agPanel = (AssetGroupPanel)tabbedPane.getSelectedComponent();
+        agPanel.shutdown();
         PortfolioProvider.getInstance().getPortfolio().getGroups().remove(agPanel.getAssetGroup());
         tabbedPane.remove(index);
 

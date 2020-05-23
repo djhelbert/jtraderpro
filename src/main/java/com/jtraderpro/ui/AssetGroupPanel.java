@@ -14,6 +14,7 @@
  */
 package com.jtraderpro.ui;
 
+import com.jtraderpro.model.Asset;
 import com.jtraderpro.model.AssetGroup;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class AssetGroupPanel extends JPanel {
 
   public static int ROW_MAX = 8;
   public static int COL_MAX = 5;
-  public static int MAX_SIZE = 40;
-  
+  public static int MAX = 40;
+
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static final Logger logger = LoggerFactory.getLogger(AssetGroupPanel.class);
 
@@ -92,6 +93,25 @@ public class AssetGroupPanel extends JPanel {
         assetPanels.add(panel);
         order++;
       }
+    }
+  }
+
+  /**
+   * Update Asset Order and Refresh Each
+   */
+  public void sort() {
+    for(int i=0; i<MAX; i++) {
+      assetPanels.get(i).empty();
+    }
+
+    group.getAssets().sort(null);
+
+    int index = 0;
+
+    for (Asset ass : group.getAssets()) {
+      ass.setOrder(index);
+      assetPanels.get(index).refresh(ass);
+      index++;
     }
   }
 

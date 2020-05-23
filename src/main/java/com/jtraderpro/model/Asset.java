@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author djhelbert
  */
-public class Asset {
+public class Asset implements Comparable {
 
   private String symbol = "";
   private String name = "";
@@ -89,5 +89,14 @@ public class Asset {
     }
 
     return false;
+  }
+
+  @Override
+  public int compareTo(Object o) {
+    if(o instanceof Asset) {
+      return symbol.compareTo(((Asset)o).getSymbol());
+    }
+
+    return 0;
   }
 }

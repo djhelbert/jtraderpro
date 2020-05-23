@@ -80,7 +80,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   }
 
   /**
-   * Update for Asset
+   * Refresh for Asset
    *
    * @param asset
    */
@@ -122,6 +122,17 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
 
   private String formatDouble(Double value) {
     return decimalFormat.format(value);
+  }
+
+  /**
+   * Clear Panel
+   */
+  public final void empty() {
+    symbolLabel.setText("");
+    priceLabel.setText("");
+    volumeLabel.setText("");
+    valueLabel.setText("");
+    asset = null;
   }
 
   /**
