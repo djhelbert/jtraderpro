@@ -177,6 +177,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
 
   @Override
   public void mouseClicked(MouseEvent e) {
+    if (e.getClickCount() == 2) {
+      assetMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
   }
 
   @Override
