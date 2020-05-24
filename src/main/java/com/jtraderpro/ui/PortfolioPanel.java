@@ -55,10 +55,22 @@ public class PortfolioPanel extends JPanel implements ActionListener {
   private static final JLabel djiLabel = new JLabel();
   private static final JLabel ixicLabel = new JLabel();
   private static final JLabel spxLabel = new JLabel();
+  private static final JLabel hkdowLabel = new JLabel();
+  private static final JLabel n225Label = new JLabel();
+  private static final JLabel cadowLabel = new JLabel();
+  private static final JLabel ftseLabel = new JLabel();
+  private static final JLabel dedowLabel = new JLabel();
+  private static final JLabel djshLabel = new JLabel();
   private static final Logger logger = LoggerFactory.getLogger(PortfolioPanel.class);
   private static final String DJI = "^DJI";
   private static final String IXIC = "^IXIC";
   private static final String SPX = "^SPX";
+  private static final String HKDOW = "^HKDOW";
+  private static final String N225 = "^N225";
+  private static final String CADOW = "^CADOW";
+  private static final String FTSE = "^FTSE";
+  private static final String DEDOW = "^DEDOW";
+  private static final String DJSH = "^DJSH";
   private static final Color DARK_GREEN = new Color(51, 102, 0);
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
@@ -75,6 +87,12 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     djiLabel.setToolTipText("Dow Jones Indus.");
     ixicLabel.setToolTipText("Nasdaq");
     spxLabel.setToolTipText("S&P 500");
+    cadowLabel.setToolTipText("Dow Jones Canada");
+    ftseLabel.setToolTipText("FTSE 100");
+    dedowLabel.setToolTipText("Dow Jones Germany");
+    hkdowLabel.setToolTipText("Dow Jones Hong Kong");
+    djshLabel.setToolTipText("Dow Jones Shanghai");
+    n225Label.setToolTipText("Nikkei 225");
     buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
     saveButton.addActionListener(this);
@@ -96,6 +114,19 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     indexPanel.add(ixicLabel);
     indexPanel.add(new JLabel("^SPX"));
     indexPanel.add(spxLabel);
+    indexPanel.add(new JLabel("^CADOW"));
+    indexPanel.add(cadowLabel);
+    indexPanel.add(new JLabel("^FTSE"));
+    indexPanel.add(ftseLabel);
+    indexPanel.add(new JLabel("^DEDOW"));
+    indexPanel.add(dedowLabel);
+    indexPanel.add(new JLabel("^HKDOW"));
+    indexPanel.add(hkdowLabel );
+    indexPanel.add(new JLabel("^DJSH"));
+    indexPanel.add(djshLabel);
+    indexPanel.add(new JLabel("^N225"));
+    indexPanel.add(n225Label);
+
     indexPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
   
     setBackground(Color.white);
@@ -115,7 +146,13 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     final AssetInfo infoDji = AssetService.getInstance().getAssetInfo(DJI);
     final AssetInfo infoIxic = AssetService.getInstance().getAssetInfo(IXIC);
     final AssetInfo infoSpx = AssetService.getInstance().getAssetInfo(SPX);
- 
+    final AssetInfo infoCadow = AssetService.getInstance().getAssetInfo(CADOW);
+    final AssetInfo infoFtse = AssetService.getInstance().getAssetInfo(FTSE);
+    final AssetInfo infoDedow = AssetService.getInstance().getAssetInfo(DEDOW);
+    final AssetInfo infoN225 = AssetService.getInstance().getAssetInfo(N225);
+    final AssetInfo infoHkdow = AssetService.getInstance().getAssetInfo(HKDOW);
+    final AssetInfo infoDjsh = AssetService.getInstance().getAssetInfo(DJSH);
+
     if(infoDji != null) {
       djiLabel.setText(infoDji.getPercentChange().toString() + "%");
       
@@ -143,6 +180,66 @@ public class PortfolioPanel extends JPanel implements ActionListener {
         spxLabel.setForeground(Color.red);
       } else {
         spxLabel.setForeground(DARK_GREEN);
+      }
+    }
+
+    if(infoCadow != null) {
+      cadowLabel.setText(infoCadow.getPercentChange().toString() + "%");
+
+      if(infoCadow.getPercentChange() < 0.00) {
+        cadowLabel.setForeground(Color.red);
+      } else {
+        cadowLabel.setForeground(DARK_GREEN);
+      }
+    }
+
+    if(infoFtse != null) {
+      ftseLabel.setText(infoFtse.getPercentChange().toString() + "%");
+
+      if(infoFtse.getPercentChange() < 0.00) {
+        ftseLabel.setForeground(Color.red);
+      } else {
+        ftseLabel.setForeground(DARK_GREEN);
+      }
+    }
+
+    if(infoDedow != null) {
+      dedowLabel.setText(infoDedow.getPercentChange().toString() + "%");
+
+      if(infoDedow.getPercentChange() < 0.00) {
+        dedowLabel.setForeground(Color.red);
+      } else {
+        dedowLabel.setForeground(DARK_GREEN);
+      }
+    }
+
+    if(infoHkdow != null) {
+      hkdowLabel.setText(infoHkdow.getPercentChange().toString() + "%");
+
+      if(infoSpx.getPercentChange() < 0.00) {
+        hkdowLabel.setForeground(Color.red);
+      } else {
+        hkdowLabel.setForeground(DARK_GREEN);
+      }
+    }
+
+    if(infoN225 != null) {
+      n225Label.setText(infoN225.getPercentChange().toString() + "%");
+
+      if(infoSpx.getPercentChange() < 0.00) {
+        n225Label.setForeground(Color.red);
+      } else {
+        n225Label.setForeground(DARK_GREEN);
+      }
+    }
+
+    if(infoDjsh != null) {
+      djshLabel.setText(infoSpx.getPercentChange().toString() + "%");
+
+      if(infoSpx.getPercentChange() < 0.00) {
+        djshLabel.setForeground(Color.red);
+      } else {
+        djshLabel.setForeground(DARK_GREEN);
       }
     }
   }
