@@ -15,6 +15,7 @@
 package com.jtraderpro.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,55 +27,62 @@ import java.util.List;
  */
 public class Portfolio {
 
-  private Date date = new Date();
-  private List<AssetGroup> groups = new ArrayList<>();
+    private Date date = new Date();
+    private List<AssetGroup> groups = new ArrayList<>();
 
-  /**
-   * Constructor
-   *
-   */
-  public Portfolio() {
-  }
-
-  @JsonIgnore
-  public Integer getMaximumGroup() {
-    Integer max = 0;
- 
-    for (AssetGroup group : groups) {
-      if(group.getOrder() > max) {
-        max = group.getOrder();
-      }
+    /**
+     * Constructor
+     */
+    public Portfolio() {
     }
 
-    return max;
-  }
- 
-  public Date getDate() {
-    return date;
-  }
+    @JsonIgnore
+    public Integer getMaximumGroup() {
+        Integer max = 0;
 
-  public void setDate(Date date) {
-    this.date = date;
-  }
+        for (AssetGroup group : groups) {
+            if (group.getOrder() > max) {
+                max = group.getOrder();
+            }
+        }
 
-  public List<AssetGroup> getGroups() {
-    return groups;
-  }
-
-  public void setGroups(List<AssetGroup> groups) {
-    this.groups = groups;
-  }
-
-  public void addGroup(AssetGroup group) {
-    groups.add(group);
-  }
-
-  public void reorder() {
-    int count = 1;
-
-    for (AssetGroup group : groups) {
-      group.setOrder(count);
-      count++;
+        return max;
     }
-  }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<AssetGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<AssetGroup> groups) {
+        this.groups = groups;
+    }
+
+    public void addGroup(AssetGroup group) {
+        groups.add(group);
+    }
+
+    public Asset getDefaultAsset() {
+        if (groups.size() > 0 && getGroups().get(0).getAssets().size() > 0) {
+            return getGroups().get(0).getAssets().get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public void reorder() {
+        int count = 1;
+
+        for (AssetGroup group : groups) {
+            group.setOrder(count);
+            count++;
+        }
+    }
 }

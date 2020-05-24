@@ -70,9 +70,17 @@ public class DetailPanel extends JPanel {
   private static final Logger logger = LoggerFactory.getLogger(DetailPanel.class);
   private static Component lastComponent;
 
-  public DetailPanel() {
+  /**
+   * Constructor
+   *
+   * @param symbol Default Symbol
+   */
+  public DetailPanel(String symbol) {
     super();
     init();
+    if(symbol != null) {
+      update(symbol);
+    }
     executor.scheduleAtFixedRate(new UpdateDetailTask(), 60, 60, TimeUnit.SECONDS);
   }
 

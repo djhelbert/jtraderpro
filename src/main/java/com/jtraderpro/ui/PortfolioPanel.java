@@ -51,7 +51,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
   private static final JButton saveButton = new JButton("Save");
   private static final JButton sortButton = new JButton("Sort");
   private static final JTabbedPane tabbedPane = new JTabbedPane();
-  private static final DetailPanel detailPanel = new DetailPanel();
+  private static final DetailPanel detailPanel = new DetailPanel(PortfolioProvider.getInstance().getPortfolio().getDefaultAsset().getSymbol());
   private static final JLabel djiLabel = new JLabel();
   private static final JLabel ixicLabel = new JLabel();
   private static final JLabel spxLabel = new JLabel();
