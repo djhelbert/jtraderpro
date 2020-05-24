@@ -54,6 +54,8 @@ public class DetailPanel extends JPanel {
   private static final JLabel exDivLabel = new JLabel();
   private static final JLabel dayHighLabel = new JLabel();
   private static final JLabel dayLowLabel = new JLabel();
+  private static final JLabel rsiLabel = new JLabel();
+  private static final JLabel fiftyDayLabel = new JLabel();
   private static final JLabel epsLabel = new JLabel();
   private static final JLabel peLabel = new JLabel();
   private static final JLabel pBookLabel = new JLabel();
@@ -77,7 +79,7 @@ public class DetailPanel extends JPanel {
   private void init() {
     setBackground(Color.white);
 
-    summaryPanel.setLayout(new GridLayout(9, 4));
+    summaryPanel.setLayout(new GridLayout(10, 4));
     summaryPanel.setPreferredSize(CHART_SIZE);
     summaryPanel.setBackground(Color.white);
 
@@ -98,7 +100,9 @@ public class DetailPanel extends JPanel {
     addLabel("EPS ", epsLabel);
     addLabel("PE Ratio ", peLabel);
     addLabel("PB Ratio ", pBookLabel);
-    addLabel("ROC ", rocLabel);
+    addLabel("ROC (30d)", rocLabel);
+    addLabel("RSI (14d)", rsiLabel);
+    addLabel("50 Day Avg. ", fiftyDayLabel);
 
     graphPanel.setPreferredSize(CHART_SIZE);
     graphPanel.setLayout(cardLayout);
@@ -150,6 +154,8 @@ public class DetailPanel extends JPanel {
       peLabel.setText(formatDouble(info.getPe()));
       pBookLabel.setText(formatDouble(info.getPriceBook()));
       rocLabel.setText(formatDouble(info.getRoc()));
+      rsiLabel.setText(formatDouble(info.getRsi()));
+      fiftyDayLabel.setText(formatDouble(info.getFiftyDayAvg()));
 
       if (info.getVolume() > 1000000) {
         volumeLabel.setText((info.getVolume() / 1000000) + "M");

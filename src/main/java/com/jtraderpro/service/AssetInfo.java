@@ -40,6 +40,7 @@ public class AssetInfo {
   private Double dayHigh;
   private Double dayLow;
   private Double dividendYield;
+  private Double annualYield;
   private Date exDate;
   private Date earningsAnnouncement;
   private Long avgVolume;
@@ -54,6 +55,8 @@ public class AssetInfo {
   private Long askSize;
   private Long bidSize;
   private Double roc;
+  private Double rsi;
+  private Double fiftyDayAvg;
 
   private List<AssetQuote> assetQuotes = new ArrayList<>();
 
@@ -109,12 +112,24 @@ public class AssetInfo {
     this.marketPrice = marketPrice;
   }
 
+  public Double getPriceChange() {
+    return marketPrice - open;
+  }
+
   public Double getPreviousClose() {
     return previousClose;
   }
 
   public void setPreviousClose(Double previousClose) {
     this.previousClose = previousClose;
+  }
+
+  public Double getAnnualYield() {
+    return annualYield;
+  }
+
+  public void setAnnualYield(Double annualYield) {
+    this.annualYield = annualYield;
   }
 
   public Double getPercentChange() {
@@ -301,13 +316,66 @@ public class AssetInfo {
     this.bidSize = bidSize;
   }
 
+  public Double getFiftyDayAvg() {
+    return fiftyDayAvg;
+  }
+
+  public void setFiftyDayAvg(Double fiftyDayAvg) {
+    this.fiftyDayAvg = fiftyDayAvg;
+  }
+
   public Double getRoc() {
     return roc;
   }
-  
+
+  public Double getRsi() {
+    return rsi;
+  }
+
+  public void updateRsi() {
+    if(assetQuotes.size() < 14) {
+      rsi = 0.0;
+      return;
+    }
+
+    double sumGains = 0.0d;
+    double sumLosses = 0.0d;
+    double currentGain = 0.0d;
+    double currentLoss = 0.0d;
+
+    if(getPriceChange() > 0) {
+      currentGain += getPriceChange();
+    } else {
+      currentLoss += Math.abs(getPriceChange());
+    }
+
+    double avgGain = 0.0d;
+    double avgLoss = 0.0d;
+
+    for(int i = assetQuotes.size() - 14; i< assetQuotes.size(); i++) {
+      double change = assetQuotes.get(i).getClose() - assetQuotes.get(i).getOpen();
+
+      if(change > 0.0) {
+        sumGains += change;
+      } else {
+        sumLosses += Math.abs(change);
+      }
+    }
+
+    avgGain = sumGains / 14.0d;
+    avgLoss = sumLosses / 14.0d;
+
+    if(avgLoss <= 0) {
+      rsi = 100.0;
+      return;
+    }
+
+    rsi = 100 - (100 / (1 + ((((avgGain * 13.0) + currentGain)) / 14.0) / ((((avgLoss * 13.0) + currentLoss)) / 14.0)));
+  }
+
   public void updateRoc() {
     if(assetQuotes.size() > 0) {
-      roc = (assetQuotes.get(assetQuotes.size()-1).getClose() - assetQuotes.get(0).getClose()) / assetQuotes.get(0).getClose() * 100.0;
+      roc = ((assetQuotes.get(assetQuotes.size()-1).getClose() - assetQuotes.get(0).getClose()) / assetQuotes.get(0).getClose()) * 100.0;
     }
   }
 

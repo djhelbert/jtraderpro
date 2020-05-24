@@ -71,27 +71,6 @@ public class AssetService {
     try {
       final Stock stock = YahooFinance.get(symbol, historical);
 
-      if (stock != null && historical) {
-        final Calendar from = Calendar.getInstance();
-        from.add(Calendar.DATE, -30);
-
-        final List<HistoricalQuote> histQuotes = stock.getHistory(from, Interval.DAILY);
-
-        histQuotes.stream().map((q) -> {
-          AssetQuote aq = new AssetQuote();
-          aq.setClose(getDouble(q.getClose()));
-          aq.setDate(q.getDate().getTime());
-          aq.setHigh(getDouble(q.getHigh()));
-          aq.setLow(getDouble(q.getLow()));
-          aq.setVolume(q.getVolume());
-          return aq;
-        }).forEachOrdered((aq) -> {
-          info.getAssetQuotes().add(aq);
-        });
-        
-        info.updateRoc();
-      }
-
       if (stock != null) {
         info.setName(stock.getName());
         info.setMarketPrice(getDouble(stock.getQuote().getPrice()));
@@ -112,6 +91,7 @@ public class AssetService {
         info.setStockExchange(stock.getStockExchange());
         info.setAskSize(stock.getQuote().getAskSize());
         info.setBidSize(stock.getQuote().getBidSize());
+        info.setFiftyDayAvg(getDouble(stock.getQuote().getPriceAvg50()));
 
         if(stock.getStats().getEps() != null) {
           info.setEps(getDouble(stock.getStats().getEps()));
@@ -147,8 +127,37 @@ public class AssetService {
           info.setDividendYield(0.00);
         }
 
+        if (stock.getDividend() != null && stock.getDividend().getAnnualYield() != null) {
+          info.setAnnualYield(getDouble(stock.getDividend().getAnnualYield()));
+        } else {
+          info.setAnnualYield(0.00);
+        }
+
         if (stock.getDividend() != null && stock.getDividend().getPayDate() != null) {
           info.setExDate(stock.getDividend().getPayDate().getTime());
+        }
+
+        if (stock != null && historical) {
+          final Calendar from = Calendar.getInstance();
+          from.add(Calendar.DATE, -30);
+
+          final List<HistoricalQuote> histQuotes = stock.getHistory(from, Interval.DAILY);
+
+          histQuotes.stream().map((q) -> {
+            AssetQuote aq = new AssetQuote();
+            aq.setClose(getDouble(q.getClose()));
+            aq.setDate(q.getDate().getTime());
+            aq.setHigh(getDouble(q.getHigh()));
+            aq.setLow(getDouble(q.getLow()));
+            aq.setOpen(getDouble(q.getOpen()));
+            aq.setVolume(q.getVolume());
+            return aq;
+          }).forEachOrdered((aq) -> {
+            info.getAssetQuotes().add(aq);
+          });
+
+          info.updateRoc();
+          info.updateRsi();
         }
 
         return info;
