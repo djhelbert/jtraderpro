@@ -1,9 +1,21 @@
-# jtraderpro
-JTraderPro
+# jTraderPro
+JTraderPro is a free open source stock tracking and analysis application.
 
-# Requirements
+## Requirements
 JDK 11
 
-# Run
-gradlew run
-gradlew.bat run
+## Build
+* gradlew clean build (Others)
+* gradlew.bat clean build (Windows)
+
+## Run
+* gradlew run (Others)
+* gradlew.bat run (Windows)
+
+## Versions
+* 1.0.0 Initial Version
+
+## Dependencies
+* JFreeChart
+* YahooFinanceAPI
+* Jackson
