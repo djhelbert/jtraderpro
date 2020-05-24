@@ -5,6 +5,7 @@
  */
 package com.jtraderpro;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jtraderpro.model.Asset;
 import com.jtraderpro.model.AssetGroup;
@@ -20,7 +21,7 @@ import java.io.IOException;
 public class PortfolioProvider {
 
   private static final String DEFAULT = "jtraderpro.json";
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   private static final File DEFAULT_FILE = new File(System.getProperty("user.home") + File.separator + DEFAULT);
   private static final PortfolioProvider provider = new PortfolioProvider();
 

@@ -14,7 +14,7 @@
  */
 package com.jtraderpro.ui;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -105,5 +105,22 @@ public class Util {
     br.close();
 
     return text;
+  }
+
+  /**
+   * Center
+   *
+   * @param comp
+   */
+  public static void centerComponent(Component comp) {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension size = comp.getSize();
+    screenSize.height = screenSize.height / 2;
+    screenSize.width = screenSize.width / 2;
+    size.height = size.height / 2;
+    size.width = size.width / 2;
+    int y = screenSize.height - size.height;
+    int x = screenSize.width - size.width;
+    comp.setLocation(x, y);
   }
 }

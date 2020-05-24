@@ -34,132 +34,130 @@ import org.slf4j.LoggerFactory;
  */
 public class MainFrame extends JFrame implements ActionListener {
 
-  private final static JMenuItem exitItem = new JMenuItem("Exit");
-  private final static JMenuItem newItem = new JMenuItem("New");
-  private final static JMenuItem saveItem = new JMenuItem("Save");
-  private final static JMenuItem aboutItem = new JMenuItem("About...");
-  private final static JMenuItem licenseItem = new JMenuItem("License");
-  private final static PortfolioPanel portfolioPanel = new PortfolioPanel();
-  private final static Logger logger = LoggerFactory.getLogger(Main.class);
+    private final static JMenuItem exitItem = new JMenuItem("Exit");
+    private final static JMenuItem newItem = new JMenuItem("New");
+    private final static JMenuItem saveItem = new JMenuItem("Save");
+    private final static JMenuItem aboutItem = new JMenuItem("About...");
+    private final static JMenuItem licenseItem = new JMenuItem("License");
+    private final static PortfolioPanel portfolioPanel = new PortfolioPanel();
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
-  /**
-   * Constructor
-   */
-  public MainFrame() {
-    super("JTraderPro 1.0.0");
-    init();
-  }
-
-  private void init() {
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    aboutItem.setIcon(Util.getImageIcon("about.png"));
-    licenseItem.setIcon(Util.getImageIcon("business.png"));
-
-    final JMenu helpMenu = new JMenu("Help");
-    helpMenu.add(aboutItem);
-    helpMenu.add(licenseItem);
-
-    licenseItem.addActionListener(this);
-    aboutItem.addActionListener(this);
-
-    final JMenuBar menuBar = new JMenuBar();
-    final JMenu fileMenu = new JMenu("File");
-
-    newItem.setIcon(Util.getImageIcon("file.png"));
-    saveItem.setIcon(Util.getImageIcon("save.png"));
-    exitItem.setIcon(Util.getImageIcon("exit.png"));
-
-    fileMenu.add(newItem);
-    fileMenu.add(saveItem);
-    fileMenu.addSeparator();
-    fileMenu.add(exitItem);
-
-    menuBar.add(fileMenu);
-    menuBar.add(helpMenu);
-
-    saveItem.addActionListener(this);
-    newItem.addActionListener(this);
-    exitItem.addActionListener(this);
-
-    setJMenuBar(menuBar);
-    setContentPane(portfolioPanel);
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    if (e.getSource().equals(exitItem)) {
-      exitItemAction();
+    /**
+     * Constructor
+     */
+    public MainFrame() {
+        super("JTraderPro 1.0.0");
+        init();
     }
-    if (e.getSource().equals(newItem)) {
-      newItemAction();
+
+    private void init() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        aboutItem.setIcon(Util.getImageIcon("about.png"));
+        licenseItem.setIcon(Util.getImageIcon("business.png"));
+
+        final JMenu helpMenu = new JMenu("Help");
+        helpMenu.add(aboutItem);
+        helpMenu.add(licenseItem);
+
+        licenseItem.addActionListener(this);
+        aboutItem.addActionListener(this);
+
+        final JMenuBar menuBar = new JMenuBar();
+        final JMenu fileMenu = new JMenu("File");
+
+        newItem.setIcon(Util.getImageIcon("file.png"));
+        saveItem.setIcon(Util.getImageIcon("save.png"));
+        exitItem.setIcon(Util.getImageIcon("exit.png"));
+
+        fileMenu.add(newItem);
+        fileMenu.add(saveItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
+
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
+
+        saveItem.addActionListener(this);
+        newItem.addActionListener(this);
+        exitItem.addActionListener(this);
+
+        setJMenuBar(menuBar);
+        setContentPane(portfolioPanel);
     }
-    if (e.getSource().equals(saveItem)) {
-      saveItemAction();
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(exitItem)) {
+            exitItemAction();
+        }
+        if (e.getSource().equals(newItem)) {
+            newItemAction();
+        }
+        if (e.getSource().equals(saveItem)) {
+            saveItemAction();
+        }
+        if (e.getSource().equals(licenseItem)) {
+            licenseAction();
+        }
+        if (e.getSource().equals(aboutItem)) {
+            aboutAction();
+        }
     }
-    if (e.getSource().equals(licenseItem)) {
-      licenseAction();
+
+    private void saveItemAction() {
+        try {
+            PortfolioProvider.getInstance().save();
+        } catch (IOException err) {
+            logger.error("Save Item", err);
+        }
     }
-    if (e.getSource().equals(aboutItem)) {
-      aboutAction();
+
+    private void exitItemAction() {
+        System.exit(0);
     }
-  }
 
-  private void saveItemAction() {
-    try {
-      PortfolioProvider.getInstance().save();
-    } catch (IOException err) {
-      logger.error("Save Item", err);
+    private void newItemAction() {
+        PortfolioProvider.getInstance().getNewPortfolio();
+        portfolioPanel.load();
     }
-  }
 
-  private void exitItemAction() {
-    System.exit(0);
-  }
-
-  private void newItemAction() {
-    PortfolioProvider.getInstance().getNewPortfolio();
-    portfolioPanel.load();
-  }
-
-  /**
-   * About Action
-   *
-   */
-  private void aboutAction() {
-    Util.showInfo(getMainComponent(), "JTraderPro 1.0.0 Copyright 2020", "About");
-  }
-
-  /**
-   * License Action
-   *
-   */
-  private void licenseAction() {
-    try {
-      final String text = Util.getFileText("license.txt");
-      final JPanel panel = new JPanel();
-      panel.setLayout(new BorderLayout(5, 5));
-
-      final JTextArea textArea = new JTextArea(text, 25, 80);
-      textArea.setEditable(false);
-      textArea.setFont(new Font("courier", Font.PLAIN, 12));
-
-      JScrollPane spane = new JScrollPane(textArea);
-      panel.setBorder(new EtchedBorder());
-      panel.add(BorderLayout.CENTER, spane);
-
-      Util.showInfo(this, panel, "License");
-    } catch (Exception err) {
-      err.printStackTrace();
+    /**
+     * About Action
+     */
+    private void aboutAction() {
+        Util.showInfo(getMainComponent(), "JTraderPro 1.0.0 Copyright 2020", "About");
     }
-  }
 
- /**
-	 * Get Main Component
-	 * 
-	 * @return Component
-	 */
-	public static Component getMainComponent() {
-		return portfolioPanel;
-	}
+    /**
+     * License Action
+     */
+    private void licenseAction() {
+        try {
+            final String text = Util.getFileText("license.txt");
+            final JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout(5, 5));
+
+            final JTextArea textArea = new JTextArea(text, 25, 80);
+            textArea.setEditable(false);
+            textArea.setFont(new Font("courier", Font.PLAIN, 12));
+
+            JScrollPane spane = new JScrollPane(textArea);
+            panel.setBorder(new EtchedBorder());
+            panel.add(BorderLayout.CENTER, spane);
+
+            Util.showInfo(this, panel, "License");
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
+
+    /**
+     * Get Main Component
+     *
+     * @return Component
+     */
+    public static Component getMainComponent() {
+        return portfolioPanel;
+    }
 }

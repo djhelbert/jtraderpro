@@ -153,97 +153,29 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     final AssetInfo infoHkdow = AssetService.getInstance().getAssetInfo(HKDOW);
     final AssetInfo infoDjsh = AssetService.getInstance().getAssetInfo(DJSH);
 
-    if(infoDji != null) {
-      djiLabel.setText(infoDji.getPercentChange().toString() + "%");
-      
-      if(infoDji.getPercentChange() < 0.00) {
-        djiLabel.setForeground(Color.red);
+    updateIndex(djiLabel, infoDji);
+    updateIndex(ixicLabel, infoIxic);
+    updateIndex(spxLabel, infoSpx);
+    updateIndex(cadowLabel, infoCadow);
+    updateIndex(ftseLabel, infoFtse);
+    updateIndex(dedowLabel, infoDedow);
+    updateIndex(hkdowLabel, infoHkdow);
+    updateIndex(n225Label, infoN225);
+    updateIndex(djshLabel, infoDjsh);
+  }
+
+  private void updateIndex(JLabel label, AssetInfo info) {
+    if(info != null) {
+      label.setText(info.getPercentChange().toString() + "%");
+
+      if(info.getPercentChange() < 0.00) {
+        label.setForeground(Color.red);
       } else {
-        djiLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoIxic != null) {
-      ixicLabel.setText(infoIxic.getPercentChange().toString() + "%");
-
-      if(infoIxic.getPercentChange() < 0.00) {
-        ixicLabel.setForeground(Color.red);
-      } else {
-        ixicLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoSpx != null) {
-      spxLabel.setText(infoSpx.getPercentChange().toString() + "%");
-
-      if(infoSpx.getPercentChange() < 0.00) {
-        spxLabel.setForeground(Color.red);
-      } else {
-        spxLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoCadow != null) {
-      cadowLabel.setText(infoCadow.getPercentChange().toString() + "%");
-
-      if(infoCadow.getPercentChange() < 0.00) {
-        cadowLabel.setForeground(Color.red);
-      } else {
-        cadowLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoFtse != null) {
-      ftseLabel.setText(infoFtse.getPercentChange().toString() + "%");
-
-      if(infoFtse.getPercentChange() < 0.00) {
-        ftseLabel.setForeground(Color.red);
-      } else {
-        ftseLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoDedow != null) {
-      dedowLabel.setText(infoDedow.getPercentChange().toString() + "%");
-
-      if(infoDedow.getPercentChange() < 0.00) {
-        dedowLabel.setForeground(Color.red);
-      } else {
-        dedowLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoHkdow != null) {
-      hkdowLabel.setText(infoHkdow.getPercentChange().toString() + "%");
-
-      if(infoSpx.getPercentChange() < 0.00) {
-        hkdowLabel.setForeground(Color.red);
-      } else {
-        hkdowLabel.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoN225 != null) {
-      n225Label.setText(infoN225.getPercentChange().toString() + "%");
-
-      if(infoSpx.getPercentChange() < 0.00) {
-        n225Label.setForeground(Color.red);
-      } else {
-        n225Label.setForeground(DARK_GREEN);
-      }
-    }
-
-    if(infoDjsh != null) {
-      djshLabel.setText(infoSpx.getPercentChange().toString() + "%");
-
-      if(infoSpx.getPercentChange() < 0.00) {
-        djshLabel.setForeground(Color.red);
-      } else {
-        djshLabel.setForeground(DARK_GREEN);
+        label.setForeground(DARK_GREEN);
       }
     }
   }
-  
+
   public void load() {
     tabbedPane.removeAll();
 

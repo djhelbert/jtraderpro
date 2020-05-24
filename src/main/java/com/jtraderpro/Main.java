@@ -19,7 +19,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
-import javax.swing.UIManager;
+import javax.swing.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,8 @@ import org.slf4j.LoggerFactory;
 public class Main {
 
   private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
+  private static MainFrame frame;
 
   /**
    * Main
@@ -46,8 +49,7 @@ public class Main {
       logger.error("UI Mananger Error", err);
     }
 
-    final MainFrame frame = new MainFrame();
-
+    frame = new MainFrame();
     frame.setSize(1000, 800);
     frame.setResizable(true);
     frame.setVisible(true);
@@ -89,4 +91,7 @@ public class Main {
     comp.setLocation(x, y);
   }
 
+  public static JFrame getMainFrame() {
+    return frame;
+  }
 }

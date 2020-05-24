@@ -28,6 +28,7 @@ public class Asset implements Comparable {
   private String name = "";
   private Integer order = 0;
   private List<Lot> lots = new ArrayList<>();
+  private Alert alert;
 
   public Asset() {
   }
@@ -72,6 +73,14 @@ public class Asset implements Comparable {
 
   public void setOrder(Integer order) {
     this.order = order;
+  }
+
+  public Alert getAlert() {
+    return alert;
+  }
+
+  public void setAlert(Alert alert) {
+    this.alert = alert;
   }
 
   @Override
