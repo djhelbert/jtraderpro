@@ -16,21 +16,16 @@ package com.jtraderpro.ui;
 
 import com.jtraderpro.service.AssetInfo;
 import com.jtraderpro.service.AssetService;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Detail Panel
@@ -39,229 +34,229 @@ import org.slf4j.LoggerFactory;
  */
 public class DetailPanel extends JPanel {
 
-  private static final JPanel summaryPanel = new JPanel();
-  private static final JLabel priceLabel = new JLabel();
-  private static final JLabel changeLabel = new JLabel();
-  private static final JLabel symbolLabel = new JLabel();
-  private static final JLabel openLabel = new JLabel();
-  private static final JLabel bidLabel = new JLabel();
-  private static final JLabel askLabel = new JLabel();
-  private static final JLabel volumeLabel = new JLabel();
-  private static final JLabel avgVolumeLabel = new JLabel();
-  private static final JLabel yearHighLabel = new JLabel();
-  private static final JLabel yearLowLabel = new JLabel();
-  private static final JLabel dividendLabel = new JLabel();
-  private static final JLabel exDivLabel = new JLabel();
-  private static final JLabel dayHighLabel = new JLabel();
-  private static final JLabel dayLowLabel = new JLabel();
-  private static final JLabel rsiLabel = new JLabel();
-  private static final JLabel fiftyDayLabel = new JLabel();
-  private static final JLabel epsLabel = new JLabel();
-  private static final JLabel peLabel = new JLabel();
-  private static final JLabel pBookLabel = new JLabel();
-  private static final JLabel rocLabel = new JLabel();
-  private static final JPanel graphPanel = new JPanel();
-  private static final CardLayout cardLayout = new CardLayout();
-  private static final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
-  private static final Color DARK_GREEN = new Color(51, 102, 0);
-  private static final Dimension CHART_SIZE = new Dimension(400, 400);
-  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-  private static final Logger logger = LoggerFactory.getLogger(DetailPanel.class);
-  private static Component lastComponent;
+    private static final JPanel summaryPanel = new JPanel();
+    private static final JLabel priceLabel = new JLabel();
+    private static final JLabel changeLabel = new JLabel();
+    private static final JLabel symbolLabel = new JLabel();
+    private static final JLabel openLabel = new JLabel();
+    private static final JLabel bidLabel = new JLabel();
+    private static final JLabel askLabel = new JLabel();
+    private static final JLabel volumeLabel = new JLabel();
+    private static final JLabel avgVolumeLabel = new JLabel();
+    private static final JLabel yearHighLabel = new JLabel();
+    private static final JLabel yearLowLabel = new JLabel();
+    private static final JLabel dividendLabel = new JLabel();
+    private static final JLabel exDivLabel = new JLabel();
+    private static final JLabel dayHighLabel = new JLabel();
+    private static final JLabel dayLowLabel = new JLabel();
+    private static final JLabel rsiLabel = new JLabel();
+    private static final JLabel fiftyDayLabel = new JLabel();
+    private static final JLabel epsLabel = new JLabel();
+    private static final JLabel peLabel = new JLabel();
+    private static final JLabel pBookLabel = new JLabel();
+    private static final JLabel rocLabel = new JLabel();
+    private static final JPanel graphPanel = new JPanel();
+    private static final CardLayout cardLayout = new CardLayout();
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
+    private static final Color DARK_GREEN = new Color(51, 102, 0);
+    private static final Dimension CHART_SIZE = new Dimension(400, 400);
+    private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    private static final Logger logger = LoggerFactory.getLogger(DetailPanel.class);
+    private static Component lastComponent;
 
-  /**
-   * Constructor
-   *
-   * @param symbol Default Symbol
-   */
-  public DetailPanel(String symbol) {
-    super();
-    init();
-    if(symbol != null) {
-      update(symbol);
-    }
-    executor.scheduleAtFixedRate(new UpdateDetailTask(), 60, 60, TimeUnit.SECONDS);
-  }
-
-  private void init() {
-    setBackground(Color.white);
-
-    summaryPanel.setLayout(new GridLayout(10, 4));
-    summaryPanel.setPreferredSize(CHART_SIZE);
-    summaryPanel.setBackground(Color.white);
-
-    addLabel("Symbol ", symbolLabel);
-    addLabel("Open ", openLabel);
-    addLabel("Price ", priceLabel);
-    addLabel("Change ", changeLabel);
-    addLabel("Bid ", bidLabel);
-    addLabel("Ask ", askLabel);
-    addLabel("Volume ", volumeLabel);
-    addLabel("Avg. Volume ", avgVolumeLabel);
-    addLabel("Day Low ", dayLowLabel);
-    addLabel("Day Low ", dayHighLabel);
-    addLabel("Year Low ", yearLowLabel);
-    addLabel("Year High ", yearHighLabel);
-    addLabel("Dividend ", dividendLabel);
-    addLabel("Payment Date ", exDivLabel);
-    addLabel("EPS ", epsLabel, "Earnings Per Share");
-    addLabel("PE Ratio ", peLabel, "Price/Earnings Ratio");
-    addLabel("PB Ratio ", pBookLabel, "Price/Book Ratio");
-    addLabel("ROC ", rocLabel, "Rate of Change (30 days)");
-    addLabel("RSI ", rsiLabel, "Relative Strength Index (14 days)");
-    addLabel("50 Day Avg. ", fiftyDayLabel, "Average Price (50 days)");
-
-    graphPanel.setPreferredSize(CHART_SIZE);
-    graphPanel.setLayout(cardLayout);
-    graphPanel.setBackground(Color.white);
-
-    setBorder(BorderFactory.createTitledBorder(" "));
-    setLayout(new GridLayout(2, 1));
-
-    add(summaryPanel);
-    add(graphPanel);
-  }
-
-  /**
-   * Add Labels to Summary Panel w/Tool Tip
-   *
-   * @param text Text
-   * @param label Label
-   * @param tooltip Tool Tip Text
-   */
-  private void addLabel(String text, JLabel label, String tooltip) {
-    label.setToolTipText(tooltip);
-    summaryPanel.add(new JLabel(text));
-    summaryPanel.add(label);
-  }
-
-  /**
-   * Add Labels to Summary Panel
-   *
-   * @param text Text
-   * @param label Label
-   */
-  private void addLabel(String text, JLabel label) {
-    summaryPanel.add(new JLabel(text));
-    summaryPanel.add(label);
-  }
-
-  /**
-   * Format Double to String
-   *
-   * @param value Value
-   * @return Formatted String
-   */
-  private String formatDouble(Double value) {
-    if (value == null) {
-      return "";
+    /**
+     * Constructor
+     *
+     * @param symbol Default Symbol
+     */
+    public DetailPanel(String symbol) {
+        super();
+        init();
+        if (symbol != null) {
+            update(symbol);
+        }
+        executor.scheduleAtFixedRate(new UpdateDetailTask(), 60, 60, TimeUnit.SECONDS);
     }
 
-    return decimalFormat.format(value);
-  }
+    private void init() {
+        setBackground(Color.white);
 
-  /**
-   * Refresh w/Same Symbol
-   */
-  private void refresh() {
-    if (symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
-      update(symbolLabel.getText());
-    }
-  }
+        summaryPanel.setLayout(new GridLayout(10, 4));
+        summaryPanel.setPreferredSize(CHART_SIZE);
+        summaryPanel.setBackground(Color.white);
 
-  /**
-   * Update for new Symbol
-   *
-   * @param symbol Symbol
-   */
-  public synchronized void update(String symbol) {
-    final AssetInfo info = AssetService.getInstance().getAssetInfo(symbol, true);
+        addLabel("Symbol ", symbolLabel);
+        addLabel("Open ", openLabel);
+        addLabel("Price ", priceLabel);
+        addLabel("Change ", changeLabel);
+        addLabel("Bid ", bidLabel);
+        addLabel("Ask ", askLabel);
+        addLabel("Volume ", volumeLabel);
+        addLabel("Avg. Volume ", avgVolumeLabel);
+        addLabel("Day Low ", dayLowLabel);
+        addLabel("Day Low ", dayHighLabel);
+        addLabel("Year Low ", yearLowLabel);
+        addLabel("Year High ", yearHighLabel);
+        addLabel("Dividend ", dividendLabel);
+        addLabel("Payment Date ", exDivLabel);
+        addLabel("EPS ", epsLabel, "Earnings Per Share");
+        addLabel("PE Ratio ", peLabel, "Price/Earnings Ratio");
+        addLabel("PB Ratio ", pBookLabel, "Price/Book Ratio");
+        addLabel("ROC ", rocLabel, "Rate of Change (30 days)");
+        addLabel("RSI ", rsiLabel, "Relative Strength Index (14 days)");
+        addLabel("50 Day Avg. ", fiftyDayLabel, "Average Price (50 days)");
 
-    if (info != null) {
-      setBorder(BorderFactory.createTitledBorder(info.getName()));
+        graphPanel.setPreferredSize(CHART_SIZE);
+        graphPanel.setLayout(cardLayout);
+        graphPanel.setBackground(Color.white);
 
-      symbolLabel.setText(info.getSymbol());
-      openLabel.setText(formatDouble(info.getOpen()));
-      askLabel.setText(formatDouble(info.getBid()) + "x" + info.getBidSize());
-      bidLabel.setText(formatDouble(info.getAsk()) + "x" + info.getAskSize());
-      yearHighLabel.setText(formatDouble(info.getYearHigh()));
-      yearLowLabel.setText(formatDouble(info.getYearLow()));
-      dayHighLabel.setText(formatDouble(info.getDayHigh()));
-      dayLowLabel.setText(formatDouble(info.getDayLow()));
-      priceLabel.setText(formatDouble(info.getMarketPrice()));
-      epsLabel.setText(formatDouble(info.getEps()));
-      peLabel.setText(formatDouble(info.getPe()));
-      pBookLabel.setText(formatDouble(info.getPriceBook()));
-      rocLabel.setText(formatDouble(info.getRoc()));
-      rsiLabel.setText(formatDouble(info.getRsi()));
-      fiftyDayLabel.setText(formatDouble(info.getFiftyDayAvg()));
+        setBorder(BorderFactory.createTitledBorder(" "));
+        setLayout(new GridLayout(2, 1));
 
-      if (info.getVolume() > 1000000) {
-        volumeLabel.setText((info.getVolume() / 1000000) + "M");
-      } else {
-        volumeLabel.setText((info.getVolume() / 1000) + "K");
-      }
-
-      if (info.getAvgVolume() > 1000000) {
-        avgVolumeLabel.setText((info.getAvgVolume() / 1000000) + "M");
-      } else {
-        avgVolumeLabel.setText((info.getAvgVolume() / 1000) + "K");
-      }
-
-      dividendLabel.setText(decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
-
-      if (info.getExDate() != null) {
-        exDivLabel.setText(dateFormat.format(info.getExDate()));
-      } else {
-        exDivLabel.setText("");
-      }
-
-      if (info.getPercentChange() < 0.0) {
-        changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
-        priceLabel.setForeground(Color.red);
-        changeLabel.setForeground(Color.red);
-      } else if (info.getPercentChange() > 0.0) {
-        changeLabel.setText("+" + formatDouble(info.getPercentChange()) + "%");
-        priceLabel.setForeground(DARK_GREEN);
-        changeLabel.setForeground(DARK_GREEN);
-      } else {
-        changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
-        priceLabel.setForeground(Color.black);
-        changeLabel.setForeground(Color.black);
-      }
-
-      // Remove previous chart
-      if (lastComponent != null) {
-        graphPanel.remove(lastComponent);
-      }
-
-      // Create new chart
-      final Component newComp = ChartUtil.createChart(info.getSymbol() + " " + info.getExchange(), info.getCurrency(), info.getAssetQuotes());
-      newComp.setPreferredSize(CHART_SIZE);
-
-      // Add to card layout
-      graphPanel.add(newComp, info.getSymbol());
-      graphPanel.validate();
-
-      lastComponent = newComp;
-    }
-  }
-
-  /**
-   * Runnable Task for Refresh
-   */
-  private class UpdateDetailTask implements Runnable {
-    public UpdateDetailTask() {
+        add(summaryPanel);
+        add(graphPanel);
     }
 
-    @Override
-    public void run() {
-      try {
-        refresh();
-      } catch (Exception e) {
-        logger.error("Update Detail Task", e);
-      }
+    /**
+     * Add Labels to Summary Panel w/Tool Tip
+     *
+     * @param text    Text
+     * @param label   Label
+     * @param tooltip Tool Tip Text
+     */
+    private void addLabel(String text, JLabel label, String tooltip) {
+        label.setToolTipText(tooltip);
+        summaryPanel.add(new JLabel(text));
+        summaryPanel.add(label);
     }
-  }
+
+    /**
+     * Add Labels to Summary Panel
+     *
+     * @param text  Text
+     * @param label Label
+     */
+    private void addLabel(String text, JLabel label) {
+        summaryPanel.add(new JLabel(text));
+        summaryPanel.add(label);
+    }
+
+    /**
+     * Format Double to String
+     *
+     * @param value Value
+     * @return Formatted String
+     */
+    private String formatDouble(Double value) {
+        if (value == null) {
+            return "";
+        }
+
+        return decimalFormat.format(value);
+    }
+
+    /**
+     * Refresh w/Same Symbol
+     */
+    private void refresh() {
+        if (symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
+            update(symbolLabel.getText());
+        }
+    }
+
+    /**
+     * Update for new Symbol
+     *
+     * @param symbol Symbol
+     */
+    public synchronized void update(String symbol) {
+        final AssetInfo info = AssetService.getInstance().getAssetInfo(symbol, true);
+
+        if (info != null) {
+            setBorder(BorderFactory.createTitledBorder(info.getName()));
+
+            symbolLabel.setText(info.getSymbol());
+            openLabel.setText(formatDouble(info.getOpen()));
+            askLabel.setText(formatDouble(info.getBid()) + "x" + info.getBidSize());
+            bidLabel.setText(formatDouble(info.getAsk()) + "x" + info.getAskSize());
+            yearHighLabel.setText(formatDouble(info.getYearHigh()));
+            yearLowLabel.setText(formatDouble(info.getYearLow()));
+            dayHighLabel.setText(formatDouble(info.getDayHigh()));
+            dayLowLabel.setText(formatDouble(info.getDayLow()));
+            priceLabel.setText(formatDouble(info.getMarketPrice()));
+            epsLabel.setText(formatDouble(info.getEps()));
+            peLabel.setText(formatDouble(info.getPe()));
+            pBookLabel.setText(formatDouble(info.getPriceBook()));
+            rocLabel.setText(formatDouble(info.getRoc()));
+            rsiLabel.setText(formatDouble(info.getRsi()));
+            fiftyDayLabel.setText(formatDouble(info.getFiftyDayAvg()));
+
+            if (info.getVolume() > 1000000) {
+                volumeLabel.setText((info.getVolume() / 1000000) + "M");
+            } else {
+                volumeLabel.setText((info.getVolume() / 1000) + "K");
+            }
+
+            if (info.getAvgVolume() > 1000000) {
+                avgVolumeLabel.setText((info.getAvgVolume() / 1000000) + "M");
+            } else {
+                avgVolumeLabel.setText((info.getAvgVolume() / 1000) + "K");
+            }
+
+            dividendLabel.setText(decimalFormat.format(info.getAnnualYield()) + " " + decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
+
+            if (info.getExDate() != null) {
+                exDivLabel.setText(dateFormat.format(info.getExDate()));
+            } else {
+                exDivLabel.setText("");
+            }
+
+            if (info.getPercentChange() < 0.0) {
+                changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
+                priceLabel.setForeground(Color.red);
+                changeLabel.setForeground(Color.red);
+            } else if (info.getPercentChange() > 0.0) {
+                changeLabel.setText("+" + formatDouble(info.getPercentChange()) + "%");
+                priceLabel.setForeground(DARK_GREEN);
+                changeLabel.setForeground(DARK_GREEN);
+            } else {
+                changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
+                priceLabel.setForeground(Color.black);
+                changeLabel.setForeground(Color.black);
+            }
+
+            // Remove previous chart
+            if (lastComponent != null) {
+                graphPanel.remove(lastComponent);
+            }
+
+            // Create new chart
+            final Component newComp = ChartUtil.createChart(info.getSymbol() + " " + info.getExchange(), info.getCurrency(), info.getAssetQuotes());
+            newComp.setPreferredSize(CHART_SIZE);
+
+            // Add to card layout
+            graphPanel.add(newComp, info.getSymbol());
+            graphPanel.validate();
+
+            lastComponent = newComp;
+        }
+    }
+
+    /**
+     * Runnable Task for Refresh
+     */
+    private class UpdateDetailTask implements Runnable {
+        public UpdateDetailTask() {
+        }
+
+        @Override
+        public void run() {
+            try {
+                refresh();
+            } catch (Exception e) {
+                logger.error("Update Detail Task", e);
+            }
+        }
+    }
 }

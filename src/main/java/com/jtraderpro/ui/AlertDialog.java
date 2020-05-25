@@ -31,19 +31,15 @@ public class AlertDialog extends JDialog implements ActionListener {
     private static final String ABOVE = "ABOVE";
     private static final String BELOW = "BELOW";
 
-    private final JPanel updatePanel = new JPanel();
     private final JTextField priceField = new JTextField("0.00");
-    private final JLabel symbolField = new JLabel();
-    private final JComboBox<String> type = new JComboBox(new Object[]{ABOVE, BELOW});
+    private final JComboBox<String> type = new JComboBox<>(new String[]{ABOVE, BELOW});
     private final JButton okButton = new JButton("Ok");
-    private final JButton cancelButton = new JButton("Cancel");
-    private final JPanel buttonPanel = new JPanel();
     private final Asset dialogAsset;
 
     /**
      * Constructor
      *
-     * @param asset
+     * @param asset Asset
      */
     public AlertDialog(Asset asset) {
         super(Main.getMainFrame());
@@ -53,9 +49,12 @@ public class AlertDialog extends JDialog implements ActionListener {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Update Alert");
 
+        JPanel updatePanel = new JPanel();
         updatePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         updatePanel.setLayout(new GridLayout(3, 2, 10, 10));
         updatePanel.add(new JLabel("Symbol"));
+
+        JLabel symbolField = new JLabel();
         updatePanel.add(symbolField);
         updatePanel.add(new JLabel("Alert Type"));
         updatePanel.add(type);
@@ -75,9 +74,12 @@ public class AlertDialog extends JDialog implements ActionListener {
             priceField.setText("0.00");
         }
 
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         buttonPanel.add(okButton);
+
+        JButton cancelButton = new JButton("Cancel");
         buttonPanel.add(cancelButton);
 
         okButton.addActionListener(this);

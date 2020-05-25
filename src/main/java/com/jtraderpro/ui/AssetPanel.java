@@ -111,7 +111,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
             priceLabel.setText(
                     formatPrice(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
 
-            if (info != null) {
+            if (info.getMarketPrice() > 0.0) {
                 marketPrice = info.getMarketPrice();
 
                 if (info.getVolume() > 1000000) {

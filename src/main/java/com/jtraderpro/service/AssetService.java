@@ -43,6 +43,7 @@ public class AssetService {
 
   /**
    * Get Singleton Instance
+   *
    * @return AssetService
    */
   public static AssetService getInstance() {
@@ -170,6 +171,12 @@ public class AssetService {
     return null;
   }
 
+  /**
+   * Get Double from BigDecimal
+   *
+   * @param big Big Decimal
+   * @return double
+   */
   private double getDouble(BigDecimal big) {
     if(big == null) {
       return 0.0d;

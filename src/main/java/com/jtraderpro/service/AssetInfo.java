@@ -57,19 +57,19 @@ public class AssetInfo {
   private Double roc;
   private Double rsi;
   private Double fiftyDayAvg;
-
   private List<AssetQuote> assetQuotes = new ArrayList<>();
 
+  /**
+   * Constructor
+   *
+   * @param symbol Symbol
+   */
   public AssetInfo(final String symbol) {
     this.symbol = symbol;
   }
 
   public String getSymbol() {
     return symbol;
-  }
-
-  public void setSymbol(String symbol) {
-    this.symbol = symbol;
   }
 
   public String getName() {
@@ -349,9 +349,6 @@ public class AssetInfo {
       currentLoss += Math.abs(getPriceChange());
     }
 
-    double avgGain = 0.0d;
-    double avgLoss = 0.0d;
-
     for(int i = assetQuotes.size() - 14; i< assetQuotes.size(); i++) {
       double change = assetQuotes.get(i).getClose() - assetQuotes.get(i).getOpen();
 
@@ -362,8 +359,8 @@ public class AssetInfo {
       }
     }
 
-    avgGain = sumGains / 14.0d;
-    avgLoss = sumLosses / 14.0d;
+    double avgGain = sumGains / 14.0d;
+    double avgLoss = sumLosses / 14.0d;
 
     if(avgLoss <= 0) {
       rsi = 100.0;
@@ -373,6 +370,9 @@ public class AssetInfo {
     rsi = 100 - (100 / (1 + ((((avgGain * 13.0) + currentGain)) / 14.0) / ((((avgLoss * 13.0) + currentLoss)) / 14.0)));
   }
 
+  /**
+   * Rate of Change = [(Close - Close n periods ago) / (Close n periods ago)] * 100
+   */
   public void updateRoc() {
     if(assetQuotes.size() > 0) {
       roc = ((assetQuotes.get(assetQuotes.size()-1).getClose() - assetQuotes.get(0).getClose()) / assetQuotes.get(0).getClose()) * 100.0;

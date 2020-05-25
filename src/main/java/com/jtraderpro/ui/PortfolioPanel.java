@@ -175,9 +175,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     public void load() {
         tabbedPane.removeAll();
 
-        PortfolioProvider.getInstance().getPortfolio().getGroups().forEach((group) -> {
-            tabbedPane.addTab(group.getName(), new AssetGroupPanel(group));
-        });
+        PortfolioProvider.getInstance().getPortfolio().getGroups().forEach((group) -> tabbedPane.addTab(group.getName(), new AssetGroupPanel(group)));
 
         remGroupButton.setEnabled(tabbedPane.getTabCount() > 1);
     }

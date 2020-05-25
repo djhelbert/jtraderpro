@@ -15,9 +15,6 @@
 package com.jtraderpro.ui;
 
 import com.jtraderpro.service.AssetQuote;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -32,105 +29,109 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 /**
  * Chart Utility
  */
 public class ChartUtil {
 
-  private static final DecimalFormat decimalformat = new DecimalFormat("#.##");
+    private static final DecimalFormat decimalformat = new DecimalFormat("#.##");
 
-  /**
-   * Private Constructor
-   */
-  private ChartUtil() {
-  }
+    /**
+     * Private Constructor
+     */
+    private ChartUtil() {
+    }
 
-  /**
-   * Create Volume Dataset
-   *
-   * @param assetQuotes Asset Quotes
-   * @return IntervalXYDataset
-   */
-  private static IntervalXYDataset createVolumeDataset(final List<AssetQuote> assetQuotes) {
-    final TimeSeries timeseries = new TimeSeries("Volume");
+    /**
+     * Create Volume Dataset
+     *
+     * @param assetQuotes Asset Quotes
+     * @return IntervalXYDataset
+     */
+    private static IntervalXYDataset createVolumeDataset(final List<AssetQuote> assetQuotes) {
+        final TimeSeries timeseries = new TimeSeries("Volume");
 
-    assetQuotes.forEach((aq) -> {
-      timeseries.add(new Day(aq.getDate()), aq.getVolume() / 1000000);
-    });
+        assetQuotes.forEach((aq) -> {
+            timeseries.add(new Day(aq.getDate()), aq.getVolume() / 1000000);
+        });
 
-    return new TimeSeriesCollection(timeseries);
-  }
+        return new TimeSeriesCollection(timeseries);
+    }
 
-  /**
-   * Create Price Data Set
-   *
-   * @param assetQuotes Asset Quotes
-   * @return XYDataset
-   */
-  private static XYDataset createPriceDataset(final List<AssetQuote> assetQuotes) {
-    final TimeSeries timeseries = new TimeSeries("Price");
+    /**
+     * Create Price Data Set
+     *
+     * @param assetQuotes Asset Quotes
+     * @return XYDataset
+     */
+    private static XYDataset createPriceDataset(final List<AssetQuote> assetQuotes) {
+        final TimeSeries timeseries = new TimeSeries("Price");
 
-    assetQuotes.forEach((aq) -> {
-      timeseries.add(new Day(aq.getDate()), aq.getClose());
-    });
+        assetQuotes.forEach((aq) -> {
+            timeseries.add(new Day(aq.getDate()), aq.getClose());
+        });
 
-    return new TimeSeriesCollection(timeseries);
-  }
+        return new TimeSeriesCollection(timeseries);
+    }
 
-  /**
-   * Create Chart
-   *
-   * @param title Title
-   * @param currency Currency
-   * @param assetQuotes Asset Quotes
-   * @return Chart Panel
-   */
-  public static ChartPanel createChart(String title, String currency, final List<AssetQuote> assetQuotes) {
-    return createChart(title, currency, createVolumeDataset(assetQuotes), createPriceDataset(assetQuotes));
-  }
+    /**
+     * Create Chart
+     *
+     * @param title       Title
+     * @param currency    Currency
+     * @param assetQuotes Asset Quotes
+     * @return Chart Panel
+     */
+    public static ChartPanel createChart(String title, String currency, final List<AssetQuote> assetQuotes) {
+        return createChart(title, currency, createVolumeDataset(assetQuotes), createPriceDataset(assetQuotes));
+    }
 
-  /**
-   * Create Chart
-   *
-   * @param title Title
-   * @param currency Currency
-   * @param volumeDataset Volume Data Set
-   * @param priceDataSet Price Data Set
-   * @return Chart Panel
-   */
-  private static ChartPanel createChart(String title, String currency, final IntervalXYDataset volumeDataset,
-      final XYDataset priceDataSet) {
-    JFreeChart jfreechart = ChartFactory
-        .createTimeSeriesChart(title, "Date", "Price " + currency, priceDataSet, true, true, false);
+    /**
+     * Create Chart
+     *
+     * @param title         Title
+     * @param currency      Currency
+     * @param volumeDataset Volume Data Set
+     * @param priceDataSet  Price Data Set
+     * @return Chart Panel
+     */
+    private static ChartPanel createChart(String title, String currency, final IntervalXYDataset volumeDataset,
+                                          final XYDataset priceDataSet) {
+        JFreeChart jfreechart = ChartFactory
+                .createTimeSeriesChart(title, "Date", "Price " + currency, priceDataSet, true, true, false);
 
-    final XYPlot xyplot = (XYPlot) jfreechart.getPlot();
-    NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();
-    numberaxis.setLowerMargin(0.40000000000000002D);
+        final XYPlot xyplot = (XYPlot) jfreechart.getPlot();
+        NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();
+        numberaxis.setLowerMargin(0.40000000000000002D);
 
-    numberaxis.setNumberFormatOverride(decimalformat);
+        numberaxis.setNumberFormatOverride(decimalformat);
 
-    final XYItemRenderer xyitemrenderer = xyplot.getRenderer();
+        final XYItemRenderer xyitemrenderer = xyplot.getRenderer();
 
-    xyitemrenderer.setDefaultToolTipGenerator(
-        new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
-            new DecimalFormat("0.00")));
+        xyitemrenderer.setDefaultToolTipGenerator(
+                new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
+                        new DecimalFormat("0.00")));
 
-    final NumberAxis numberaxis1 = new NumberAxis("Volume M");
-    numberaxis1.setUpperMargin(1.0D);
+        final NumberAxis numberaxis1 = new NumberAxis("Volume M");
+        numberaxis1.setUpperMargin(1.0D);
 
-    xyplot.setRangeAxis(1, numberaxis1);
-    xyplot.setDataset(1, volumeDataset);
-    xyplot.setRangeAxis(1, numberaxis1);
-    xyplot.mapDatasetToRangeAxis(1, 1);
+        xyplot.setRangeAxis(1, numberaxis1);
+        xyplot.setDataset(1, volumeDataset);
+        xyplot.setRangeAxis(1, numberaxis1);
+        xyplot.mapDatasetToRangeAxis(1, 1);
 
-    final XYBarRenderer xybarrenderer = new XYBarRenderer(0.20000000000000001D);
+        final XYBarRenderer xybarrenderer = new XYBarRenderer(0.20000000000000001D);
 
-    xybarrenderer.setDefaultToolTipGenerator(
-        new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
-            new DecimalFormat("0,000.00")));
-    xyplot.setRenderer(1, xybarrenderer);
+        xybarrenderer.setDefaultToolTipGenerator(
+                new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
+                        new DecimalFormat("0,000.00")));
+        xyplot.setRenderer(1, xybarrenderer);
 
-    return new ChartPanel(jfreechart, true, true, true, false, true);
-  }
+        return new ChartPanel(jfreechart, true, true, true, false, true);
+    }
 
 }

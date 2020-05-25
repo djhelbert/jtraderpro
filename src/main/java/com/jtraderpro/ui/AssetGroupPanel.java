@@ -78,9 +78,7 @@ public class AssetGroupPanel extends JPanel {
      * Update
      */
     private void update() {
-        panelGroup.getAssets().forEach((asset) -> {
-            assetPanels.get(asset.getOrder()).refresh(asset);
-        });
+        panelGroup.getAssets().forEach((asset) -> assetPanels.get(asset.getOrder()).refresh(asset));
     }
 
     /**
@@ -131,7 +129,7 @@ public class AssetGroupPanel extends JPanel {
         @Override
         public void run() {
             try {
-                assetPanels.forEach((panel) -> panel.updateInfo());
+                assetPanels.forEach(AssetPanel::updateInfo);
             } catch (Exception e) {
                 logger.error("Update Info Task", e);
             }

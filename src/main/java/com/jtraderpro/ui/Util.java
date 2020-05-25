@@ -86,21 +86,21 @@ public class Util {
    * @throws Exception Exception
    */
   public static String getFileText(String name) throws Exception {
-    String text = "";
-
+    final StringBuilder text = new StringBuilder();
     final InputStreamReader isr = new InputStreamReader(CLASS_LOADER.getResourceAsStream(name));
     final BufferedReader br = new BufferedReader(isr);
 
     String temp = br.readLine();
 
     while (temp != null) {
-      text += temp + "\n";
+      text.append(temp);
+      text.append('\n');
       temp = br.readLine();
     }
 
     br.close();
 
-    return text;
+    return text.toString();
   }
 
   /**
