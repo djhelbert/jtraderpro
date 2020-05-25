@@ -46,7 +46,6 @@ public class Util {
    */
   public static ImageIcon getImageIcon(String name) {
     final String imageResPath = "images/" + name;
-
     final URL iconURL = classLoader.getResource(imageResPath);
 
     if (iconURL != null) {
@@ -90,10 +89,8 @@ public class Util {
   public static String getFileText(String name) throws Exception {
     String text = "";
 
-    ClassLoader cload = Util.class.getClassLoader();
-    InputStream is = cload.getResourceAsStream(name);
-    InputStreamReader isr = new InputStreamReader(is);
-    BufferedReader br = new BufferedReader(isr);
+    final InputStreamReader isr = new InputStreamReader(classLoader.getResourceAsStream(name));
+    final BufferedReader br = new BufferedReader(isr);
 
     String temp = br.readLine();
 
@@ -113,14 +110,16 @@ public class Util {
    * @param comp
    */
   public static void centerComponent(Component comp) {
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Dimension size = comp.getSize();
+    final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    final Dimension size = comp.getSize();
     screenSize.height = screenSize.height / 2;
     screenSize.width = screenSize.width / 2;
     size.height = size.height / 2;
     size.width = size.width / 2;
+
     int y = screenSize.height - size.height;
     int x = screenSize.width - size.width;
+
     comp.setLocation(x, y);
   }
 }

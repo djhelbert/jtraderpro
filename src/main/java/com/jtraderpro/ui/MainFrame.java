@@ -105,6 +105,9 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Save Portfolio
+     */
     private void saveItemAction() {
         try {
             PortfolioProvider.getInstance().save();
@@ -113,10 +116,16 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Exit
+     */
     private void exitItemAction() {
         System.exit(0);
     }
 
+    /**
+     * Create New Portfolio & Reload Tabs
+     */
     private void newItemAction() {
         PortfolioProvider.getInstance().getNewPortfolio();
         portfolioPanel.load();
@@ -142,9 +151,8 @@ public class MainFrame extends JFrame implements ActionListener {
             textArea.setEditable(false);
             textArea.setFont(new Font("courier", Font.PLAIN, 12));
 
-            JScrollPane spane = new JScrollPane(textArea);
             panel.setBorder(new EtchedBorder());
-            panel.add(BorderLayout.CENTER, spane);
+            panel.add(BorderLayout.CENTER, new JScrollPane(textArea));
 
             Util.showInfo(this, panel, "License");
         } catch (Exception err) {

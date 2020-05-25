@@ -32,7 +32,9 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
 
     private final JButton addButton = new JButton("Add Lot");
     private final JButton deleteButton = new JButton("Delete Lot");
+    private JButton okButton = new JButton("Ok");
     private final JPanel buttonPanel = new JPanel();
+    private final JPanel lowerPanel = new JPanel();
     private final LotTableModel model;
     private JTable table;
     private JScrollPane scroller;
@@ -48,7 +50,7 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
         this.asset = asset;
         this.assetPanel = assetPanel;
 
-        if(asset.getLots() != null && asset.getLots().size() > 0) {
+        if (asset.getLots() != null && asset.getLots().size() > 0) {
             deleteButton.setEnabled(true);
         } else {
             deleteButton.setEnabled(false);
@@ -64,46 +66,60 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
     private void init() {
         addButton.addActionListener(this);
         deleteButton.addActionListener(this);
+        okButton.addActionListener(this);
         addButton.setIcon(Util.getImageIcon("add.png"));
         deleteButton.setIcon(Util.getImageIcon("minus.png"));
+        okButton.setIcon(Util.getImageIcon("check.png"));
 
-        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(addButton);
         buttonPanel.add(deleteButton);
+        lowerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        lowerPanel.add(okButton);
 
-        sizeTableColumns(table,0,25);
-        sizeTableColumns(table,3,25);
+        sizeTableColumns(table, 0, 25);
+        sizeTableColumns(table, 3, 25);
 
         final Container cont = getContentPane();
         cont.setLayout(new BorderLayout());
-        cont.add(buttonPanel,BorderLayout.PAGE_START);
-        cont.add(scroller,BorderLayout.CENTER);
+        cont.add(buttonPanel, BorderLayout.PAGE_START);
+        cont.add(scroller, BorderLayout.CENTER);
+        cont.add(lowerPanel, BorderLayout.PAGE_END);
 
         pack();
         Util.centerComponent(this);
     }
 
     private void sizeTableColumns(JTable table, int col, int size) {
-        TableColumn column = table.getColumnModel().getColumn(col);
+        final TableColumn column = table.getColumnModel().getColumn(col);
         column.setPreferredWidth(size);
+    }
+
+    private void closeDialog() {
+        // Close
+        setVisible(false);
+        dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(e.getSource().equals(addButton)) {
-           model.addLot();
-           deleteButton.setEnabled(true);
-       } else {
-           if(table.getSelectedRow() >= 0) {
-               model.removeLot(table.getSelectedRow());
+        if (e.getSource().equals(addButton)) {
+            model.addLot();
+            deleteButton.setEnabled(true);
+        } else if (e.getSource().equals(okButton)) {
+            assetPanel.refresh();
+            closeDialog();
+        } else {
+            if (table.getSelectedRow() >= 0) {
+                model.removeLot(table.getSelectedRow());
 
-               if (asset.getLots() != null && asset.getLots().size() > 0) {
-                   deleteButton.setEnabled(true);
-               } else {
-                   deleteButton.setEnabled(false);
-               }
-           }
-       }
+                if (asset.getLots() != null && asset.getLots().size() > 0) {
+                    deleteButton.setEnabled(true);
+                } else {
+                    deleteButton.setEnabled(false);
+                }
+            }
+        }
     }
 
     @Override

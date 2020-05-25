@@ -123,17 +123,36 @@ public class DetailPanel extends JPanel {
     add(graphPanel);
   }
 
+  /**
+   * Add Labels to Summary Panel w/Tool Tip
+   *
+   * @param text
+   * @param label
+   * @param tooltip
+   */
   private void addLabel(String text, JLabel label, String tooltip) {
     label.setToolTipText(tooltip);
     summaryPanel.add(new JLabel(text));
     summaryPanel.add(label);
   }
 
+  /**
+   * Add Labels to Summary Panel
+   *
+   * @param text
+   * @param label
+   */
   private void addLabel(String text, JLabel label) {
     summaryPanel.add(new JLabel(text));
     summaryPanel.add(label);
   }
 
+  /**
+   * Format Double to String
+   *
+   * @param value
+   * @return
+   */
   private String formatDouble(Double value) {
     if (value == null) {
       return "";
@@ -142,12 +161,20 @@ public class DetailPanel extends JPanel {
     return decimalFormat.format(value);
   }
 
+  /**
+   * Refresh w/Same Symbol
+   */
   private void refresh() {
     if (symbolLabel.getText() != null && symbolLabel.getText().length() > 0) {
       update(symbolLabel.getText());
     }
   }
 
+  /**
+   * Update for new Symbol
+   *
+   * @param symbol
+   */
   public synchronized void update(String symbol) {
     final AssetInfo info = AssetService.getInstance().getAssetInfo(symbol, true);
 
@@ -221,6 +248,9 @@ public class DetailPanel extends JPanel {
     }
   }
 
+  /**
+   * Runnable Task for Refresh
+   */
   private class UpdateDetailTask implements Runnable {
     public UpdateDetailTask() {
     }

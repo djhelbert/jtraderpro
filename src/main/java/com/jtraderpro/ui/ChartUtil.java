@@ -39,9 +39,18 @@ public class ChartUtil {
 
   private static final DecimalFormat decimalformat = new DecimalFormat("#.##");
 
+  /**
+   * Private Constructor
+   */
   private ChartUtil() {
   }
 
+  /**
+   * Create Volume Dataset
+   *
+   * @param assetQuotes
+   * @return
+   */
   private static IntervalXYDataset createVolumeDataset(final List<AssetQuote> assetQuotes) {
     final TimeSeries timeseries = new TimeSeries("Volume");
 
@@ -52,6 +61,12 @@ public class ChartUtil {
     return new TimeSeriesCollection(timeseries);
   }
 
+  /**
+   * Create Price Data Set
+   *
+   * @param assetQuotes
+   * @return
+   */
   private static XYDataset createPriceDataset(final List<AssetQuote> assetQuotes) {
     final TimeSeries timeseries = new TimeSeries("Price");
 
@@ -62,10 +77,27 @@ public class ChartUtil {
     return new TimeSeriesCollection(timeseries);
   }
 
+  /**
+   * Create Chart
+   *
+   * @param title
+   * @param currency
+   * @param assetQuotes
+   * @return
+   */
   public static ChartPanel createChart(String title, String currency, final List<AssetQuote> assetQuotes) {
     return createChart(title, currency, createVolumeDataset(assetQuotes), createPriceDataset(assetQuotes));
   }
 
+  /**
+   * Create Chart
+   *
+   * @param title
+   * @param currency
+   * @param volumeDataset
+   * @param priceDataSet
+   * @return
+   */
   private static ChartPanel createChart(String title, String currency, final IntervalXYDataset volumeDataset,
       final XYDataset priceDataSet) {
     JFreeChart jfreechart = ChartFactory

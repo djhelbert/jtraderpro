@@ -26,13 +26,16 @@ import java.awt.event.ActionListener;
 /**
  * Alert Panel
  */
-public class AlertDialog extends JDialog implements ActionListener  {
+public class AlertDialog extends JDialog implements ActionListener {
+    private static final String ABOVE = "ABOVE";
+    private static final String BELOW = "BELOW";
+
     private JPanel updatePanel = new JPanel();
     private JTextField priceField = new JTextField("0.00");
     private JLabel symbolField = new JLabel();
-    private JComboBox<String> type = new JComboBox(new Object[]{"ABOVE", "BELOW"});
-    private JButton okButton = new JButton("OK");
-    private JButton cancelButton = new JButton("CANCEL");
+    private JComboBox<String> type = new JComboBox(new Object[]{ABOVE, BELOW});
+    private JButton okButton = new JButton("Ok");
+    private JButton cancelButton = new JButton("Cancel");
     private JPanel buttonPanel = new JPanel();
     private Asset asset;
 
@@ -59,12 +62,12 @@ public class AlertDialog extends JDialog implements ActionListener  {
 
         symbolField.setText(asset.getSymbol());
 
-        if(asset.getAlert() != null) {
+        if (asset.getAlert() != null) {
             priceField.setText(asset.getAlert().getPrice().toString());
             if (asset.getAlert().getAbove()) {
-                type.setSelectedItem("ABOVE");
+                type.setSelectedItem(ABOVE);
             } else {
-                type.setSelectedItem("BELOW");
+                type.setSelectedItem(BELOW);
             }
         } else {
             priceField.setText("0.00");
@@ -76,39 +79,38 @@ public class AlertDialog extends JDialog implements ActionListener  {
 
         okButton.addActionListener(this);
         cancelButton.addActionListener(this);
-
         okButton.setIcon(Util.getImageIcon("check.png"));
         cancelButton.setIcon(Util.getImageIcon("delete.png"));
 
         final Container cont = getContentPane();
         cont.setSize(new Dimension(350, 80));
         cont.setLayout(new BorderLayout());
-        cont.add(updatePanel,BorderLayout.CENTER);
-        cont.add(buttonPanel,BorderLayout.SOUTH);
+        cont.add(updatePanel, BorderLayout.CENTER);
+        cont.add(buttonPanel, BorderLayout.SOUTH);
 
         pack();
         Util.centerComponent(this);
     }
 
-    public Double getPrice() throws NumberFormatException {
+    private Double getPrice() throws NumberFormatException {
         return Double.parseDouble(priceField.getText());
     }
 
-    public boolean isAbove() {
-        return "ABOVE".equals(type.getSelectedItem());
+    private boolean isAbove() {
+        return ABOVE.equals(type.getSelectedItem());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == okButton ) {
+        if (e.getSource() == okButton) {
             try {
-                asset.setAlert(new Alert(isAbove(),getPrice()));
-                JOptionPane.showMessageDialog(MainFrame.getMainComponent(),"New alert has been added.","Information",JOptionPane.INFORMATION_MESSAGE);
+                asset.setAlert(new Alert(isAbove(), getPrice()));
+
                 // Close
                 setVisible(false);
                 dispose();
-            } catch(NumberFormatException err) {
-                JOptionPane.showMessageDialog(MainFrame.getMainComponent(),"Not a valid number.","Error",JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException err) {
+                JOptionPane.showMessageDialog(MainFrame.getMainComponent(), "Not a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             // Close
