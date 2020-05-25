@@ -24,68 +24,99 @@ import java.util.List;
  */
 public class AssetGroup {
 
-  public static final Integer MAX_SIZE = 40;
+    public static final Integer MAX_SIZE = 40;
 
-  private String name = "";
-  private Integer order = 0;
-  private List<Asset> assets = new ArrayList<>(MAX_SIZE);
+    private String name = "";
+    private Integer order = 0;
+    private List<Asset> assets = new ArrayList<>(MAX_SIZE);
 
-  public AssetGroup() {
-  }
-
-  public AssetGroup(String name, Integer order) {
-    this.name = name;
-    this.order = order;
-  }
-
-  public void removeAsset(Asset asset) {
-    assets.remove(asset);
-  }
-
-  public void addAsset(Asset asset) {
-    if (assets.size() <= MAX_SIZE) {
-      assets.add(asset);
-    }
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Integer getOrder() {
-    return order;
-  }
-
-  public void setOrder(Integer order) {
-    this.order = order;
-  }
-
-  public List<Asset> getAssets() {
-    return assets;
-  }
-
-  public void setAssets(List<Asset> assets) {
-    this.assets = assets;
-  }
-
-  @Override
-  public int hashCode() {
-    return order.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o != null && o instanceof AssetGroup) {
-      final AssetGroup a = (AssetGroup) o;
-      if (a.getOrder().equals(order)) {
-        return true;
-      }
+    /**
+     * Cosntructor
+     */
+    public AssetGroup() {
     }
 
-    return false;
-  }
+    /**
+     * Constructor
+     *
+     * @param name
+     * @param order
+     */
+    public AssetGroup(String name, Integer order) {
+        this.name = name;
+        this.order = order;
+    }
+
+    /**
+     * Remove Asset
+     *
+     * @param symbol
+     */
+    public void removeAsset(String symbol) {
+        if (symbol == null) {
+            throw new IllegalArgumentException();
+        }
+
+        int index = 0;
+
+        for (Asset ass : assets) {
+            if (ass.getSymbol().equalsIgnoreCase(symbol)) {
+                assets.remove(index);
+                return;
+            }
+            index++;
+        }
+    }
+
+    /**
+     * Add Asset
+     *
+     * @param asset
+     */
+    public void addAsset(Asset asset) {
+        if (assets.size() <= MAX_SIZE) {
+            assets.add(asset);
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
+    }
+
+    @Override
+    public int hashCode() {
+        return order.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && o instanceof AssetGroup) {
+            final AssetGroup a = (AssetGroup) o;
+            if (a.getOrder().equals(order)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

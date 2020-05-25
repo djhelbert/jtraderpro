@@ -191,6 +191,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     public final void empty() {
         asset = null;
 
+        symbolLabel.setToolTipText(null);
         symbolLabel.setIcon(null);
         symbolLabel.setText("");
         priceLabel.setText("");
@@ -206,9 +207,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
      * Clear Panel and Remove Asset From Group
      */
     public final void clear() {
+        assetGroup.removeAsset(asset.getSymbol());
         asset = null;
-        assetGroup.removeAsset(asset);
 
+        symbolLabel.setToolTipText(null);
         symbolLabel.setIcon(null);
         symbolLabel.setText("");
         priceLabel.setText("");

@@ -19,6 +19,7 @@ import com.jtraderpro.model.Alert;
 import com.jtraderpro.model.Asset;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,6 +53,7 @@ public class AlertDialog extends JDialog implements ActionListener {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Update Alert");
 
+        updatePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         updatePanel.setLayout(new GridLayout(3, 2, 10, 10));
         updatePanel.add(new JLabel("Symbol"));
         updatePanel.add(symbolField);
@@ -73,7 +75,8 @@ public class AlertDialog extends JDialog implements ActionListener {
             priceField.setText("0.00");
         }
 
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
 

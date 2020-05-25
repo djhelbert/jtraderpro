@@ -18,6 +18,7 @@ import com.jtraderpro.Main;
 import com.jtraderpro.model.Asset;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,7 +34,7 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
     private final JButton addButton = new JButton("Add Lot");
     private final JButton deleteButton = new JButton("Delete Lot");
     private JButton okButton = new JButton("Ok");
-    private final JPanel buttonPanel = new JPanel();
+    private final JPanel upperPanel = new JPanel();
     private final JPanel lowerPanel = new JPanel();
     private final LotTableModel model;
     private JTable table;
@@ -41,6 +42,12 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
     private Asset asset;
     private AssetPanel assetPanel;
 
+    /**
+     * Constructor
+     *
+     * @param asset
+     * @param assetPanel
+     */
     public LotDialog(Asset asset, AssetPanel assetPanel) {
         super(Main.getMainFrame());
         setTitle(asset.getSymbol() + " Lots");
@@ -63,6 +70,9 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
         init();
     }
 
+    /**
+     * Initialize Dialog
+     */
     private void init() {
         addButton.addActionListener(this);
         deleteButton.addActionListener(this);
@@ -71,10 +81,12 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
         deleteButton.setIcon(Util.getImageIcon("minus.png"));
         okButton.setIcon(Util.getImageIcon("check.png"));
 
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.add(addButton);
-        buttonPanel.add(deleteButton);
-        lowerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        upperPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        upperPanel.add(addButton);
+        upperPanel.add(deleteButton);
+        lowerPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        lowerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         lowerPanel.add(okButton);
 
         sizeTableColumns(table, 0, 25);
@@ -82,7 +94,7 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
 
         final Container cont = getContentPane();
         cont.setLayout(new BorderLayout());
-        cont.add(buttonPanel, BorderLayout.PAGE_START);
+        cont.add(upperPanel, BorderLayout.PAGE_START);
         cont.add(scroller, BorderLayout.CENTER);
         cont.add(lowerPanel, BorderLayout.PAGE_END);
 
@@ -90,11 +102,21 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
         Util.centerComponent(this);
     }
 
+    /**
+     * Size Column
+     *
+     * @param table
+     * @param col
+     * @param size
+     */
     private void sizeTableColumns(JTable table, int col, int size) {
         final TableColumn column = table.getColumnModel().getColumn(col);
         column.setPreferredWidth(size);
     }
 
+    /**
+     * Close Dialog
+     */
     private void closeDialog() {
         // Close
         setVisible(false);
