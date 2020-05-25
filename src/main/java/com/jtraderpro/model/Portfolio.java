@@ -33,6 +33,7 @@ public class Portfolio {
     /**
      * Constructor
      */
+    @SuppressWarnings("unused")
     public Portfolio() {
     }
 

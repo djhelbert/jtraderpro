@@ -21,6 +21,7 @@ public class Alert {
     private Boolean above;
     private Double price;
 
+    @SuppressWarnings("unused")
     public Alert() {
     }
 

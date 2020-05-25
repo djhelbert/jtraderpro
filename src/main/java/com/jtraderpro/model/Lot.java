@@ -31,16 +31,17 @@ public class Lot {
   /**
    * Constructor
    */
+  @SuppressWarnings("unused")
   public Lot() {
   }
 
   /**
    * Constructor
    *
-   * @param order
-   * @param amount
-   * @param price
-   * @param date
+   * @param order Order
+   * @param amount Amount
+   * @param price Price
+   * @param date Date
    */
   public Lot(Integer order, Integer amount, Double price, Date date) {
     this.amount = amount;
@@ -88,11 +89,9 @@ public class Lot {
 
   @Override
   public boolean equals(Object o) {
-    if (o != null && o instanceof Lot) {
+    if (o instanceof Lot) {
       final Lot a = (Lot) o;
-      if (a.getOrder().equals(order)) {
-        return true;
-      }
+      return a.getOrder().equals(order);
     }
 
     return false;

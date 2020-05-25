@@ -31,8 +31,9 @@ public class AssetGroup {
     private List<Asset> assets = new ArrayList<>(MAX_SIZE);
 
     /**
-     * Cosntructor
+     * Constructor
      */
+    @SuppressWarnings("unused")
     public AssetGroup() {
     }
 

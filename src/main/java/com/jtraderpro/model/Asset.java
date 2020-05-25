@@ -33,6 +33,7 @@ public class Asset implements Comparable {
   /**
    * Constructor
    */
+  @SuppressWarnings("unused")
   public Asset() {
   }
 
