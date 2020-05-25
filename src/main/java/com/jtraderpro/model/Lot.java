@@ -46,6 +46,7 @@ public class Lot {
     this.amount = amount;
     this.date = date;
     this.price = price;
+    this.order = order;
   }
 
   public Integer getAmount() {

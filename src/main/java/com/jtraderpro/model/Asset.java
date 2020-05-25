@@ -30,9 +30,19 @@ public class Asset implements Comparable {
   private List<Lot> lots = new ArrayList<>();
   private Alert alert;
 
+  /**
+   * Constructor
+   */
   public Asset() {
   }
 
+  /**
+   * Constructor
+   *
+   * @param symbol
+   * @param name
+   * @param order
+   */
   public Asset(String symbol, String name, Integer order) {
     this.symbol = symbol;
     this.name = name;
@@ -107,5 +117,39 @@ public class Asset implements Comparable {
     }
 
     return 0;
+  }
+
+  /**
+   * Reorder Lots (used for removals)
+   */
+  public void reorder() {
+    int count = 0;
+
+    for (Lot lot : lots) {
+      lot.setOrder(count);
+      count++;
+    }
+  }
+
+  /**
+   * Get Current Asset Value
+   *
+   * @param marketPrice
+   * @return
+   */
+  public Double getValue(Double marketPrice) {
+    if(lots == null) {
+      return null;
+    } else if(lots.size() == 0) {
+      return null;
+    }
+
+    double value = 0;
+
+    for(Lot lot : lots) {
+      value += (marketPrice - lot.getPrice()) * lot.getAmount();
+    }
+
+    return value;
   }
 }

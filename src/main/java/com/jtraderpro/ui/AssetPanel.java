@@ -46,12 +46,13 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
   private final JMenuItem clearItem = new JMenuItem("Clear");
   private final JMenuItem updateAlertItem = new JMenuItem("Update Alert");
   private final JMenuItem removeAlertItem = new JMenuItem("Remove Alert");
+  private final JMenuItem lotsItem = new JMenuItem("Update Lots");
   private final JLabel symbolLabel = new JLabel("", JLabel.CENTER);
   private final JLabel priceLabel = new JLabel("", JLabel.CENTER);
   private final JLabel volumeLabel = new JLabel("", JLabel.CENTER);
   private final JLabel valueLabel = new JLabel("", JLabel.CENTER);
   private final int order;
-  private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+  private final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   private final AssetGroup assetGroup;
   private Asset asset;
   private Font labelFont;
@@ -90,6 +91,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     this.asset = asset;
     symbolLabel.setText(asset.getSymbol());
     symbolLabel.setToolTipText(asset.getName());
+    updateAlertItem.setEnabled(true);
+    removeAlertItem.setEnabled(true);
+    lotsItem.setEnabled(true);
+    clearItem.setEnabled(true);
     startTask();
   }
 
@@ -101,15 +106,17 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     thread.start();
   }
 
+  /**
+   * Update Asset Information
+   */
   public final void updateInfo() {
     if (asset != null) {
       final AssetInfo info = AssetService.getInstance().getAssetInfo(asset.getSymbol());
 
-      if (info != null) {
-        priceLabel.setText(
-            formatDouble(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange())
-                + "%");
+      priceLabel.setText(
+              formatPrice(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
 
+      if (info != null) {
         if (info.getVolume() > 1000000) {
           volumeLabel.setText((info.getVolume() / 1000000) + "M");
         } else {
@@ -129,6 +136,22 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
           symbolLabel.setIcon(null);
         }
 
+        final Double assetValue = asset.getValue(info.getMarketPrice());
+        if(assetValue != null) {
+          valueLabel.setText(formatDouble(assetValue));
+
+          if (assetValue < 0.0) {
+            valueLabel.setForeground(Color.red);
+          } else if (assetValue > 0.0) {
+            valueLabel.setForeground(DARK_GREEN);
+          } else {
+            valueLabel.setForeground(Color.black);
+          }
+        } else {
+          valueLabel.setText("");
+          valueLabel.setForeground(Color.black);
+        }
+
         if (info.getPercentChange() < 0.0) {
           priceLabel.setForeground(Color.red);
           symbolLabel.setForeground(Color.red);
@@ -143,8 +166,18 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     }
   }
 
-  private String formatDouble(Double value) {
+  private String formatPrice(Double value) {
+    if(value == null) {
+      return "";
+    }
     return decimalFormat.format(value);
+  }
+
+  private String formatDouble(Double value) {
+    if(value == null) {
+      return "";
+    }
+    return (value > 0.0 ? "+" : "") + decimalFormat.format(value);
   }
 
   /**
@@ -157,6 +190,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     volumeLabel.setText("");
     valueLabel.setText("");
     asset = null;
+    updateAlertItem.setEnabled(false);
+    removeAlertItem.setEnabled(false);
+    lotsItem.setEnabled(false);
+    clearItem.setEnabled(false);
   }
 
   /**
@@ -170,6 +207,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     volumeLabel.setText("");
     valueLabel.setText("");
     asset = null;
+    updateAlertItem.setEnabled(false);
+    removeAlertItem.setEnabled(false);
+    lotsItem.setEnabled(false);
+    clearItem.setEnabled(false);
   }
 
   /**
@@ -184,6 +225,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     add(volumeLabel);
     add(valueLabel);
 
+    priceLabel.setToolTipText("Market Price");
+    volumeLabel.setToolTipText("Volume");
+    valueLabel.setToolTipText("Total Change");
+
     addMouseListener(this);
     symbolLabel.addMouseListener(this);
     priceLabel.addMouseListener(this);
@@ -193,12 +238,19 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     assetMenu.add(updateItem);
     assetMenu.add(updateAlertItem);
     assetMenu.add(removeAlertItem);
+    assetMenu.add(lotsItem);
     assetMenu.add(clearItem);
+
+    updateAlertItem.setEnabled(false);
+    removeAlertItem.setEnabled(false);
+    lotsItem.setEnabled(false);
+    clearItem.setEnabled(false);
 
     clearItem.addActionListener(this);
     updateItem.addActionListener(this);
     updateAlertItem.addActionListener(this);
     removeAlertItem.addActionListener(this);
+    lotsItem.addActionListener(this);
 
     labelFont = symbolLabel.getFont();
     boldFont = new Font(labelFont.getName(), Font.BOLD, labelFont.getSize()+1);
@@ -259,6 +311,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         asset.setAlert(null);
         symbolLabel.setIcon(null);
       }
+    } else if (e.getSource().equals(lotsItem)) {
+      final LotDialog dialog = new LotDialog(asset, this);
+      dialog.setVisible(true);
     } else if (e.getSource().equals(updateItem)) {
       final String input = JOptionPane.showInputDialog(
           MainFrame.getMainComponent(), "Enter new symbol", "Add", JOptionPane.QUESTION_MESSAGE);

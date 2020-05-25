@@ -166,12 +166,12 @@ public class PortfolioPanel extends JPanel implements ActionListener {
 
   private void updateIndex(JLabel label, AssetInfo info) {
     if(info != null) {
-      label.setText(info.getPercentChange().toString() + "%");
-
       if(info.getPercentChange() < 0.00) {
         label.setForeground(Color.red);
+        label.setText(info.getPercentChange().toString() + "%");
       } else {
         label.setForeground(DARK_GREEN);
+        label.setText("+" + info.getPercentChange().toString() + "%");
       }
     }
   }

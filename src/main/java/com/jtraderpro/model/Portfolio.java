@@ -76,13 +76,4 @@ public class Portfolio {
             return null;
         }
     }
-
-    public void reorder() {
-        int count = 1;
-
-        for (AssetGroup group : groups) {
-            group.setOrder(count);
-            count++;
-        }
-    }
 }

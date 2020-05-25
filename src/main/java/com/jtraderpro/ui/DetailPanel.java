@@ -62,7 +62,7 @@ public class DetailPanel extends JPanel {
   private static final JLabel rocLabel = new JLabel();
   private static final JPanel graphPanel = new JPanel();
   private static final CardLayout cardLayout = new CardLayout();
-  private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+  private static final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy");
   private static final Color DARK_GREEN = new Color(51, 102, 0);
   private static final Dimension CHART_SIZE = new Dimension(400, 400);
@@ -105,12 +105,12 @@ public class DetailPanel extends JPanel {
     addLabel("Year High ", yearHighLabel);
     addLabel("Dividend ", dividendLabel);
     addLabel("Payment Date ", exDivLabel);
-    addLabel("EPS ", epsLabel);
-    addLabel("PE Ratio ", peLabel);
-    addLabel("PB Ratio ", pBookLabel);
-    addLabel("ROC (30d)", rocLabel);
-    addLabel("RSI (14d)", rsiLabel);
-    addLabel("50 Day Avg. ", fiftyDayLabel);
+    addLabel("EPS ", epsLabel, "Earnings Per Share");
+    addLabel("PE Ratio ", peLabel, "Price/Earnings Ratio");
+    addLabel("PB Ratio ", pBookLabel, "Price/Book Ratio");
+    addLabel("ROC ", rocLabel, "Rate of Change (30 days)");
+    addLabel("RSI ", rsiLabel, "Relative Strength Index (14 days)");
+    addLabel("50 Day Avg. ", fiftyDayLabel, "Average Price (50 days)");
 
     graphPanel.setPreferredSize(CHART_SIZE);
     graphPanel.setLayout(cardLayout);
@@ -121,6 +121,12 @@ public class DetailPanel extends JPanel {
 
     add(summaryPanel);
     add(graphPanel);
+  }
+
+  private void addLabel(String text, JLabel label, String tooltip) {
+    label.setToolTipText(tooltip);
+    summaryPanel.add(new JLabel(text));
+    summaryPanel.add(label);
   }
 
   private void addLabel(String text, JLabel label) {
@@ -157,7 +163,6 @@ public class DetailPanel extends JPanel {
       dayHighLabel.setText(formatDouble(info.getDayHigh()));
       dayLowLabel.setText(formatDouble(info.getDayLow()));
       priceLabel.setText(formatDouble(info.getMarketPrice()));
-      changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
       epsLabel.setText(formatDouble(info.getEps()));
       peLabel.setText(formatDouble(info.getPe()));
       pBookLabel.setText(formatDouble(info.getPriceBook()));
@@ -186,12 +191,15 @@ public class DetailPanel extends JPanel {
       }
 
       if (info.getPercentChange() < 0.0) {
+        changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
         priceLabel.setForeground(Color.red);
         changeLabel.setForeground(Color.red);
       } else if (info.getPercentChange() > 0.0) {
+        changeLabel.setText("+" + formatDouble(info.getPercentChange()) + "%");
         priceLabel.setForeground(DARK_GREEN);
         changeLabel.setForeground(DARK_GREEN);
       } else {
+        changeLabel.setText(formatDouble(info.getPercentChange()) + "%");
         priceLabel.setForeground(Color.black);
         changeLabel.setForeground(Color.black);
       }
