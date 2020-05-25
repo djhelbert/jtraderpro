@@ -49,7 +49,7 @@ public class AssetInfo {
   private Double priceBook;
   private Double priceSales;
   private Double revenue;
-  private Double marketCap;
+  private Long marketCap;
   private Double pe;
   private String stockExchange;
   private Long askSize;
@@ -276,11 +276,11 @@ public class AssetInfo {
     this.revenue = revenue;
   }
 
-  public Double getMarketCap() {
+  public Long getMarketCap() {
     return marketCap;
   }
 
-  public void setMarketCap(Double marketCap) {
+  public void setMarketCap(Long marketCap) {
     this.marketCap = marketCap;
   }
 

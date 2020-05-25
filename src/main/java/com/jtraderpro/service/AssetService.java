@@ -89,11 +89,16 @@ public class AssetService {
         info.setDayHigh(getDouble(stock.getQuote().getDayHigh()));
         info.setDayLow(getDouble(stock.getQuote().getDayLow()));
         info.setOpen(getDouble(stock.getQuote().getOpen()));
-        info.setMarketCap(getDouble(stock.getStats().getMarketCap()));
         info.setStockExchange(stock.getStockExchange());
         info.setAskSize(stock.getQuote().getAskSize());
         info.setBidSize(stock.getQuote().getBidSize());
         info.setFiftyDayAvg(getDouble(stock.getQuote().getPriceAvg50()));
+
+        if(stock.getStats().getMarketCap() != null) {
+          info.setMarketCap(stock.getStats().getMarketCap().longValue());
+        } else {
+          info.setMarketCap(0l);
+        }
 
         if(stock.getStats().getEps() != null) {
           info.setEps(getDouble(stock.getStats().getEps()));

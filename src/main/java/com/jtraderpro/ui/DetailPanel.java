@@ -55,6 +55,8 @@ public class DetailPanel extends JPanel {
     private static final JLabel peLabel = new JLabel();
     private static final JLabel pBookLabel = new JLabel();
     private static final JLabel rocLabel = new JLabel();
+    private static final JLabel mktCapLabel = new JLabel();
+    private static final JLabel earningsDateLabel = new JLabel();
     private static final JPanel graphPanel = new JPanel();
     private static final CardLayout cardLayout = new CardLayout();
     private static final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
@@ -82,11 +84,13 @@ public class DetailPanel extends JPanel {
     private void init() {
         setBackground(Color.white);
 
-        summaryPanel.setLayout(new GridLayout(10, 4));
+        summaryPanel.setLayout(new GridLayout(11, 4));
         summaryPanel.setPreferredSize(CHART_SIZE);
         summaryPanel.setBackground(Color.white);
 
         addLabel("Symbol ", symbolLabel);
+        addLabel("Market Cap ", mktCapLabel);
+        addLabel("Earnings Date ", earningsDateLabel);
         addLabel("Open ", openLabel);
         addLabel("Price ", priceLabel);
         addLabel("Change ", changeLabel);
@@ -192,6 +196,12 @@ public class DetailPanel extends JPanel {
             rsiLabel.setText(formatDouble(info.getRsi()));
             fiftyDayLabel.setText(formatDouble(info.getFiftyDayAvg()));
 
+            if (info.getMarketCap() > 1000000) {
+                mktCapLabel.setText((info.getMarketCap() / 1000000) + "M");
+            } else {
+                mktCapLabel.setText((info.getMarketCap() / 1000) + "K");
+            }
+
             if (info.getVolume() > 1000000) {
                 volumeLabel.setText((info.getVolume() / 1000000) + "M");
             } else {
@@ -210,6 +220,12 @@ public class DetailPanel extends JPanel {
                 exDivLabel.setText(dateFormat.format(info.getExDate()));
             } else {
                 exDivLabel.setText("");
+            }
+
+            if (info.getEarningsAnnouncement() != null) {
+                earningsDateLabel.setText(dateFormat.format(info.getEarningsAnnouncement()));
+            } else {
+                earningsDateLabel.setText("");
             }
 
             if (info.getPercentChange() < 0.0) {
