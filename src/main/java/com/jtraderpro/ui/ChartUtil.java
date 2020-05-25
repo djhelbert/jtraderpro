@@ -48,8 +48,8 @@ public class ChartUtil {
   /**
    * Create Volume Dataset
    *
-   * @param assetQuotes
-   * @return
+   * @param assetQuotes Asset Quotes
+   * @return IntervalXYDataset
    */
   private static IntervalXYDataset createVolumeDataset(final List<AssetQuote> assetQuotes) {
     final TimeSeries timeseries = new TimeSeries("Volume");
@@ -64,8 +64,8 @@ public class ChartUtil {
   /**
    * Create Price Data Set
    *
-   * @param assetQuotes
-   * @return
+   * @param assetQuotes Asset Quotes
+   * @return XYDataset
    */
   private static XYDataset createPriceDataset(final List<AssetQuote> assetQuotes) {
     final TimeSeries timeseries = new TimeSeries("Price");
@@ -80,10 +80,10 @@ public class ChartUtil {
   /**
    * Create Chart
    *
-   * @param title
-   * @param currency
-   * @param assetQuotes
-   * @return
+   * @param title Title
+   * @param currency Currency
+   * @param assetQuotes Asset Quotes
+   * @return Chart Panel
    */
   public static ChartPanel createChart(String title, String currency, final List<AssetQuote> assetQuotes) {
     return createChart(title, currency, createVolumeDataset(assetQuotes), createPriceDataset(assetQuotes));
@@ -92,11 +92,11 @@ public class ChartUtil {
   /**
    * Create Chart
    *
-   * @param title
-   * @param currency
-   * @param volumeDataset
-   * @param priceDataSet
-   * @return
+   * @param title Title
+   * @param currency Currency
+   * @param volumeDataset Volume Data Set
+   * @param priceDataSet Price Data Set
+   * @return Chart Panel
    */
   private static ChartPanel createChart(String title, String currency, final IntervalXYDataset volumeDataset,
       final XYDataset priceDataSet) {

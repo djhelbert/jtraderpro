@@ -29,39 +29,23 @@ import java.util.Date;
 public class LotTableModel extends AbstractTableModel {
 
     private static final String[] headers = {"Number", "Date", "Amount", "Price"};
-    private Asset asset;
+
+    private final Asset modelAsset;
 
     /**
      * Constructor
      */
     public LotTableModel(Asset asset) {
-        this.asset = asset;
-    }
-
-    /**
-     * Refresh Data
-     */
-    public void refresh() {
-        fireTableDataChanged();
-    }
-
-    /**
-     * Get Lot at Row
-     *
-     * @param row
-     * @return Lot
-     */
-    public Lot getTeam(int row) {
-        return asset.getLots().get(row);
+        this.modelAsset = asset;
     }
 
     /**
      * Get Row Count
      *
-     * @return int
+     * @return int Rows
      */
     public int getRowCount() {
-        return asset.getLots().size();
+        return modelAsset.getLots().size();
     }
 
     @Override
@@ -72,12 +56,12 @@ public class LotTableModel extends AbstractTableModel {
     /**
      * Get Value
      *
-     * @param row
-     * @param col
+     * @param row Row
+     * @param col Column
      * @return Object
      */
     public Object getValueAt(int row, int col) {
-        final Lot lot = asset.getLots().get(row);
+        final Lot lot = modelAsset.getLots().get(row);
 
         if (col == 0) {
             return lot.getOrder() + 1;
@@ -103,14 +87,9 @@ public class LotTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int row, int col) {
-        if (col == 0 || col == 1) {
-            return false;
-        } else {
-            return true;
-        }
+        return col != 0 && col != 1;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Class getColumnClass(int col) {
         if (col == 0) {
@@ -127,9 +106,9 @@ public class LotTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int row, int col) {
         if (col == 2) {
-            asset.getLots().get(row).setAmount(Integer.parseInt(value.toString()));
+            modelAsset.getLots().get(row).setAmount(Integer.parseInt(value.toString()));
         } else if (col == 3) {
-            asset.getLots().get(row).setPrice(Double.parseDouble(value.toString()));
+            modelAsset.getLots().get(row).setPrice(Double.parseDouble(value.toString()));
         } else {
             throw new IllegalArgumentException();
         }
@@ -138,18 +117,18 @@ public class LotTableModel extends AbstractTableModel {
     }
 
     public void removeLot(int row) {
-        asset.getLots().remove(row);
-        asset.reorder();
+        modelAsset.getLots().remove(row);
+        modelAsset.reorder();
 
         fireTableDataChanged();
     }
 
     public void addLot() {
-        if(asset.getLots() == null) {
-            asset.setLots(new ArrayList<>());
+        if(modelAsset.getLots() == null) {
+            modelAsset.setLots(new ArrayList<>());
         }
 
-        asset.getLots().add(new Lot(asset.getLots().size(), 0, 0.00, new Date()));
+        modelAsset.getLots().add(new Lot(modelAsset.getLots().size(), 0, 0.00, new Date()));
         fireTableDataChanged();
     }
 }

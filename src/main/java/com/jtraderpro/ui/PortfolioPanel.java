@@ -154,8 +154,8 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     /**
      * Update Label
      *
-     * @param label
-     * @param info
+     * @param label Label
+     * @param info Asset Information
      */
     private void updateIndex(JLabel label, AssetInfo info) {
         if (info != null) {
@@ -179,11 +179,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
             tabbedPane.addTab(group.getName(), new AssetGroupPanel(group));
         });
 
-        if (tabbedPane.getTabCount() > 1) {
-            remGroupButton.setEnabled(true);
-        } else {
-            remGroupButton.setEnabled(false);
-        }
+        remGroupButton.setEnabled(tabbedPane.getTabCount() > 1);
     }
 
     @Override

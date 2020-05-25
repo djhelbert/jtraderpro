@@ -28,7 +28,7 @@ public class AssetQuote {
   private Double low = 0.0d;
   private Double high = 0.0d;
   private Double close = 0.0d;
-  private Long volume = 0l;
+  private Long volume = 0L;
 
   public Date getDate() {
     return date;

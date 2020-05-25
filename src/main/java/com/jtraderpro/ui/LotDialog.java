@@ -33,20 +33,20 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
 
     private final JButton addButton = new JButton("Add Lot");
     private final JButton deleteButton = new JButton("Delete Lot");
-    private JButton okButton = new JButton("Ok");
+    private final JButton okButton = new JButton("Ok");
     private final JPanel upperPanel = new JPanel();
     private final JPanel lowerPanel = new JPanel();
     private final LotTableModel model;
-    private JTable table;
-    private JScrollPane scroller;
-    private Asset asset;
-    private AssetPanel assetPanel;
+    private final JTable table;
+    private final JScrollPane scroller;
+    private final Asset asset;
+    private final AssetPanel assetPanel;
 
     /**
      * Constructor
      *
-     * @param asset
-     * @param assetPanel
+     * @param asset Asset
+     * @param assetPanel Asset Panel
      */
     public LotDialog(Asset asset, AssetPanel assetPanel) {
         super(Main.getMainFrame());
@@ -57,11 +57,7 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
         this.asset = asset;
         this.assetPanel = assetPanel;
 
-        if (asset.getLots() != null && asset.getLots().size() > 0) {
-            deleteButton.setEnabled(true);
-        } else {
-            deleteButton.setEnabled(false);
-        }
+        deleteButton.setEnabled(asset.getLots() != null && asset.getLots().size() > 0);
 
         model = new LotTableModel(asset);
         table = new JTable(model);
@@ -90,6 +86,8 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
         lowerPanel.add(okButton);
 
         sizeTableColumns(table, 0, 25);
+        sizeTableColumns(table, 2, 100);
+        sizeTableColumns(table, 2, 25);
         sizeTableColumns(table, 3, 25);
 
         final Container cont = getContentPane();
@@ -105,9 +103,9 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
     /**
      * Size Column
      *
-     * @param table
-     * @param col
-     * @param size
+     * @param table Table
+     * @param col Column Number
+     * @param size Size
      */
     private void sizeTableColumns(JTable table, int col, int size) {
         final TableColumn column = table.getColumnModel().getColumn(col);
@@ -135,11 +133,7 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
             if (table.getSelectedRow() >= 0) {
                 model.removeLot(table.getSelectedRow());
 
-                if (asset.getLots() != null && asset.getLots().size() > 0) {
-                    deleteButton.setEnabled(true);
-                } else {
-                    deleteButton.setEnabled(false);
-                }
+                deleteButton.setEnabled(asset.getLots() != null && asset.getLots().size() > 0);
             }
         }
     }

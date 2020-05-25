@@ -39,9 +39,9 @@ public class Asset implements Comparable {
   /**
    * Constructor
    *
-   * @param symbol
-   * @param name
-   * @param order
+   * @param symbol Symbol
+   * @param name Name
+   * @param order Order
    */
   public Asset(String symbol, String name, Integer order) {
     this.symbol = symbol;
@@ -102,9 +102,7 @@ public class Asset implements Comparable {
   public boolean equals(Object o) {
     if (o != null && o instanceof Asset) {
       final Asset a = (Asset) o;
-      if (a.getSymbol().equalsIgnoreCase(symbol)) {
-        return true;
-      }
+      return a.getSymbol().equalsIgnoreCase(symbol);
     }
 
     return false;
@@ -134,8 +132,8 @@ public class Asset implements Comparable {
   /**
    * Get Current Asset Value
    *
-   * @param marketPrice
-   * @return
+   * @param marketPrice Market Price
+   * @return Double
    */
   public Double getValue(Double marketPrice) {
     if(lots == null) {

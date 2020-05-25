@@ -43,23 +43,16 @@ public class AssetGroupPanel extends JPanel {
     private static final Logger logger = LoggerFactory.getLogger(AssetGroupPanel.class);
 
     private final List<AssetPanel> assetPanels = new ArrayList<>();
-    private AssetGroup group;
-
-    /**
-     * Constructor w/Empty Group
-     */
-    public AssetGroupPanel() {
-        this(new AssetGroup());
-    }
+    private final AssetGroup panelGroup;
 
     /**
      * Constructor
      *
-     * @param group
+     * @param group Asset Group
      */
     public AssetGroupPanel(AssetGroup group) {
         super();
-        this.group = group;
+        this.panelGroup = group;
         init();
         update();
         executor.scheduleAtFixedRate(new UpdateInfoTask(), 60, 60, TimeUnit.SECONDS);
@@ -68,10 +61,10 @@ public class AssetGroupPanel extends JPanel {
     /**
      * Get Asset Group for Panel
      *
-     * @return
+     * @return AssetGroup
      */
     public AssetGroup getAssetGroup() {
-        return group;
+        return panelGroup;
     }
 
     /**
@@ -85,7 +78,7 @@ public class AssetGroupPanel extends JPanel {
      * Update
      */
     private void update() {
-        group.getAssets().forEach((asset) -> {
+        panelGroup.getAssets().forEach((asset) -> {
             assetPanels.get(asset.getOrder()).refresh(asset);
         });
     }
@@ -101,7 +94,7 @@ public class AssetGroupPanel extends JPanel {
 
         for (int i = 0; i < ROW_MAX; i++) {
             for (int j = 0; j < COL_MAX; j++) {
-                AssetPanel panel = new AssetPanel(group, order);
+                AssetPanel panel = new AssetPanel(panelGroup, order);
                 add(panel);
                 assetPanels.add(panel);
                 order++;
@@ -117,11 +110,11 @@ public class AssetGroupPanel extends JPanel {
             assetPanels.get(i).empty();
         }
 
-        group.getAssets().sort(null);
+        panelGroup.getAssets().sort(null);
 
         int index = 0;
 
-        for (Asset ass : group.getAssets()) {
+        for (Asset ass : panelGroup.getAssets()) {
             ass.setOrder(index);
             assetPanels.get(index).refresh(ass);
             index++;
@@ -138,9 +131,7 @@ public class AssetGroupPanel extends JPanel {
         @Override
         public void run() {
             try {
-                assetPanels.forEach((panel) -> {
-                    panel.updateInfo();
-                });
+                assetPanels.forEach((panel) -> panel.updateInfo());
             } catch (Exception e) {
                 logger.error("Update Info Task", e);
             }

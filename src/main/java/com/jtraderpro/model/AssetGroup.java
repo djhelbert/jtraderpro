@@ -39,8 +39,8 @@ public class AssetGroup {
     /**
      * Constructor
      *
-     * @param name
-     * @param order
+     * @param name Name
+     * @param order Order
      */
     public AssetGroup(String name, Integer order) {
         this.name = name;
@@ -50,7 +50,7 @@ public class AssetGroup {
     /**
      * Remove Asset
      *
-     * @param symbol
+     * @param symbol Symbol
      */
     public void removeAsset(String symbol) {
         if (symbol == null) {
@@ -71,7 +71,7 @@ public class AssetGroup {
     /**
      * Add Asset
      *
-     * @param asset
+     * @param asset Asset
      */
     public void addAsset(Asset asset) {
         if (assets.size() <= MAX_SIZE) {
@@ -112,9 +112,7 @@ public class AssetGroup {
     public boolean equals(Object o) {
         if (o != null && o instanceof AssetGroup) {
             final AssetGroup a = (AssetGroup) o;
-            if (a.getOrder().equals(order)) {
-                return true;
-            }
+            return a.getOrder().equals(order);
         }
 
         return false;

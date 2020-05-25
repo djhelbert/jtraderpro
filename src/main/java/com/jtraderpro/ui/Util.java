@@ -16,7 +16,6 @@ package com.jtraderpro.ui;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -30,7 +29,7 @@ import javax.swing.JOptionPane;
  */
 public class Util {
 
-  private final static ClassLoader classLoader = Util.class.getClassLoader();
+  private final static ClassLoader CLASS_LOADER = Util.class.getClassLoader();
   
   /**
    * Private Constructor
@@ -41,12 +40,12 @@ public class Util {
   /**
    * Get Image Icon
    *
-   * @param name
-   * @return
+   * @param name Name
+   * @return Image Icon
    */
   public static ImageIcon getImageIcon(String name) {
     final String imageResPath = "images/" + name;
-    final URL iconURL = classLoader.getResource(imageResPath);
+    final URL iconURL = CLASS_LOADER.getResource(imageResPath);
 
     if (iconURL != null) {
       return new ImageIcon(iconURL, name);
@@ -82,14 +81,14 @@ public class Util {
   /**
    * Get File Text
    *
-   * @param name
-   * @return String
-   * @throws Exception
+   * @param name Name
+   * @return String File Text as String
+   * @throws Exception Exception
    */
   public static String getFileText(String name) throws Exception {
     String text = "";
 
-    final InputStreamReader isr = new InputStreamReader(classLoader.getResourceAsStream(name));
+    final InputStreamReader isr = new InputStreamReader(CLASS_LOADER.getResourceAsStream(name));
     final BufferedReader br = new BufferedReader(isr);
 
     String temp = br.readLine();
@@ -107,7 +106,7 @@ public class Util {
   /**
    * Center
    *
-   * @param comp
+   * @param comp Component
    */
   public static void centerComponent(Component comp) {
     final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

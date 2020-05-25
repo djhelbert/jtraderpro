@@ -43,7 +43,7 @@ public class AssetService {
 
   /**
    * Get Singleton Instance
-   * @return 
+   * @return AssetService
    */
   public static AssetService getInstance() {
     return service;
@@ -51,8 +51,9 @@ public class AssetService {
 
   /**
    * Get Asset Information with no History
-   * @param symbol
-   * @return 
+   *
+   * @param symbol Symbol
+   * @return Asset Information
    */
   public AssetInfo getAssetInfo(String symbol) {
     return getAssetInfo(symbol, false);
@@ -61,9 +62,9 @@ public class AssetService {
   /**
    * Get Asset Information
    * 
-   * @param symbol
-   * @param historical
-   * @return 
+   * @param symbol Symbol
+   * @param historical Include History Flag
+   * @return Asset Information
    */
   public AssetInfo getAssetInfo(String symbol, boolean historical) {
     final AssetInfo info = new AssetInfo(symbol);

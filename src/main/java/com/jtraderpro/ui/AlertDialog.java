@@ -31,14 +31,14 @@ public class AlertDialog extends JDialog implements ActionListener {
     private static final String ABOVE = "ABOVE";
     private static final String BELOW = "BELOW";
 
-    private JPanel updatePanel = new JPanel();
-    private JTextField priceField = new JTextField("0.00");
-    private JLabel symbolField = new JLabel();
-    private JComboBox<String> type = new JComboBox(new Object[]{ABOVE, BELOW});
-    private JButton okButton = new JButton("Ok");
-    private JButton cancelButton = new JButton("Cancel");
-    private JPanel buttonPanel = new JPanel();
-    private Asset asset;
+    private final JPanel updatePanel = new JPanel();
+    private final JTextField priceField = new JTextField("0.00");
+    private final JLabel symbolField = new JLabel();
+    private final JComboBox<String> type = new JComboBox(new Object[]{ABOVE, BELOW});
+    private final JButton okButton = new JButton("Ok");
+    private final JButton cancelButton = new JButton("Cancel");
+    private final JPanel buttonPanel = new JPanel();
+    private final Asset dialogAsset;
 
     /**
      * Constructor
@@ -48,7 +48,7 @@ public class AlertDialog extends JDialog implements ActionListener {
     public AlertDialog(Asset asset) {
         super(Main.getMainFrame());
 
-        this.asset = asset;
+        this.dialogAsset = asset;
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Update Alert");
@@ -107,7 +107,7 @@ public class AlertDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == okButton) {
             try {
-                asset.setAlert(new Alert(isAbove(), getPrice()));
+                dialogAsset.setAlert(new Alert(isAbove(), getPrice()));
 
                 // Close
                 setVisible(false);

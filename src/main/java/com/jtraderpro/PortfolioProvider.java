@@ -38,7 +38,7 @@ public class PortfolioProvider {
    *
    * @return PortfolioProvider
    */
-  public static final PortfolioProvider getInstance() {
+  public static PortfolioProvider getInstance() {
     return provider;
   }
 
@@ -55,27 +55,49 @@ public class PortfolioProvider {
     return portfolio;
   }
 
+  /**
+   * Load
+   *
+   * @throws IOException
+   */
   public void load() throws IOException {
     load(DEFAULT_FILE);
   }
 
+  /**
+   * Load File
+   * @param file File
+   * @throws IOException IO Error
+   */
   public void load(File file) throws IOException {
     portfolio = objectMapper.readValue(file, Portfolio.class);
   }
 
+  /**
+   * Save
+   *
+   * @throws IOException IO Error
+   */
   public void save() throws IOException {
     save(DEFAULT_FILE);
   }
 
+  /**
+   * Save File
+   *
+   * @param file File
+   * @throws IOException IO Error
+   */
   public void save(File file) throws IOException {
     objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, portfolio);
   }
 
+  /**
+   * Default File Exists
+   *
+   * @return boolean
+   */
   public boolean defaultExists() {
     return DEFAULT_FILE.exists();
-  }
-
-  public void delete(File file) {
-    file.delete();
   }
 }

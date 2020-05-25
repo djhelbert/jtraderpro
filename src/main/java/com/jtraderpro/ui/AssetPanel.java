@@ -35,6 +35,9 @@ import java.text.DecimalFormat;
  */
 public class AssetPanel extends JPanel implements MouseListener, ActionListener {
 
+    private final static DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private static final Color DARK_GREEN = new Color(51, 102, 0);
+
     private final JPopupMenu assetMenu = new JPopupMenu("Asset");
     private final JMenuItem updateItem = new JMenuItem("Update Symbol");
     private final JMenuItem clearItem = new JMenuItem("Clear");
@@ -46,19 +49,17 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     private final JLabel volumeLabel = new JLabel("", JLabel.CENTER);
     private final JLabel valueLabel = new JLabel("", JLabel.CENTER);
     private final int order;
-    private final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private Double marketPrice;
     private final AssetGroup assetGroup;
-    private Asset asset;
+    private Asset panelAsset;
     private Font labelFont;
     private Font boldFont;
-
-    private static final Color DARK_GREEN = new Color(51, 102, 0);
 
     /**
      * Constructor
      *
-     * @param assetGroup
-     * @param order
+     * @param assetGroup Asset Group
+     * @param order Orde
      */
     public AssetPanel(AssetGroup assetGroup, Integer order) {
         super();
@@ -71,18 +72,18 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
      * Refresh Panel
      */
     public final void refresh() {
-        symbolLabel.setText(asset.getSymbol());
-        symbolLabel.setToolTipText(asset.getName());
+        symbolLabel.setText(panelAsset.getSymbol());
+        symbolLabel.setToolTipText(panelAsset.getName());
         startTask();
     }
 
     /**
      * Refresh for Asset
      *
-     * @param asset
+     * @param asset Asset
      */
     public final void refresh(Asset asset) {
-        this.asset = asset;
+        this.panelAsset = asset;
         symbolLabel.setText(asset.getSymbol());
         symbolLabel.setToolTipText(asset.getName());
         updateAlertItem.setEnabled(true);
@@ -96,7 +97,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
      * Start Update Task
      */
     public void startTask() {
-        final Thread thread = new Thread(new UpdateTask(), asset.getSymbol());
+        final Thread thread = new Thread(new UpdateTask(), panelAsset.getSymbol());
         thread.start();
     }
 
@@ -104,32 +105,25 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
      * Update Asset Information
      */
     public final void updateInfo() {
-        if (asset != null) {
-            final AssetInfo info = AssetService.getInstance().getAssetInfo(asset.getSymbol());
+        if (panelAsset != null) {
+            final AssetInfo info = AssetService.getInstance().getAssetInfo(panelAsset.getSymbol());
 
             priceLabel.setText(
                     formatPrice(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
 
             if (info != null) {
+                marketPrice = info.getMarketPrice();
+
                 if (info.getVolume() > 1000000) {
                     volumeLabel.setText((info.getVolume() / 1000000) + "M");
                 } else {
                     volumeLabel.setText((info.getVolume() / 1000) + "K");
                 }
 
-                if (asset.getAlert() != null) {
-                    if (info.getMarketPrice() > asset.getAlert().getPrice() && asset.getAlert().getAbove()) {
-                        symbolLabel.setIcon(Util.getImageIcon("warning.png"));
-                    } else if (info.getMarketPrice() < asset.getAlert().getPrice() && !asset.getAlert().getAbove()) {
-                        symbolLabel.setIcon(Util.getImageIcon("warning.png"));
-                    } else {
-                        symbolLabel.setIcon(null);
-                    }
-                } else {
-                    symbolLabel.setIcon(null);
-                }
+                updateSymbolLabel();
 
-                final Double assetValue = asset.getValue(info.getMarketPrice());
+                final Double assetValue = panelAsset.getValue(info.getMarketPrice());
+
                 if (assetValue != null) {
                     valueLabel.setText(formatDouble(assetValue));
 
@@ -159,11 +153,25 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         }
     }
 
+    private void updateSymbolLabel() {
+        if (panelAsset.getAlert() != null) {
+            if (marketPrice > panelAsset.getAlert().getPrice() && panelAsset.getAlert().getAbove()) {
+                symbolLabel.setIcon(Util.getImageIcon("warning.png"));
+            } else if (marketPrice < panelAsset.getAlert().getPrice() && !panelAsset.getAlert().getAbove()) {
+                symbolLabel.setIcon(Util.getImageIcon("warning.png"));
+            } else {
+                symbolLabel.setIcon(null);
+            }
+        } else {
+            symbolLabel.setIcon(null);
+        }
+    }
+
     /**
      * Format Price
      *
-     * @param value
-     * @return
+     * @param value Value
+     * @return Formatted String
      */
     private String formatPrice(Double value) {
         if (value == null) {
@@ -175,8 +183,8 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     /**
      * Format Double w/Decimal Format
      *
-     * @param value
-     * @return
+     * @param value Value
+     * @return Formatted String
      */
     private String formatDouble(Double value) {
         if (value == null) {
@@ -189,7 +197,8 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
      * Clear Panel
      */
     public final void empty() {
-        asset = null;
+        panelAsset = null;
+        marketPrice = null;
 
         symbolLabel.setToolTipText(null);
         symbolLabel.setIcon(null);
@@ -207,8 +216,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
      * Clear Panel and Remove Asset From Group
      */
     public final void clear() {
-        assetGroup.removeAsset(asset.getSymbol());
-        asset = null;
+        assetGroup.removeAsset(panelAsset.getSymbol());
+        panelAsset = null;
+        marketPrice = null;
 
         symbolLabel.setToolTipText(null);
         symbolLabel.setIcon(null);
@@ -299,8 +309,8 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         if (SwingUtilities.isRightMouseButton(e)) {
             assetMenu.show(e.getComponent(), e.getX(), e.getY());
         } else if (SwingUtilities.isLeftMouseButton(e)) {
-            if (asset != null) {
-                PortfolioPanel.getDetailPanel().update(asset.getSymbol());
+            if (panelAsset != null) {
+                PortfolioPanel.getDetailPanel().update(panelAsset.getSymbol());
             }
         }
     }
@@ -310,18 +320,18 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         if (e.getSource().equals(clearItem)) {
             clear();
         } else if (e.getSource().equals(updateAlertItem)) {
-            if (asset != null) {
-                final AlertDialog dialog = new AlertDialog(asset);
+            if (panelAsset != null) {
+                final AlertDialog dialog = new AlertDialog(panelAsset);
                 dialog.setVisible(true);
-                startTask();
+                updateSymbolLabel();
             }
         } else if (e.getSource().equals(removeAlertItem)) {
-            if (asset != null) {
-                asset.setAlert(null);
+            if (panelAsset != null) {
+                panelAsset.setAlert(null);
                 symbolLabel.setIcon(null);
             }
         } else if (e.getSource().equals(lotsItem)) {
-            final LotDialog dialog = new LotDialog(asset, this);
+            final LotDialog dialog = new LotDialog(panelAsset, this);
             dialog.setVisible(true);
         } else if (e.getSource().equals(updateItem)) {
             final String input = JOptionPane.showInputDialog(
@@ -332,10 +342,10 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
                 if (info != null) {
                     final Asset newAsset = new Asset(input.toUpperCase().trim(), info.getName(), order);
 
-                    if (asset != null) {
+                    if (panelAsset != null) {
                         // Update asset
-                        asset.setSymbol(newAsset.getSymbol());
-                        asset.setName(info.getName());
+                        panelAsset.setSymbol(newAsset.getSymbol());
+                        panelAsset.setName(info.getName());
                         refresh();
                     } else if (!assetGroup.getAssets().contains(newAsset)) {
                         // Add new asset

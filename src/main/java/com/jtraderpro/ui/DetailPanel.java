@@ -126,9 +126,9 @@ public class DetailPanel extends JPanel {
   /**
    * Add Labels to Summary Panel w/Tool Tip
    *
-   * @param text
-   * @param label
-   * @param tooltip
+   * @param text Text
+   * @param label Label
+   * @param tooltip Tool Tip Text
    */
   private void addLabel(String text, JLabel label, String tooltip) {
     label.setToolTipText(tooltip);
@@ -139,8 +139,8 @@ public class DetailPanel extends JPanel {
   /**
    * Add Labels to Summary Panel
    *
-   * @param text
-   * @param label
+   * @param text Text
+   * @param label Label
    */
   private void addLabel(String text, JLabel label) {
     summaryPanel.add(new JLabel(text));
@@ -150,8 +150,8 @@ public class DetailPanel extends JPanel {
   /**
    * Format Double to String
    *
-   * @param value
-   * @return
+   * @param value Value
+   * @return Formatted String
    */
   private String formatDouble(Double value) {
     if (value == null) {
@@ -173,7 +173,7 @@ public class DetailPanel extends JPanel {
   /**
    * Update for new Symbol
    *
-   * @param symbol
+   * @param symbol Symbol
    */
   public synchronized void update(String symbol) {
     final AssetInfo info = AssetService.getInstance().getAssetInfo(symbol, true);
