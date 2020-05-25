@@ -21,6 +21,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import javax.swing.*;
 
+import com.jtraderpro.ui.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,7 @@ public class Main {
     frame.setSize(1000, 800);
     frame.setResizable(true);
     frame.setVisible(true);
+    frame.setIconImage(Util.getImageIcon("stocks.png").getImage());
     centerComponent(frame);
   }
 
