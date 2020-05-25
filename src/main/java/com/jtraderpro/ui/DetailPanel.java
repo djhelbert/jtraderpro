@@ -196,7 +196,9 @@ public class DetailPanel extends JPanel {
             rsiLabel.setText(formatDouble(info.getRsi()));
             fiftyDayLabel.setText(formatDouble(info.getFiftyDayAvg()));
 
-            if (info.getMarketCap() > 1000000) {
+            if (info.getMarketCap() > 1000000000) {
+                mktCapLabel.setText((info.getMarketCap() / 1000000000) + "B");
+            } else if (info.getMarketCap() > 1000000) {
                 mktCapLabel.setText((info.getMarketCap() / 1000000) + "M");
             } else {
                 mktCapLabel.setText((info.getMarketCap() / 1000) + "K");
