@@ -220,6 +220,8 @@ public class DetailPanel extends JPanel {
 
             if(info.getAnnualYield() != null && info.getAnnualYield() > 0.0) {
                 dividendLabel.setText(decimalFormat.format(info.getAnnualYield()) + " " + decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
+            } else {
+                dividendLabel.setText("");
             }
 
             if (info.getExDate() != null) {
