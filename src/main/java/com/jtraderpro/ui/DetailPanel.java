@@ -200,8 +200,10 @@ public class DetailPanel extends JPanel {
                 mktCapLabel.setText((info.getMarketCap() / 1000000000) + "B");
             } else if (info.getMarketCap() > 1000000) {
                 mktCapLabel.setText((info.getMarketCap() / 1000000) + "M");
-            } else {
+            } else if (info.getMarketCap() > 0) {
                 mktCapLabel.setText((info.getMarketCap() / 1000) + "K");
+            } else {
+                mktCapLabel.setText("");
             }
 
             if (info.getVolume() > 1000000) {
@@ -216,7 +218,9 @@ public class DetailPanel extends JPanel {
                 avgVolumeLabel.setText((info.getAvgVolume() / 1000) + "K");
             }
 
-            dividendLabel.setText(decimalFormat.format(info.getAnnualYield()) + " " + decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
+            if(info.getAnnualYield() != null && info.getAnnualYield() > 0.0) {
+                dividendLabel.setText(decimalFormat.format(info.getAnnualYield()) + " " + decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
+            }
 
             if (info.getExDate() != null) {
                 exDivLabel.setText(dateFormat.format(info.getExDate()));
