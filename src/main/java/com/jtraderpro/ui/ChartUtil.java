@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class ChartUtil {
 
-    private static final DecimalFormat decimalformat = new DecimalFormat("#.##");
+    private static final DecimalFormat decimalformat = new DecimalFormat("#0.00");
 
     /**
      * Private Constructor
@@ -55,9 +55,7 @@ public class ChartUtil {
     private static IntervalXYDataset createVolumeDataset(final List<AssetQuote> assetQuotes) {
         final TimeSeries timeseries = new TimeSeries("Volume");
 
-        assetQuotes.forEach((aq) -> {
-            timeseries.add(new Day(aq.getDate()), aq.getVolume() / 1000000);
-        });
+        assetQuotes.forEach((aq) -> timeseries.add(new Day(aq.getDate()), aq.getVolume().doubleValue() / 1000000));
 
         return new TimeSeriesCollection(timeseries);
     }
@@ -71,9 +69,7 @@ public class ChartUtil {
     private static XYDataset createPriceDataset(final List<AssetQuote> assetQuotes) {
         final TimeSeries timeseries = new TimeSeries("Price");
 
-        assetQuotes.forEach((aq) -> {
-            timeseries.add(new Day(aq.getDate()), aq.getClose());
-        });
+        assetQuotes.forEach((aq) -> timeseries.add(new Day(aq.getDate()), aq.getClose()));
 
         return new TimeSeriesCollection(timeseries);
     }
@@ -106,7 +102,7 @@ public class ChartUtil {
 
         final XYPlot xyplot = (XYPlot) jfreechart.getPlot();
         NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();
-        numberaxis.setLowerMargin(0.40000000000000002D);
+        numberaxis.setLowerMargin(0.4D);
 
         numberaxis.setNumberFormatOverride(decimalformat);
 
@@ -114,7 +110,7 @@ public class ChartUtil {
 
         xyitemrenderer.setDefaultToolTipGenerator(
                 new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
-                        new DecimalFormat("0.00")));
+                        new DecimalFormat("#0.00")));
 
         final NumberAxis numberaxis1 = new NumberAxis("Volume M");
         numberaxis1.setUpperMargin(1.0D);
@@ -124,11 +120,11 @@ public class ChartUtil {
         xyplot.setRangeAxis(1, numberaxis1);
         xyplot.mapDatasetToRangeAxis(1, 1);
 
-        final XYBarRenderer xybarrenderer = new XYBarRenderer(0.20000000000000001D);
+        final XYBarRenderer xybarrenderer = new XYBarRenderer(0.2D);
 
         xybarrenderer.setDefaultToolTipGenerator(
                 new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d M yy"),
-                        new DecimalFormat("0,000.00")));
+                        new DecimalFormat("#0.00")));
         xyplot.setRenderer(1, xybarrenderer);
 
         return new ChartPanel(jfreechart, true, true, true, false, true);
