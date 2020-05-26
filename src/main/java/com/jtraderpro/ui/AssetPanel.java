@@ -201,6 +201,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         marketPrice = null;
 
         symbolLabel.setToolTipText(null);
+        priceLabel.setToolTipText(null);
+        volumeLabel.setToolTipText(null);
+        valueLabel.setToolTipText(null);
         symbolLabel.setIcon(null);
         symbolLabel.setText("");
         priceLabel.setText("");
@@ -221,6 +224,9 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         marketPrice = null;
 
         symbolLabel.setToolTipText(null);
+        priceLabel.setToolTipText(null);
+        volumeLabel.setToolTipText(null);
+        valueLabel.setToolTipText(null);
         symbolLabel.setIcon(null);
         symbolLabel.setText("");
         priceLabel.setText("");
