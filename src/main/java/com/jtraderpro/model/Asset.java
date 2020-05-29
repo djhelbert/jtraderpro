@@ -138,9 +138,9 @@ public class Asset implements Comparable {
    */
   public Double getValue(Double marketPrice) {
     if(lots == null) {
-      return null;
+      return 0.0;
     } else if(lots.size() == 0) {
-      return null;
+      return 0.0;
     }
 
     double value = 0;

@@ -146,7 +146,7 @@ public class AssetService {
 
         if (stock != null && historical) {
           final Calendar from = Calendar.getInstance();
-          from.add(Calendar.DATE, -30);
+          from.add(Calendar.DATE, -21);
 
           final List<HistoricalQuote> histQuotes = stock.getHistory(from, Interval.DAILY);
 

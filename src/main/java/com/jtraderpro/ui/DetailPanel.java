@@ -107,7 +107,7 @@ public class DetailPanel extends JPanel {
         addLabel("EPS ", epsLabel, "Earnings Per Share");
         addLabel("PE Ratio ", peLabel, "Price/Earnings Ratio");
         addLabel("PB Ratio ", pBookLabel, "Price/Book Ratio");
-        addLabel("ROC ", rocLabel, "Rate of Change (30 days)");
+        addLabel("ROC ", rocLabel, "Rate of Change");
         addLabel("RSI ", rsiLabel, "Relative Strength Index (14 days)");
         addLabel("50 Day Avg. ", fiftyDayLabel, "Average Price (50 days)");
 
@@ -160,6 +160,21 @@ public class DetailPanel extends JPanel {
         return decimalFormat.format(value);
     }
 
+    private String formatLong(Long value) {
+        if(value == null) {
+            return "";
+        }
+
+        if (value > 1000000000) {
+            return (value / 1000000000) + "B";
+        } else if (value > 1000000) {
+            return (value / 1000000) + "M";
+        } else if (value > 0) {
+            return (value / 1000) + "K";
+        } else {
+            return value.toString();
+        }
+    }
     /**
      * Refresh w/Same Symbol
      */
@@ -182,8 +197,8 @@ public class DetailPanel extends JPanel {
 
             symbolLabel.setText(info.getSymbol());
             openLabel.setText(formatDouble(info.getOpen()));
-            askLabel.setText(formatDouble(info.getBid()) + "x" + info.getBidSize());
-            bidLabel.setText(formatDouble(info.getAsk()) + "x" + info.getAskSize());
+            askLabel.setText(formatDouble(info.getBid()) + " x " + info.getBidSize());
+            bidLabel.setText(formatDouble(info.getAsk()) + " x " + info.getAskSize());
             yearHighLabel.setText(formatDouble(info.getYearHigh()));
             yearLowLabel.setText(formatDouble(info.getYearLow()));
             dayHighLabel.setText(formatDouble(info.getDayHigh()));
@@ -196,27 +211,9 @@ public class DetailPanel extends JPanel {
             rsiLabel.setText(formatDouble(info.getRsi()));
             fiftyDayLabel.setText(formatDouble(info.getFiftyDayAvg()));
 
-            if (info.getMarketCap() > 1000000000) {
-                mktCapLabel.setText((info.getMarketCap() / 1000000000) + "B");
-            } else if (info.getMarketCap() > 1000000) {
-                mktCapLabel.setText((info.getMarketCap() / 1000000) + "M");
-            } else if (info.getMarketCap() > 0) {
-                mktCapLabel.setText((info.getMarketCap() / 1000) + "K");
-            } else {
-                mktCapLabel.setText("");
-            }
-
-            if (info.getVolume() > 1000000) {
-                volumeLabel.setText((info.getVolume() / 1000000) + "M");
-            } else {
-                volumeLabel.setText((info.getVolume() / 1000) + "K");
-            }
-
-            if (info.getAvgVolume() > 1000000) {
-                avgVolumeLabel.setText((info.getAvgVolume() / 1000000) + "M");
-            } else {
-                avgVolumeLabel.setText((info.getAvgVolume() / 1000) + "K");
-            }
+            mktCapLabel.setText(formatLong(info.getMarketCap()));
+            volumeLabel.setText(formatLong(info.getVolume()));
+            avgVolumeLabel.setText(formatLong(info.getAvgVolume()));
 
             if(info.getAnnualYield() != null && info.getAnnualYield() > 0.0) {
                 dividendLabel.setText(decimalFormat.format(info.getAnnualYield()) + " " + decimalFormat.format(info.getDividendYield()) + (info.getDividendYield() == null ? "" : "%"));
