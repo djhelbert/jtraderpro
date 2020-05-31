@@ -17,7 +17,7 @@ package com.jtraderpro.ui;
 /**
  * Asset Performance
  */
-public class AssetPerformance {
+public class AssetPerformance implements Comparable<AssetPerformance> {
     private String symbol;
     private String name;
     private Double marketPrice;
@@ -98,5 +98,10 @@ public class AssetPerformance {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    @Override
+    public int compareTo(AssetPerformance o) {
+        return o.getValue().compareTo(getValue());
     }
 }

@@ -93,6 +93,8 @@ public class AssetPerformanceDialog extends JDialog implements ActionListener, W
         sizeTableColumns(table, 7, 70);
         sizeTableColumns(table, 8, 70);
 
+        table.setDefaultRenderer(Double.class, new ValueTableCellRenderer());
+
         setPreferredSize(new Dimension(800,700));
 
         pack();

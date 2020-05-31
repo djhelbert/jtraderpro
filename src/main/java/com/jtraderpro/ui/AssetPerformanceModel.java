@@ -16,14 +16,14 @@ package com.jtraderpro.ui;
 
 import javax.swing.table.AbstractTableModel;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Asset Performance Table Model
  */
 public class AssetPerformanceModel extends AbstractTableModel {
-
-    private final static DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    
     private static final String[] headers = {"Symbol", "Name", "Price", "Change", "Dividend", "Year Low", "Year High", "Shares", "Value"};
     private final List<AssetPerformance> perfs;
 
@@ -34,6 +34,7 @@ public class AssetPerformanceModel extends AbstractTableModel {
      */
     public AssetPerformanceModel(List<AssetPerformance> perfs) {
         this.perfs = perfs;
+        perfs.sort(null);
     }
 
     @Override
@@ -63,21 +64,33 @@ public class AssetPerformanceModel extends AbstractTableModel {
         } else if (col == 1) {
             return perfs.get(row).getName();
         } else if (col == 2) {
-            return decimalFormat.format(perfs.get(row).getMarketPrice());
+            return perfs.get(row).getMarketPrice();
         } else if (col == 3) {
-            return decimalFormat.format(perfs.get(row).getChange());
+            return perfs.get(row).getChange();
         } else if (col == 4) {
-            return decimalFormat.format(perfs.get(row).getDividend());
+            return perfs.get(row).getDividend();
         } else if (col == 5) {
-            return decimalFormat.format(perfs.get(row).getYearLow());
+            return perfs.get(row).getYearLow();
         } else if (col == 6) {
-            return decimalFormat.format(perfs.get(row).getYearHigh());
+            return perfs.get(row).getYearHigh();
         } else if (col == 7) {
-            return perfs.get(row).getShares().toString();
+            return perfs.get(row).getShares();
         } else if (col == 8) {
-            return decimalFormat.format(perfs.get(row).getValue());
+            return perfs.get(row).getValue();
         }
 
         return perfs.get(row).getValue();
     }
+
+    @Override
+    public Class getColumnClass(int col) {
+        if (col == 7) {
+            return Integer.class;
+        } else if (col == 2 || col == 3 || col == 4 || col == 5 || col == 6 || col == 8) {
+            return Double.class;
+        } else {
+            return String.class;
+        }
+    }
+
 }
