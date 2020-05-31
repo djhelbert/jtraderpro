@@ -101,6 +101,23 @@ public class AssetGroupPanel extends JPanel {
     }
 
     /**
+     * Get Asset Perfroamce List for Group
+     *
+     * @return List
+     */
+    public List<AssetPerformance> getAssetPerformanceList() {
+        final List<AssetPerformance> list = new ArrayList<>();
+
+        for (AssetPanel ass : assetPanels) {
+            if(!ass.isEmpty()) {
+                list.add(ass.getAssetPerformance());
+            }
+        }
+
+        return list;
+    }
+
+    /**
      * Update Asset Order and Refresh Each
      */
     public void sort() {

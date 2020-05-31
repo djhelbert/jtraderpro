@@ -44,6 +44,7 @@ public class PortfolioPanel extends JPanel implements ActionListener {
     private static final JButton remGroupButton = new JButton("Group");
     private static final JButton saveButton = new JButton("Save");
     private static final JButton sortButton = new JButton("Sort");
+    private static final JButton performanceButton = new JButton("Performance");
     private static final JTabbedPane tabbedPane = new JTabbedPane();
     private static final DetailPanel detailPanel = new DetailPanel(PortfolioProvider.getInstance().getPortfolio().getDefaultAsset().getSymbol());
     private static final JLabel djiLabel = new JLabel();
@@ -97,10 +98,13 @@ public class PortfolioPanel extends JPanel implements ActionListener {
         remGroupButton.setIcon(Util.getImageIcon("delete.png"));
         sortButton.addActionListener(this);
         sortButton.setIcon(Util.getImageIcon("sort.png"));
+        performanceButton.addActionListener(this);
+        performanceButton.setIcon(Util.getImageIcon("stocks.png"));
         buttonPanel.add(saveButton);
         buttonPanel.add(addGroupButton);
         buttonPanel.add(remGroupButton);
         buttonPanel.add(sortButton);
+        buttonPanel.add(performanceButton);
         indexPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         indexPanel.add(new JLabel("^DJI"));
         indexPanel.add(djiLabel);
@@ -191,6 +195,10 @@ public class PortfolioPanel extends JPanel implements ActionListener {
         } else if (e.getSource().equals(sortButton)) {
             final AssetGroupPanel agPanel = (AssetGroupPanel) tabbedPane.getSelectedComponent();
             agPanel.sort();
+        } else if (e.getSource().equals(performanceButton)) {
+            final AssetGroupPanel agPanel = (AssetGroupPanel) tabbedPane.getSelectedComponent();
+            final AssetPerformanceDialog dialog = new AssetPerformanceDialog(agPanel.getAssetPerformanceList());
+            dialog.setVisible(true);
         } else if (e.getSource().equals(remGroupButton)) {
             if (tabbedPane.getTabCount() > 1) {
                 int index = tabbedPane.getSelectedIndex();

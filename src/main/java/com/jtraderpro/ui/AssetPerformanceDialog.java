@@ -15,7 +15,6 @@
 package com.jtraderpro.ui;
 
 import com.jtraderpro.Main;
-import com.jtraderpro.model.Asset;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -25,80 +24,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.List;
 
 /**
- * Lot Dialog
+ * Performance Dialog
  */
-public class LotDialog extends JDialog implements ActionListener, WindowListener {
+public class AssetPerformanceDialog extends JDialog implements ActionListener, WindowListener {
 
-    private final JButton addButton = new JButton("Add Lot");
-    private final JButton deleteButton = new JButton("Delete Lot");
     private final JButton okButton = new JButton("Ok");
-    private final JPanel upperPanel = new JPanel();
     private final JPanel lowerPanel = new JPanel();
-    private final LotTableModel model;
+    private final AssetPerformanceModel model;
     private final JTable table;
     private final JScrollPane scroller;
-    private final Asset asset;
-    private final AssetPanel assetPanel;
 
     /**
      * Constructor
      *
-     * @param asset Asset
-     * @param assetPanel Asset Panel
+     * @param perfs Performance List
      */
-    public LotDialog(Asset asset, AssetPanel assetPanel) {
+    public AssetPerformanceDialog(List<AssetPerformance> perfs) {
         super(Main.getMainFrame());
-        setTitle(asset.getSymbol() + " Lots");
+        setTitle("Performance");
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         addWindowListener(this);
 
-        this.asset = asset;
-        this.assetPanel = assetPanel;
-
-        deleteButton.setEnabled(asset.getLots() != null && asset.getLots().size() > 0);
-
-        model = new LotTableModel(asset);
+        model = new AssetPerformanceModel(perfs);
         table = new JTable(model);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scroller = new JScrollPane(table);
 
         init();
-    }
-
-    /**
-     * Initialize Dialog
-     */
-    private void init() {
-        addButton.addActionListener(this);
-        deleteButton.addActionListener(this);
-        okButton.addActionListener(this);
-        addButton.setIcon(Util.getImageIcon("add.png"));
-        deleteButton.setIcon(Util.getImageIcon("minus.png"));
-        okButton.setIcon(Util.getImageIcon("check.png"));
-
-        upperPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        upperPanel.add(addButton);
-        upperPanel.add(deleteButton);
-        lowerPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        lowerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        lowerPanel.add(okButton);
-
-        sizeTableColumns(table, 0, 25);
-        sizeTableColumns(table, 2, 100);
-        sizeTableColumns(table, 2, 25);
-        sizeTableColumns(table, 3, 25);
-
-        final Container cont = getContentPane();
-        cont.setLayout(new BorderLayout());
-        cont.add(upperPanel, BorderLayout.PAGE_START);
-        cont.add(scroller, BorderLayout.CENTER);
-        cont.add(lowerPanel, BorderLayout.PAGE_END);
-
-        pack();
-        Util.centerComponent(this);
     }
 
     /**
@@ -114,6 +68,38 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
     }
 
     /**
+     * Initialize Dialog
+     */
+    private void init() {
+        okButton.addActionListener(this);
+        okButton.setIcon(Util.getImageIcon("check.png"));
+
+        lowerPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        lowerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        lowerPanel.add(okButton);
+
+        final Container cont = getContentPane();
+        cont.setLayout(new BorderLayout());
+        cont.add(scroller, BorderLayout.CENTER);
+        cont.add(lowerPanel, BorderLayout.PAGE_END);
+
+        sizeTableColumns(table, 0, 70);
+        sizeTableColumns(table, 1, 150);
+        sizeTableColumns(table, 2, 70);
+        sizeTableColumns(table, 3, 70);
+        sizeTableColumns(table, 4, 70);
+        sizeTableColumns(table, 5, 70);
+        sizeTableColumns(table, 6, 70);
+        sizeTableColumns(table, 7, 70);
+        sizeTableColumns(table, 8, 70);
+
+        setPreferredSize(new Dimension(800,700));
+
+        pack();
+        Util.centerComponent(this);
+    }
+
+    /**
      * Close Dialog
      */
     private void closeDialog() {
@@ -124,47 +110,43 @@ public class LotDialog extends JDialog implements ActionListener, WindowListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(addButton)) {
-            model.addLot();
-            deleteButton.setEnabled(true);
-        } else if (e.getSource().equals(okButton)) {
-            assetPanel.refresh();
+        if (e.getSource().equals(okButton)) {
             closeDialog();
-        } else {
-            if (table.getSelectedRow() >= 0) {
-                model.removeLot(table.getSelectedRow());
-
-                deleteButton.setEnabled(asset.getLots() != null && asset.getLots().size() > 0);
-            }
         }
     }
 
     @Override
     public void windowOpened(WindowEvent e) {
+
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-        assetPanel.refresh();
+
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
+
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
+
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
+
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
+
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
+
     }
 }

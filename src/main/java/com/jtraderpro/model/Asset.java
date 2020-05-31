@@ -151,4 +151,25 @@ public class Asset implements Comparable {
 
     return value;
   }
+
+  /**
+   * Get Shares
+   *
+   * @return Integer
+   */
+  public Integer getShares() {
+    if(lots == null) {
+      return 0;
+    } else if(lots.size() == 0) {
+      return 0;
+    }
+
+    int value = 0;
+
+    for(Lot lot : lots) {
+      value += lot.getAmount();
+    }
+
+    return value;
+  }
 }

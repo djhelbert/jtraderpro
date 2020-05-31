@@ -51,6 +51,7 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
     private final int order;
     private Double marketPrice;
     private final AssetGroup assetGroup;
+    private final AssetPerformance assetPerformance = new AssetPerformance();
     private Asset panelAsset;
     private Font labelFont;
     private Font boldFont;
@@ -93,6 +94,14 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
         startTask();
     }
 
+    public boolean isEmpty() {
+        return panelAsset == null;
+    }
+
+    public final AssetPerformance getAssetPerformance() {
+        return assetPerformance;
+    }
+
     /**
      * Start Update Task
      */
@@ -111,8 +120,18 @@ public class AssetPanel extends JPanel implements MouseListener, ActionListener 
             priceLabel.setText(
                     formatPrice(info.getMarketPrice()) + " " + formatDouble(info.getPercentChange()) + "%");
 
+            assetPerformance.setSymbol(info.getSymbol());
+            assetPerformance.setName(info.getName());
+            assetPerformance.setShares(panelAsset.getShares());
+            assetPerformance.setValue(panelAsset.getValue(info.getMarketPrice()));
+            assetPerformance.setDividend(info.getAnnualYield());
+            assetPerformance.setChange(info.getPercentChange());
+            assetPerformance.setYearHigh(info.getYearHigh());
+            assetPerformance.setYearLow(info.getYearLow());
+
             if (info.getMarketPrice() > 0.0) {
                 marketPrice = info.getMarketPrice();
+                assetPerformance.setMarketPrice(info.getMarketPrice());
 
                 if (info.getVolume() > 1000000) {
                     volumeLabel.setText((info.getVolume() / 1000000) + "M");
